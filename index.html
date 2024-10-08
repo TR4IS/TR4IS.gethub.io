@@ -3,68 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Web Page</title>
+    <title>Website with Body Layout</title>
     <style>
-        * {
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            color: #333;
-            line-height: 1.6;
+            background-color: #f4f4f4;
         }
 
         header {
-            background-color: #333;
-            color: #fff;
+            background-color: #007bff;
+            color: white;
             padding: 20px;
             text-align: center;
         }
 
         nav {
-            display: flex;
-            justify-content: center;
-            background-color: #444;
-            padding: 10px 0;
+            background-color: #343a40;
+            text-align: center;
+            padding: 10px;
         }
 
         nav a {
-            color: #fff;
+            color: white;
             text-decoration: none;
             margin: 0 15px;
             padding: 10px;
-            transition: background 0.3s ease;
+            display: inline-block;
         }
 
         nav a:hover {
-            background-color: #333;
+            background-color: #495057;
+            border-radius: 5px;
         }
 
         .container {
-            max-width: 1100px;
-            margin: 20px auto;
-            padding: 0 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
         }
 
-        .content {
-            margin: 20px 0;
+        .content-section {
+            background-color: white;
             padding: 20px;
-            background: #f4f4f4;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .content-section h2 {
+            margin-bottom: 15px;
+            color: #007bff;
+        }
+
+        .services ul {
+            list-style-type: none;
+        }
+
+        .services ul li {
+            background-color: #e9ecef;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-form input, 
+        .contact-form textarea {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .contact-form button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .contact-form button:hover {
+            background-color: #0056b3;
         }
 
         footer {
+            background-color: #343a40;
+            color: white;
             text-align: center;
-            background-color: #333;
-            color: #fff;
-            padding: 20px 0;
-            position: absolute;
-            width: 100%;
-            bottom: 0;
+            padding: 20px;
+            margin-top: 20px;
         }
     </style>
 </head>
+<body>
+
+<header>
+    <h1>Welcome to My Website</h1>
+    <p>A simple website with a structured body layout</p>
+</header>
+
+<nav>
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Contact</a>
+</nav>
+
+<div class="container">
+
+    <!-- Introduction Section -->
+    <div class="content-section">
+        <h2>Introduction</h2>
+        <p>This is a simple webpage template that demonstrates a structured body layout. The body contains different sections for an introduction, services, and a contact form. You can customize these sections as needed.</p>
+    </div>
+
+    <!-- Services Section -->
+    <div class="content-section services">
+        <h2>Our Services</h2>
+        <ul>
+            <li>Web Design</li>
+            <li>Web Development</li>
+            <li>SEO Optimization</li>
+            <li>Marketing</li>
+        </ul>
+    </div>
+
+    <!-- Contact Form Section -->
+    <div class="content-section">
+        <h2>Contact Us</h2>
+        <form class="contact-form">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+
+</div>
+
+<footer>
+    <p>&copy; 2024 Simple Website. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>
