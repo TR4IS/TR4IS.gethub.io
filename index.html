@@ -1,157 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website with Body Layout</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
+<html>
+    <head>
 
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
+        <title>Calc</title>
+        <link rel="stylesheet" href="CALCSS.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
 
-        nav {
-            background-color: #343a40;
-            text-align: center;
-            padding: 10px;
-        }
+    </head>
+    <body>
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            padding: 10px;
-            display: inline-block;
-        }
+        <div id="calc">
 
-        nav a:hover {
-            background-color: #495057;
-            border-radius: 5px;
-        }
+            <input id="display" readonly>
+            <div id="oprtrs">
+                <button id="btn" onclick="SendTo('+')">+</button>
+                <button id="btn" onclick="SendTo('7')">7</button>
+                <button id="btn" onclick="SendTo('8')">8</button>
+                <button id="btn" onclick="SendTo('9')">9</button>
+                <button id="btn" onclick="SendTo('-')">-</button>
+                <button id="btn" onclick="SendTo('4')">4</button>
+                <button id="btn" onclick="SendTo('5')">5</button>
+                <button id="btn" onclick="SendTo('6')">6</button>
+                <button id="btn" onclick="SendTo('*')">*</button>
+                <button id="btn" onclick="SendTo('1')">1</button>
+                <button id="btn" onclick="SendTo('2')">2</button>
+                <button id="btn" onclick="SendTo('3')">3</button>
+                <button id="btn" onclick="SendTo('/')">/</button>
+                <button id="btn" onclick="SendTo('0')">0</button>
+                <button id="btn" onclick="Equals('=')">=</button>
+                <button id="btn" onclick="Clear('C')">C</button>
 
-        .container {
-            padding: 20px;
-            max-width: 1200px;
-            margin: auto;
-        }
+            </div>
+        </div>
+        <script src="calcj.js"></script>
 
-        .content-section {
-            background-color: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
+    </body>
 
-        .content-section h2 {
-            margin-bottom: 15px;
-            color: #007bff;
-        }
 
-        .services ul {
-            list-style-type: none;
-        }
 
-        .services ul li {
-            background-color: #e9ecef;
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
-        }
 
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-        }
 
-        .contact-form input, 
-        .contact-form textarea {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
 
-        .contact-form button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .contact-form button:hover {
-            background-color: #0056b3;
-        }
-
-        footer {
-            background-color: #343a40;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-
-<header>
-    <h1>Welcome to My Website</h1>
-    <p>A simple website with a structured body layout</p>
-</header>
-
-<nav>
-    <a href="#">Home</a>
-    <a href="#">About</a>
-    <a href="#">Services</a>
-    <a href="#">Contact</a>
-</nav>
-
-<div class="container">
-
-    <!-- Introduction Section -->
-    <div class="content-section">
-        <h2>Introduction</h2>
-        <p>This is a simple webpage template that demonstrates a structured body layout. The body contains different sections for an introduction, services, and a contact form. You can customize these sections as needed.</p>
-    </div>
-
-    <!-- Services Section -->
-    <div class="content-section services">
-        <h2>Our Services</h2>
-        <ul>
-            <li>Web Design</li>
-            <li>Web Development</li>
-            <li>SEO Optimization</li>
-            <li>Marketing</li>
-        </ul>
-    </div>
-
-    <!-- Contact Form Section -->
-    <div class="content-section">
-        <h2>Contact Us</h2>
-        <form class="contact-form">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-            <button type="submit">Send Message</button>
-        </form>
-    </div>
-
-</div>
-
-<footer>
-    <p>&copy; 2024 Simple Website. All Rights Reserved.</p>
-</footer>
-
-</body>
 </html>
