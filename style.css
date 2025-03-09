@@ -8,7 +8,7 @@
     src: url(Fonts/Silkscreen-Regular.ttf);
 }
 html {
-    background-image: url(Images/backgournd-Recovered.png);
+    background-image: url(Images/1980Background.png);
     background-size: cover;
     background-color: transparent;
     overflow-y: scroll;
