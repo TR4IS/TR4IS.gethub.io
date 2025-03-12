@@ -26,6 +26,7 @@ h1 {
     top: 0px;
     left: 42px;
     background: linear-gradient(to right, #ff0000, #ff5e00);
+    background-clip: border-box;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     display: inline-block;
@@ -47,6 +48,7 @@ a {
 }
 h2 {
     background: linear-gradient(to right, #ff0000, #ff5e00);
+    background-clip: border-box;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-family: FiraCode;
@@ -69,6 +71,7 @@ p {
     top: 280px;
     left: 50px;
     background: linear-gradient(to right, #ff0000, #ff5e00);
+    background-clip: border-box;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-size: 200% 100%;
