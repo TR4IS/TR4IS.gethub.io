@@ -1,9 +1,5 @@
 # Webpage for testing 
 
-the webpage : https://tr4is.github.io/TR4IS.gethub.io/
-
-# Webpage for testing 
-
 [The webpage](https://tr4is.github.io/TR4IS.gethub.io/)
 
 QR Code for the webpage :
