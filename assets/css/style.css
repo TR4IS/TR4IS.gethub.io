@@ -1,0 +1,114 @@
+/*
+  ================== styles.css ==================
+  QUICK EDITS:
+  - Colors: change in :root below
+  - Spacing & sizes: look for variables or media queries
+  - Mobile: see @media blocks near the end
+
+  COLOR PALETTE (from your image):
+    --paper:  #e8d8c9  (light beige)
+    --slate:  #4b607f  (cool blue)
+    --accent: #f3701e  (orange)
+  We place them on a dark background so they pop.
+*/
+
+:root{
+    --bg:#0e1116;      /* page background */
+    --ink:#e9eef5;     /* default text on dark */
+    --paper:#e8d8c9;   /* beige highlight */
+    --slate:#4b607f;   /* blue rail / chips */
+    --accent:#f3701e;  /* orange accent */
+    --muted:#9aa7b8;   /* secondary text */
+    --card:#141922;    /* card background */
+    --line:#222833;    /* borders */
+    --radius:14px;     /* card corner radius */
+    --shadow:0 8px 24px rgba(0,0,0,.25);
+  }
+  
+  /* --- Base reset-ish --- */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  }
+  a{color:inherit;text-decoration:none}
+  .u{text-decoration:underline}
+  img{max-width:100%;display:block}
+  
+  /* --- Containers --- */
+  .container{max-width:1100px;margin:0 auto;padding:20px 18px 96px}
+  
+  /* --- Header (sticky) --- */
+  .hdr{
+    position:sticky;top:0;z-index:10;
+    background:linear-gradient(180deg, rgba(14,17,22,.95), rgba(14,17,22,.70) 60%, rgba(14,17,22,0));
+    backdrop-filter:saturate(140%) blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .bar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;gap:12px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px rgba(243,112,30,.6)}
+  #brandText{color:var(--paper)}
+  
+  .nav{display:flex;gap:18px;align-items:center}
+  .navlink{
+    padding:8px 10px;border-radius:10px;border:1px solid transparent;opacity:.95;
+    transition:transform .12s ease, background .2s ease, border-color .2s ease;
+  }
+  .navlink:hover{transform:translateY(-1px)}
+  .navlink.active{border-color:var(--line);background:#121722}
+  
+  /* --- Home layout rail vibe --- */
+  .hero{display:grid;grid-template-columns:280px 1fr;gap:40px;margin-top:28px}
+  .rail{position:relative;padding-top:10px;color:var(--muted)}
+  .rail::before{
+    content:"";position:absolute;left:10px;top:0;bottom:0;width:3px;border-radius:3px;
+    background:linear-gradient(var(--slate), var(--accent));
+    box-shadow:0 0 20px rgba(75,96,127,.45);
+  }
+  .chip{
+    display:inline-block;margin-left:28px;margin-bottom:8px;
+    padding:6px 10px;border-radius:10px;background:rgba(75,96,127,.18);border:1px solid var(--line)
+  }
+  
+  /* --- Cards/typography --- */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+  .title{font-size:44px;margin:0 0 8px}
+  .accent{color:var(--accent)}
+  .muted{color:var(--muted)}
+  .actions{margin-top:14px;display:flex;gap:12px;flex-wrap:wrap}
+  
+  /* --- Buttons/tags --- */
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,#141a24,#111722);color:var(--paper);font-weight:700}
+  .badge{display:inline-block;padding:2px 8px;border-radius:999px;background:var(--accent);color:#111;font-weight:800}
+  .tags{margin-top:14px}
+  .tag{display:inline-block;background:rgba(232,216,201,.12);border:1px solid var(--line);padding:3px 8px;border-radius:999px;color:var(--paper);font-size:12px;margin-right:6px}
+  
+  /* --- Projects grid --- */
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+  .col-6{grid-column:span 6}
+  .project{background:#101622;border:1px solid var(--line);border-radius:12px;padding:16px}
+  
+  /* --- Visibility helper for router --- */
+  .hidden{display:none}
+  
+  /* --- Footer --- */
+  .ft{margin:40px auto 0;color:var(--muted);text-align:center}
+  
+  /* ----------- Responsive tweaks ----------- */
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr}
+    .rail::before{left:0}
+    .chip{margin-left:12px}
+    .title{font-size:36px}
+    .nav{gap:10px}
+  }
+  @media (max-width:560px){
+    .bar{padding:12px 10px}
+    .navlink{padding:8px}
+    .grid{grid-template-columns:1fr}
+    .col-6{grid-column:1}
+  }
+  

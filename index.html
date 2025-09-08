@@ -1,268 +1,156 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>reachflow.is()</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<!-- ======= COLORS (your palette) =======
-  --ink: base text on dark bg
-  --paper: #e8d8c9  (light)
-  --slate: #4b607f  (cool blue)
-  --accent: #f3701e (orange)
-  --bg: dark base so the palette pops
--->
-<style>
-  :root{
-    --bg:#0e1116;
-    --ink:#e9eef5;
-    --paper:#e8d8c9;
-    --slate:#4b607f;
-    --accent:#f3701e;
-    --muted:#9aa7b8;
-    --card:#141922;
-    --line:#222833;
-    --radius:14px;
-    --shadow:0 8px 24px rgba(0,0,0,.25);
-  }
+  <!--
+    ============= reachflow.site =============
+    HOW THIS WORKS (quick tour)
+    - This is a single-page app (SPA) with 3 "pages":
+        #is, #projects, #contact
+      We use the URL hash to switch pages so everything stays on reachflow.site (no /contact path).
+    - Visuals live in /assets/css/styles.css
+    - Behavior (the tiny router) lives in /assets/js/app.js
+    - To edit content, scroll down to the <section> blocks and change text/cards. (SEARCH: EDIT HERE)
 
-  /* Base */
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0;background:var(--bg);color:var(--ink);
-    font:16px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-  }
-  a{color:inherit;text-decoration:none}
-  img{max-width:100%;display:block}
+    FILE MAP
+    - index.html         → structure & content
+    - assets/css/styles.css → colors, layout, responsive rules
+    - assets/js/app.js      → hash router, active link state, brand label updater
+  -->
 
-  /* Layout */
-  .container{max-width:1100px;margin:0 auto;padding:20px 18px 96px}
-  header{
-    position:sticky;top:0;z-index:10;
-    background:linear-gradient(180deg, rgba(14,17,22,.95), rgba(14,17,22,.70) 60%, rgba(14,17,22,0));
-    backdrop-filter:saturate(140%) blur(8px);
-    border-bottom:1px solid var(--line);
-  }
-  .bar{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:14px 18px;gap:12px;
-  }
-
-  /* Brand (top-left) – updates on page change */
-  .brand{
-    display:flex;align-items:center;gap:10px;
-    font-weight:800;letter-spacing:.2px;
-  }
-  .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px rgba(243,112,30,.6)}
-  #brandText{color:var(--paper)} /* will switch dynamically */
-
-  /* Top-right nav */
-  nav{display:flex;gap:18px;align-items:center}
-  .navlink{
-    padding:8px 10px;border-radius:10px;border:1px solid transparent;
-    opacity:.95;transition:transform .12s ease, background .2s ease, border-color .2s ease;
-  }
-  .navlink:hover{transform:translateY(-1px)}
-  .navlink.active{border-color:var(--line);background:#121722}
-  .pill{padding:6px 9px;border-radius:999px;background:var(--accent);color:#111; font-weight:700}
-
-  /* Hero / rail vibe */
-  .hero{
-    display:grid;grid-template-columns:280px 1fr;gap:40px;margin-top:28px;
-  }
-  .rail{
-    position:relative;padding-top:10px;color:var(--muted);
-  }
-  .rail::before{
-    content:"";position:absolute;left:10px;top:0;bottom:0;width:3px;border-radius:3px;
-    background:linear-gradient(var(--slate), var(--accent));
-    box-shadow:0 0 20px rgba(75,96,127,.45);
-  }
-  .rail .chip{
-    display:inline-block;margin-left:28px;margin-bottom:8px;
-    padding:6px 10px;border-radius:10px;background:rgba(75,96,127,.18);border:1px solid var(--line);
-  }
-
-  /* Cards/sections */
-  .card{
-    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-    box-shadow:var(--shadow);padding:22px;
-  }
-  .title{font-size:44px;margin:0 0 8px 0}
-  .title .accent{color:var(--accent)}
-  .muted{color:var(--muted)}
-
-  /* Hidden state for router */
-  .hidden{display:none}
-
-  /* Buttons */
-  .btn{
-    display:inline-flex;align-items:center;gap:10px;
-    padding:10px 14px;border-radius:12px;border:1px solid var(--line);
-    background:linear-gradient(180deg,#141a24,#111722);
-    color:var(--paper);font-weight:700;
-  }
-  .btn .badge{display:inline-block;padding:2px 8px;border-radius:999px;background:var(--accent);color:#111;font-weight:800}
-
-  /* Lists / project grid */
-  .grid{
-    display:grid;grid-template-columns:repeat(12,1fr);gap:16px;
-  }
-  .col-6{grid-column:span 6}
-  .project{
-    background:#101622;border:1px solid var(--line);border-radius:12px;padding:16px;
-  }
-  .tag{display:inline-block;background:rgba(232,216,201,.12);border:1px solid var(--line);
-       padding:3px 8px;border-radius:999px;color:var(--paper);font-size:12px;margin-right:6px}
-
-  /* Footer */
-  footer{margin:40px auto 0;color:var(--muted);text-align:center}
-
-  /* Mobile tweaks */
-  @media (max-width:900px){
-    .hero{grid-template-columns:1fr}
-    .rail::before{left:0}
-    .rail .chip{margin-left:12px}
-    .title{font-size:36px}
-    nav{gap:10px}
-  }
-  @media (max-width:560px){
-    .bar{padding:12px 10px}
-    .navlink{padding:8px}
-    .pill{display:none} /* hides “Hire me” on tiny screens, optional */
-    .grid{grid-template-columns:1fr}
-    .col-6{grid-column:1}
-  }
-</style>
+  <title>reachflow.is()</title>
+  <link rel="preload" href="assets/css/styles.css" as="style" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
 
-  <!-- ===== Header ===== -->
-  <header>
+  <!-- ===== Sticky Header (top bar) =====
+       - LEFT: brand text updates when page changes (home/is/projects/contact)
+       - RIGHT: links to sections (no keyboard shortcuts)
+  -->
+  <header class="hdr">
     <div class="bar container">
       <div class="brand">
-        <span class="dot"></span>
+        <span class="dot" aria-hidden="true"></span>
+        <!-- JS updates this text automatically (see app.js setActive) -->
         <span id="brandText">reachflow.home()</span>
       </div>
 
-      <!-- Top-right links (no separate routes; the hash drives the SPA) -->
-      <nav aria-label="Primary">
+      <!-- Top-right navigation:
+           NOTE: these are hash links (#is, #projects, #contact).
+           You can rename visible text freely; keep the href hashes the same. -->
+      <nav aria-label="Primary" class="nav">
         <a href="#is" class="navlink" data-link=".is()">.is()</a>
         <a href="#projects" class="navlink" data-link=".projects()">.projects()</a>
         <a href="#contact" class="navlink" data-link=".contact()">.contact()</a>
-        <a href="mailto:you@reachflow.site" class="pill">Hire me</a>
+        <!-- "Hire me" removed per your request -->
       </nav>
     </div>
   </header>
 
   <main class="container">
 
-    <!-- ===== Hero / intro (Home) ===== -->
+    <!-- =================== HOME ===================
+         EDIT HERE: Headline + intro blurb.
+         This is what shows at reachflow.site with no hash.
+    -->
     <section id="home" class="hero">
       <aside class="rail">
+        <!-- EDIT HERE: short tags describing you -->
         <span class="chip">creative frontend developer</span>
         <span class="chip">designer & illustrator</span>
       </aside>
 
       <div class="card">
+        <!-- EDIT HERE: big title -->
         <h1 class="title">iuri.<span class="accent">is()</span></h1>
-        <p class="muted">Welcome to <strong>reachflow.site</strong>. Use the top-right links to open sections.
+
+        <!-- EDIT HERE: welcome text -->
+        <p class="muted">
+          Welcome to <strong>reachflow.site</strong>. Use the top-right links to open sections.
           You can also share direct URLs like <code>reachflow.site#projects</code>.
         </p>
 
-        <div style="margin-top:14px;display:flex;gap:12px;flex-wrap:wrap">
+        <!-- EDIT HERE: primary actions (optional) -->
+        <div class="actions">
           <a class="btn" href="#projects"><span class="badge">→</span> View projects</a>
           <a class="btn" href="#is">About me</a>
         </div>
       </div>
     </section>
 
-    <!-- ===== .is() (About) ===== -->
+    <!-- =================== .is() (ABOUT) ===================
+         EDIT HERE: your bio, skills, stack.
+    -->
     <section id="is" class="card hidden" aria-hidden="true">
       <h2>.is()</h2>
-      <p class="muted">Write your short bio here. Mention stack, years, favorite tools, etc.</p>
+      <p class="muted">
+        Short bio here. Mention your role, focus areas, and the kind of work you enjoy.
+      </p>
 
-      <div style="margin-top:14px">
+      <!-- EDIT HERE: tags/skills -->
+      <div class="tags">
         <span class="tag">HTML</span>
         <span class="tag">CSS</span>
-        <span class="tag">JS</span>
-        <span class="tag" style="background:rgba(75,96,127,.2)">UI</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">UI</span>
       </div>
     </section>
 
-    <!-- ===== .projects() ===== -->
+    <!-- =================== .projects() ===================
+         EDIT HERE: duplicate a .project card per project.
+         Keep each card short: name, one-liner, a couple tags, and links.
+    -->
     <section id="projects" class="card hidden" aria-hidden="true">
       <h2>.projects()</h2>
-      <div class="grid" style="margin-top:10px">
-        <div class="col-6 project">
+
+      <div class="grid">
+        <!-- Project Card 1 -->
+        <article class="col-6 project">
           <strong>Project One</strong>
-          <p class="muted">Short one-liner about what it is and what you did.</p>
-          <div>
-            <span class="tag">React</span><span class="tag">API</span>
+          <p class="muted">What it is + what you did. Keep it one or two lines.</p>
+          <div class="tags">
+            <span class="tag">React</span>
+            <span class="tag">API</span>
           </div>
-        </div>
-        <div class="col-6 project">
+          <!-- Optional links -->
+          <!-- <p><a class="btn" href="https://live-demo.com" target="_blank" rel="noreferrer">Live</a></p> -->
+        </article>
+
+        <!-- Project Card 2 -->
+        <article class="col-6 project">
           <strong>Project Two</strong>
-          <p class="muted">Another small description. Replace these cards freely.</p>
-          <div>
-            <span class="tag">UI</span><span class="tag">Animation</span>
+          <p class="muted">Another quick description. Swap, add, or remove cards freely.</p>
+          <div class="tags">
+            <span class="tag">UI</span>
+            <span class="tag">Animation</span>
           </div>
-        </div>
+        </article>
       </div>
     </section>
 
-    <!-- ===== .contact() ===== -->
+    <!-- =================== .contact() ===================
+         EDIT HERE: your email + social links.
+    -->
     <section id="contact" class="card hidden" aria-hidden="true">
       <h2>.contact()</h2>
-      <p class="muted">Prefer email? <a style="color:var(--paper);text-decoration:underline" href="mailto:you@reachflow.site">you@reachflow.site</a></p>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+      <p class="muted">
+        Prefer email?
+        <a class="u" href="mailto:you@reachflow.site">you@reachflow.site</a>
+      </p>
+
+      <div class="links">
         <a class="btn" href="https://github.com/YOUR_GITHUB" target="_blank" rel="noreferrer">GitHub</a>
         <a class="btn" href="https://linkedin.com/in/YOUR_LINKEDIN" target="_blank" rel="noreferrer">LinkedIn</a>
       </div>
     </section>
 
-    <footer>© <span id="year"></span> reachflow</footer>
+    <footer class="ft">© <span id="year"></span> reachflow</footer>
   </main>
 
-<script>
-  // ----- Simple hash router (no keyboard shortcuts) -----
-  const SECTIONS = ["home","is","projects","contact"];
-  const brandText = document.getElementById("brandText");
-  const navLinks = [...document.querySelectorAll(".navlink")];
-
-  function setActive(hash){
-    // show one section
-    SECTIONS.forEach(id=>{
-      const el=document.getElementById(id);
-      const on = id===hash;
-      el.classList.toggle("hidden", !on);
-      el.setAttribute("aria-hidden", String(!on));
-    });
-    // brand label at top-left
-    const label = hash==="home" ? "reachflow.home()" : `reachflow.${hash}()`;
-    brandText.textContent = label;
-    // active nav state
-    navLinks.forEach(a=>{
-      a.classList.toggle("active", a.getAttribute("href")==="#"+hash);
-    });
-    // scroll to top on change (mobile nicety)
-    window.scrollTo({top:0,behavior:"instant"});
-  }
-
-  function route(){
-    const hash = (location.hash || "#home").replace("#","");
-    if(!SECTIONS.includes(hash)){ location.hash = "#home"; return; }
-    setActive(hash);
-  }
-  window.addEventListener("hashchange", route);
-  window.addEventListener("DOMContentLoaded", ()=>{
-    // default to home if no hash
-    if(!location.hash) location.hash = "#home";
-    route();
-    document.getElementById("year").textContent = new Date().getFullYear();
-  });
-</script>
+  <!-- JS placed at the end for faster first paint -->
+  <script src="assets/js/app.js" defer></script>
 </body>
 </html>
