@@ -1,34 +1,95 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" href="style.css">
-        <link rel="icon" type="image/png" href="Images/code.png">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>reachflow.is()</title>
+<style>
+  :root { --bg:#0d0f12; --fg:#cbd5e1; --muted:#8b9bb4; --accent:#7c3aed; }
+  *{box-sizing:border-box} html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;}
+  a{color:var(--fg);text-decoration:none}
+  .wrap{max-width:1100px;margin:0 auto;padding:56px 24px 96px;display:grid;grid-template-columns:240px 1fr;gap:48px}
+  header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;opacity:.9}
+  .brand{font-weight:800;letter-spacing:.3px}
+  .badge{color:var(--accent)}
+  .rail{position:relative}
+  .dot{position:absolute;left:-16px;top:12px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  h1{font-size:48px;margin:0 0 8px 0}
+  .muted{color:var(--muted)}
+  .box{border:1px solid #23262d;border-radius:10px;padding:24px;background:#0f1217}
+  .hidden{display:none}
+  .navhint{position:fixed;right:16px;top:14px;font-size:14px;opacity:.7}
+  .navhint code{background:#12151b;border:1px solid #23262d;border-radius:6px;padding:2px 6px}
+  /* tiny responsiveness */
+  @media (max-width:800px){ .wrap{grid-template-columns:1fr} .rail{order:2} }
+</style>
+</head>
+<body>
+  <div class="navhint">open: <code>#is</code> <code>#contact</code> • shortcuts: <code>i</code>, <code>c</code>, <code>esc</code></div>
 
-        <meta charset="utf-8">
-        <title>Developer SA</title>
-    </head>
-    <body>
-        <h1>Developer!</h1>
-        <h2>> Hey 👋 , I’m TRAIS!</h2>
-        <p>
-            I’m not a pro developer (yet...)<br>
-            intersted in cybersecurity, optmizing and ricing arch
+  <div class="wrap">
+    <header>
+      <div class="brand">.is()<span class="badge"> // reachflow</span></div>
+      <!-- keep header minimal; no links need to appear -->
+    </header>
 
-            <big><b>> What I do :</b></big><br><br>
+    <!-- left column -->
+    <aside class="rail">
+      <span class="dot"></span>
+      <div class="muted">Creative frontend developer, designer, and illustrator.</div>
+    </aside>
 
+    <!-- right column: sections -->
+    <main>
+      <!-- HOME -->
+      <section id="home" class="box">
+        <h1>iuri.<span style="color:var(--accent)">is()</span></h1>
+        <p class="muted">Welcome to reachflow.site. Use the secret routes
+          <code>#is</code> and <code>#contact</code> (or press <b>i</b>/<b>c</b>) to open sections.</p>
+      </section>
 
-            I spend my time building java and python apps💻,<br>
-            tweaking Linux performance 
-            and diving into cybersecurity<br>
-            
-            <big><b>> D41ly L34rnin9 :</b></b ig><br><br>
+      <!-- .is() SECTION -->
+      <section id="is" class="box hidden" aria-hidden="true">
+        <h2>.is()</h2>
+        <p>About me content goes here—skills, bio, stack, etc.</p>
+      </section>
 
-            Cr4cker ...<br><br><br>
-            <big><b>
-            > Still learning, still growing,
-            still coding! 🔥
-            </b></big>
-        </p>
-    </body>
+      <!-- .contact() SECTION -->
+      <section id="contact" class="box hidden" aria-hidden="true">
+        <h2>.contact()</h2>
+        <p>Email: <a href="mailto:you@reachflow.site">you@reachflow.site</a></p>
+        <p>LinkedIn / GitHub links here.</p>
+      </section>
+    </main>
+  </div>
+
+<script>
+  // simple router: show one section based on hash or query
+  const sections = ["home","is","contact"];
+  function show(which){
+    sections.forEach(id=>{
+      const el = document.getElementById(id);
+      const on = id===which;
+      el.classList.toggle("hidden", !on);
+      el.setAttribute("aria-hidden", String(!on));
+    });
+  }
+  function route(){
+    const hash = (location.hash || "").replace("#","");
+    const search = new URLSearchParams(location.search);
+    const key = hash || (search.has("is")?"is": (search.has("contact")?"contact":""));
+    show(key || "home");
+  }
+  window.addEventListener("hashchange", route);
+  window.addEventListener("DOMContentLoaded", route);
+
+  // keyboard shortcuts
+  document.addEventListener("keydown", (e)=>{
+    if (e.key.toLowerCase()==="i"){ location.hash = "is"; }
+    if (e.key.toLowerCase()==="c"){ location.hash = "contact"; }
+    if (e.key === "Escape"){ location.hash = ""; } // back to home
+  });
+</script>
+</body>
 </html>
-
