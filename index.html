@@ -20,7 +20,7 @@
     - assets/js/app.js      → hash router, active link state, brand label updater
   -->
 
-  <title>reachflow.is()</title>
+  <title>reachflow.site()</title>
   <link rel="preload" href="assets/css/styles.css" as="style" />
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
@@ -42,10 +42,11 @@
            NOTE: these are hash links (#is, #projects, #contact).
            You can rename visible text freely; keep the href hashes the same. -->
       <nav aria-label="Primary" class="nav">
+        <a href="#home" class="navlink" data-link=".home()">.home()</a>
         <a href="#is" class="navlink" data-link=".is()">.is()</a>
         <a href="#projects" class="navlink" data-link=".projects()">.projects()</a>
         <a href="#contact" class="navlink" data-link=".contact()">.contact()</a>
-        <!-- "Hire me" removed per your request -->
+        
       </nav>
     </div>
   </header>
@@ -56,21 +57,17 @@
          EDIT HERE: Headline + intro blurb.
          This is what shows at reachflow.site with no hash.
     -->
-    <section id="home" class="hero">
-      <aside class="rail">
-        <!-- EDIT HERE: short tags describing you -->
-        <span class="chip">creative frontend developer</span>
-        <span class="chip">designer & illustrator</span>
-      </aside>
+    <section id="home" class="hero" >
+      
 
       <div class="card">
         <!-- EDIT HERE: big title -->
-        <h1 class="title">iuri.<span class="accent">is()</span></h1>
+        <h1 class="title">trais.<span class="accent">home()</span></h1>
 
         <!-- EDIT HERE: welcome text -->
         <p class="muted">
           Welcome to <strong>reachflow.site</strong>. Use the top-right links to open sections.
-          You can also share direct URLs like <code>reachflow.site#projects</code>.
+          This is a portfolio website, enjoy.
         </p>
 
         <!-- EDIT HERE: primary actions (optional) -->
@@ -87,12 +84,13 @@
     <section id="is" class="card hidden" aria-hidden="true">
       <h2>.is()</h2>
       <p class="muted">
-        Short bio here. Mention your role, focus areas, and the kind of work you enjoy.
+        Hi, I’m <strong>ziyad</strong> — a curious builder, learner, and creator with a strong passion for technology, problem-solving, and growth. I enjoy working on projects that blend creativity with functionality, whether it’s coding, designing systems, or exploring new tech trends.
       </p>
 
       <!-- EDIT HERE: tags/skills -->
       <div class="tags">
-        <span class="tag">HTML</span>
+        <span class="tag">Python</span>
+        <span class="tag">Automation</span>
         <span class="tag">CSS</span>
         <span class="tag">JavaScript</span>
         <span class="tag">UI</span>
@@ -109,23 +107,25 @@
       <div class="grid">
         <!-- Project Card 1 -->
         <article class="col-6 project">
-          <strong>Project One</strong>
-          <p class="muted">What it is + what you did. Keep it one or two lines.</p>
+          <strong>Windows File Organizer</strong>
+          <p class="muted">A simple and effective app that automatically organizes your Windows Downloads folder into categorized subfolders.</p>
+          <a class="btn" href="https://github.com/TR4IS/windows-downloads-file-organizer"> View project</a>
           <div class="tags">
-            <span class="tag">React</span>
-            <span class="tag">API</span>
+            <span class="tag">Python</span>
           </div>
+          
           <!-- Optional links -->
           <!-- <p><a class="btn" href="https://live-demo.com" target="_blank" rel="noreferrer">Live</a></p> -->
         </article>
 
         <!-- Project Card 2 -->
         <article class="col-6 project">
-          <strong>Project Two</strong>
-          <p class="muted">Another quick description. Swap, add, or remove cards freely.</p>
+          <strong>Portfolio website</strong>
+          <p class="muted">This website you are seeing.</p>
           <div class="tags">
-            <span class="tag">UI</span>
-            <span class="tag">Animation</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">Html</span>
+            <span class="tag">CSS</span>
           </div>
         </article>
       </div>
@@ -138,12 +138,12 @@
       <h2>.contact()</h2>
       <p class="muted">
         Prefer email?
-        <a class="u" href="mailto:you@reachflow.site">you@reachflow.site</a>
+        <a class="u" href="mailto:ziyad.tr.46@gmail.com">ziyad.tr.46@gmail.com</a>
       </p>
 
       <div class="links">
-        <a class="btn" href="https://github.com/YOUR_GITHUB" target="_blank" rel="noreferrer">GitHub</a>
-        <a class="btn" href="https://linkedin.com/in/YOUR_LINKEDIN" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a class="btn" href="https://github.com/tr4is" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="btn" href="https://linkedin.com" target="_blank" rel="noreferrer">LinkedIn</a>
       </div>
     </section>
 
