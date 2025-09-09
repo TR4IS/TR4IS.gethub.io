@@ -49,6 +49,26 @@ function route() {
 
 window.addEventListener("hashchange", route);
 window.addEventListener("DOMContentLoaded", () => {
+const brand = document.getElementById("brandText");
+const nav = document.querySelector(".nav");
+const navLinks = document.querySelectorAll(".navlink");
+
+if (brand && nav) {
+  // toggle dropdown when clicking the brand
+  brand.addEventListener("click", () => {
+    nav.classList.toggle("show");
+  });
+
+  // hide dropdown after clicking any nav link (mobile only)
+  navLinks.forEach(link => {
+    link.addEventListener("click", () => {
+      if (window.innerWidth <= 768) {
+        nav.classList.remove("show");
+      }
+    });
+  });
+}
+
   if (!location.hash) location.hash = "#home"; // default if no hash
   route();
   // footer year

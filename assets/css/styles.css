@@ -104,17 +104,45 @@
   .ft{margin:40px auto 0;color:var(--muted);text-align:center}
   
   /* ----------- Responsive tweaks ----------- */
-  @media (max-width:900px){
-    .hero{grid-template-columns:1fr}
-    .rail::before{left:0}
-    .chip{margin-left:12px}
-    .title{font-size:36px}
-    .nav{gap:10px}
+ @media (max-width: 768px) {
+  .nav {
+    display: none;             /* hidden by default */
+    flex-direction: column;    /* stack vertically */
+    position: absolute;        /* appear under the brand */
+    top: 60px;                 /* below the sticky bar height */
+    left: 0;
+    right: 0;
+
+    /* Acrylic/frosted effect like header */
+    background: rgba(14,17,22,0.95);
+    backdrop-filter: saturate(140%) blur(8px);
+
+    border-bottom: 1px solid var(--line);
+    border-radius: 0 0 var(--radius) var(--radius); 
+    padding: 10px 0;
+    gap: 8px;
+    z-index: 1000;
+    box-shadow: var(--shadow);
   }
-  @media (max-width:560px){
-    .bar{padding:12px 10px}
-    .navlink{padding:8px}
-    .grid{grid-template-columns:1fr}
-    .col-6{grid-column:1}
+
+  .nav.show {
+    display: flex;
   }
-  
+}
+  @media (max-width: 768px) {
+  /* Projects stack vertically on mobile */
+  .grid {
+    grid-template-columns: 1fr !important; /* one column only */
+    gap: 16px; /* space between projects */
+  }
+
+  .col-6 {
+    grid-column: 1; /* force full width */
+  }
+
+  .project {
+    width: 100%; /* ensure full width */
+    margin: 0 auto;
+  }
+}
+
