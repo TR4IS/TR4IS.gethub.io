@@ -1,148 +1,159 @@
-/*
-  ================== styles.css ==================
-  QUICK EDITS:
-  - Colors: change in :root below
-  - Spacing & sizes: look for variables or media queries
-  - Mobile: see @media blocks near the end
+/* --- Global Styles & Font (Same as before) --- */
+:root {
+    --bg-color: #10121a;
+    --grid-color: rgba(255, 255, 255, 0.05);
+    --text-color: #d1d1d1;
+    --accent-cyan: #00bfff;
+    --accent-green: #a3c9a8;
+    --line-color: #3f4251;
+    --node-color: var(--accent-cyan);
+    --white:white;
+      
 
-  COLOR PALETTE (from your image):
-    --paper:  #e8d8c9  (light beige)
-    --slate:  #4b607f  (cool blue)
-    --accent: #f3701e  (orange)
-  We place them on a dark background so they pop.
-*/
+}
 
-:root{
-    --bg:#0e1116;      /* page background */
-    --ink:#e9eef5;     /* default text on dark */
-    --paper:#e8d8c9;   /* beige highlight */
-    --slate:#4b607f;   /* blue rail / chips */
-    --accent:#f3701e;  /* orange accent */
-    --muted:#9aa7b8;   /* secondary text */
-    --card:#141922;    /* card background */
-    --line:#222833;    /* borders */
-    --radius:14px;     /* card corner radius */
-    --shadow:0 8px 24px rgba(0,0,0,.25);
-  }
-  
-  /* --- Base reset-ish --- */
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0;background:var(--bg);color:var(--ink);
-    font:16px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-  }
-  a{color:inherit;text-decoration:none}
-  .u{text-decoration:underline}
-  img{max-width:100%;display:block}
-  
-  /* --- Containers --- */
-  .container{max-width:1100px;margin:0 auto;padding:20px 18px 96px; flex: 1;}
-  
-  /* --- Header (sticky) --- */
-  .hdr{
-    position:sticky;top:0;z-index:10;
-    background:linear-gradient(180deg, rgba(14,17,22,.95), rgba(14,17,22,.70) 60%, rgba(14,17,22,0));
-    backdrop-filter:saturate(140%) blur(8px);
-    border-bottom:1px solid var(--line);
-  }
-  .bar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;gap:12px}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
-  .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px rgba(243,112,30,.6)}
-  #brandText{color:var(--paper)}
-  
-  .nav{display:flex;gap:18px;align-items:center}
-  .navlink{
-    padding:8px 10px;border-radius:10px;border:1px solid transparent;opacity:.95;
-    transition:transform .12s ease, background .2s ease, border-color .2s ease;
-  }
-  .navlink:hover{transform:translateY(-1px)}
-  .navlink.active{border-color:var(--line);background:#121722;color: #f3701e;}
-  
-  /* --- Home layout rail vibe --- */
-  .hero {
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Fira Code', 'Courier New', monospace;
+    margin: 0; /* Remove default margin */
+    overflow: hidden; /* Hide the body's scrollbar */
+        text-align: left;
+
+}
+
+/* --- 1. The Scroll Snap Container --- */
+.snap-container {
+    /* This makes the container scrollable instead of the whole page */
+    height: 100vh; /* vh = viewport height */
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+
+    /* This is the magic for snapping! */
+    /*scroll-snap-type: y mandatory;
+        text-align: left;
+
+}
+
+/* --- 2. The Full-Screen Sections --- */
+section {
+    /* Make each section take up the full screen */
+    height: 100vh;
+    width: 100%; /* vw = viewport width */
     
-    display: block;
-    grid-template-columns: 280px 1fr;
-                  /* optional padding */
-  }  
-  
-  .rail{position:relative;padding-top:10px;color:var(--muted)}
-  .rail::before{
-    content:"";position:absolute;left:10px;top:0;bottom:0;width:3px;border-radius:3px;
-    background:linear-gradient(var(--slate), var(--accent));
-    box-shadow:0 0 20px rgba(75,96,127,.45);
-  }
-  .chip{
-    display:flex;margin-left:28px;margin-bottom:8px;
-    padding:6px 10px;border-radius:10px;background:rgba(75,96,127,.18);border:1px solid var(--line)
-  }
-  
-  /* --- Cards/typography --- */
-  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
-  .title{font-size:44px;margin:0 0 8px}
-  .accent{color:var(--accent)}
-  .muted{color:var(--muted)}
-  .actions{margin-top:14px;display:flex;gap:12px;flex-wrap:wrap}
-  
-  /* --- Buttons/tags --- */
-  .btn{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,#141a24,#111722);color:var(--paper);font-weight:700}
-  /* .badge{display:inline-block;padding:2px 8px;border-radius:var(--radius);background:var(--accent);color:#111;font-weight:800} */
-  .tags{margin-top:14px}
-  .tag{display:inline-block;background:rgba(232,216,201,.12);border:1px solid var(--line);padding:3px 8px;border-radius:999px;color:var(--paper);font-size:12px;margin-right:6px}
-  
-  /* --- Projects grid --- */
-  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-  .col-6{grid-column:span 6}
-  .project{background:#101622;border:1px solid var(--line);border-radius:12px;padding:16px}
-  
-  /* --- Visibility helper for router --- */
-  .hidden{display:none}
-  
-  /* --- Footer --- */
-  .ft{margin:40px auto 0;color:var(--muted);text-align:center}
-  
-  /* ----------- Responsive tweaks ----------- */
- @media (max-width: 768px) {
-  .nav {
-    display: none;             /* hidden by default */
-    flex-direction: column;    /* stack vertically */
-    position: absolute;        /* appear under the brand */
-    top: 60px;                 /* below the sticky bar height */
-    left: 0;
-    right: 0;
+    /* This tells the container where to snap this section */
+    scroll-snap-align: start;
 
-    /* Acrylic/frosted effect like header */
-    background: rgba(14,17,22,0.95);
-    backdrop-filter: saturate(140%) blur(8px);
-
-    border-bottom: 1px solid var(--line);
-    border-radius: 0 0 var(--radius) var(--radius); 
-    padding: 10px 0;
-    gap: 8px;
-    z-index: 1000;
-    box-shadow: var(--shadow);
-  }
-
-  .nav.show {
+    /* Use Flexbox to center the content vertically and horizontally */
     display: flex;
-  }
-}
-  @media (max-width: 768px) {
-  /* Projects stack vertically on mobile */
-  .grid {
-    grid-template-columns: 1fr !important; /* one column only */
-    gap: 16px; /* space between projects */
-  }
+    /*justify-content: center;*/
+    align-items: center;
 
-  .col-6 {
-    grid-column: 1; /* force full width */
-  }
+    /* Add the grid background to each section */
+    background-image:
+        linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+    background-size: 40px 40px;
 
-  .project {
-    width: 100%; /* ensure full width */
-    margin: 0 auto;
-  }
+    position: relative; /* Needed for the timeline element */
+        
+
 }
 
+/* --- 3. The Content within each Section --- */
+.content-wrapper {
+      
+
+    max-width: 800px;
+    padding: 40px;
+}
+
+/* --- 4. Adjusting the Timeline --- */
+/* Instead of one long line, each section gets its own line segment */
+section::before {
+     
+
+    content: '';
+    position: absolute;
+    left: 40px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--line-color);
+}
+
+.node {
+      
+
+    position: absolute;
+    left: 32px; /* Adjusted position */
+    top: 50%; /* Center it vertically */
+    transform: translateY(-50%); /* Precise centering */
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--node-color);
+    background-color: var(--bg-color);
+    z-index: 1;
+}
+
+/* --- Text Styling (Same as before) --- */
+.function-call {
+    color: var(--accent-cyan);
+    font-size: 2.5rem;
+    padding-left: 100px;
+    
+}
+.function-call1 {
+    color: var(--accent-cyan);
+    font-size: 2.5rem;
+    
+}
+.function-call2 {
+    color: var(white);
+    font-size: 2.5rem;
+     padding-left: 100px;
+}
+.subtitle {
+    font-size: 1.2rem;
+    color: #fff;
+    padding-left: 100px;
+    margin-top: -30px; /* Use a negative value to pull it up. Adjust as needed! */
+
+}
+
+.code-line {
+    font-size: 1rem;
+         padding-left: 100px;
+
+}
+
+.keyword { color: var(--accent-cyan);     ;
+}
+.variable { color: var(--accent-cyan);    ;
+}
+.link { color: var(--accent-cyan); cursor: pointer;     ;
+}
+.unstyled-link {
+  color: inherit; /* Makes the link color the same as the surrounding text */
+  text-decoration: none; /* Removes the underline */
+}
+
+.floating-image, .floating-image2, .floating-image3, .floating-image4 {
+    position: absolute;
+    width: 200px;
+    opacity: 0; /* start invisible */
+    transition: transform 1s ease-out, opacity 1s ease-out;
+}
+
+/* Final positions of images */
+.floating-image { top: 1400px; left: 1200px; }
+.floating-image2 { top: 400px; left: 300px; }
+.floating-image3 { top: 500px; left: 600px; }
+.floating-image4 { top: 600px; left: 900px; }
+
+/* Start positions (off-screen) */
+.start {
+    transform: translate(-500px, -300px); /* start far from final spot */
+}
