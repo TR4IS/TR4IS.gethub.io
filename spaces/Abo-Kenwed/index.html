@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abo-Kenwed | Front-End Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- Global Styles & Modern Theme --- */
+        :root {
+            --bg-light: #f8f9fa;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+            --primary-purple: #6f42c1;
+            --white: #ffffff;
+            --border-light: #dee2e6;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- Layout & Structure --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        /* --- Typography --- */
+        h1, h2, h3 {
+            font-weight: 700;
+        }
+
+        h1 { font-size: 3.8rem; }
+        h2 { font-size: 2.8rem; margin-bottom: 50px; text-align: center; color: var(--text-dark); }
+        h3 { font-size: 1.6rem; margin-bottom: 15px; color: var(--primary-purple); }
+
+        p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        /* --- Header / Hero Section --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .hero-text .greeting {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .typing-text {
+            color: var(--primary-purple);
+            font-family: 'Source Code Pro', monospace;
+            font-size: 4rem;
+            font-weight: 600;
+            border-right: 3px solid var(--primary-purple);
+            animation: blink-caret 0.75s step-end infinite;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--primary-purple); }
+        }
+
+        /* --- About Section --- */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        .about-text { flex: 1; }
+        .about-image { flex-basis: 300px; text-align: center; }
+        .about-image img {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        /* --- Toolkit/Skills Section --- */
+        .toolkit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 25px;
+            text-align: center;
+        }
+        .tool-item {
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+        .tool-item:hover {
+            transform: translateY(-8px);
+        }
+        .tool-item img {
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        .tool-item p {
+            font-family: 'Source Code Pro', monospace;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        /* --- Projects Section --- */
+        #projects {
+            background-color: var(--white);
+        }
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        .project-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--border-light);
+        }
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .project-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+        .project-info {
+            padding: 25px;
+        }
+        .project-tech {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .tech-tag {
+            background-color: #e9ecef;
+            color: var(--text-muted);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* --- Buttons & Links --- */
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .btn-primary {
+            background-color: var(--primary-purple);
+            color: var(--white);
+        }
+        .btn-primary:hover {
+            background-color: #5a2d9c;
+            transform: translateY(-3px);
+        }
+        .project-links {
+             margin-top: 20px;
+        }
+        .project-links .btn {
+            margin-right: 10px;
+            font-size: 0.9rem;
+            padding: 10px 20px;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--text-dark);
+            color: var(--bg-light);
+        }
+        footer h2 { color: var(--white); }
+        footer p { color: #adb5bd; }
+        .social-links a {
+            margin: 0 15px;
+            font-size: 1.8rem;
+            color: var(--bg-light);
+            transition: color 0.3s;
+        }
+        .social-links a:hover {
+            color: var(--primary-purple);
+        }
+
+        /* --- Scroll Animation --- */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.8rem; }
+            h2 { font-size: 2.2rem; }
+            .about-content { flex-direction: column; }
+            .hero { height: 80vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <div class="hero-text">
+            <p class="greeting animate-on-scroll">Hello, I'm Abo-Kenwed.</p>
+            <h1 class="animate-on-scroll">I'm a <span class="typing-text"></span></h1>
+            <a href="#projects" class="btn btn-primary animate-on-scroll" style="margin-top: 30px;">See My Work</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="about">
+            <div class="container about-content">
+                <div class="about-text animate-on-scroll">
+                    <h2>About Me</h2>
+                    <p>I'm a Front-End Developer who bridges the gap between design and technology. I'm obsessed with pixel-perfect details, smooth animations, and creating web applications that are not only functional but also a joy to use. My passion lies in crafting intuitive user interfaces that solve real-world problems.</p>
+                    <p>When I'm not coding, I enjoy exploring new design trends, contributing to open-source projects, and drinking way too much coffee.</p>
+                </div>
+                <div class="about-image animate-on-scroll">
+                    <img src="https://via.placeholder.com/250" alt="Abo-Kenwed">
+                </div>
+            </div>
+        </section>
+
+        <section id="toolkit">
+            <div class="container">
+                <h2 class="animate-on-scroll">My Toolkit</h2>
+                <div class="toolkit-grid">
+                    <div class="tool-item animate-on-scroll"><p>React</p></div>
+                    <div class="tool-item animate-on-scroll"><p>Next.js</p></div>
+                    <div class="tool-item animate-on-scroll"><p>Vue.js</p></div>
+                    <div class="tool-item animate-on-scroll"><p>TypeScript</p></div>
+                    <div class="tool-item animate-on-scroll"><p>Tailwind CSS</p></div>
+                    <div class="tool-item animate-on-scroll"><p>Framer Motion</p></div>
+                    <div class="tool-item animate-on-scroll"><p>Figma</p></div>
+                    <div class="tool-item animate-on-scroll"><p>Vercel</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="container">
+                <h2 class="animate-on-scroll">My Creations</h2>
+                <div class="projects-grid">
+                    <div class="project-card animate-on-scroll">
+                        <img src="https://via.placeholder.com/400x220/6f42c1/ffffff?text=E-commerce+UI" alt="E-commerce Platform">
+                        <div class="project-info">
+                            <h3>E-commerce Platform UI</h3>
+                            <p>A sleek, responsive user interface for an online store, featuring product filtering, a shopping cart with state management, and a seamless checkout experience.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">React</span><span class="tech-tag">Next.js</span><span class="tech-tag">Tailwind CSS</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" class="btn btn-primary">Live Demo</a>
+                                <a href="#" class="btn">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card animate-on-scroll">
+                        <img src="https://via.placeholder.com/400x220/343a40/ffffff?text=Data+Dashboard" alt="Data Dashboard">
+                        <div class="project-info">
+                            <h3>Interactive Data Dashboard</h3>
+                            <p>A data visualization dashboard for analyzing user metrics, built with Svelte for maximum performance and D3.js for powerful, interactive charts.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">Svelte</span><span class="tech-tag">D3.js</span><span class="tech-tag">TypeScript</span>
+                            </div>
+                             <div class="project-links">
+                                <a href="#" class="btn btn-primary">Live Demo</a>
+                                <a href="#" class="btn">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card animate-on-scroll">
+                        <img src="https://via.placeholder.com/400x220/6f42c1/ffffff?text=Creative+Agency" alt="Creative Agency Page">
+                        <div class="project-info">
+                            <h3>Creative Agency Landing Page</h3>
+                            <p>A visually stunning landing page for a creative agency, featuring complex layout design and fluid animations powered by GSAP to engage users.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">Vue.js</span><span class="tech-tag">GSAP</span><span class="tech-tag">Sass</span>
+                            </div>
+                             <div class="project-links">
+                                <a href="#" class="btn btn-primary">Live Demo</a>
+                                <a href="#" class="btn">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact">
+        <div class="container">
+            <h2>Let's Build Something Great</h2>
+            <p style="max-width: 500px; margin: 20px auto;">Have a project in mind or just want to connect? I'd love to hear from you.</p>
+            <a href="mailto:email@example.com" class="btn btn-primary" style="margin-top: 20px;">Say Hello</a>
+            <div class="social-links" style="margin-top: 40px; margin-bottom: 40px;">
+                <a href="#" title="GitHub">GH</a>
+                <a href="#" title="LinkedIn">IN</a>
+                <a href="#" title="Twitter / X">X</a>
+            </div>
+            <p style="font-size: 0.9rem;">&copy; 2025 Abo-Kenwed. Crafted with passion.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Typing Animation Script ---
+        const typingTextEl = document.querySelector('.typing-text');
+        const textArray = ["Front-End Developer.", "UI Architect.", "Creative Coder."];
+        let textArrayIndex = 0;
+        let charIndex = 0;
+
+        function type() {
+            if (charIndex < textArray[textArrayIndex].length) {
+                typingTextEl.textContent += textArray[textArrayIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(type, 100);
+            } else {
+                setTimeout(erase, 2000);
+            }
+        }
+
+        function erase() {
+            if (charIndex > 0) {
+                typingTextEl.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(erase, 50);
+            } else {
+                textArrayIndex = (textArrayIndex + 1) % textArray.length;
+                setTimeout(type, 500);
+            }
+        }
+        
+        document.addEventListener("DOMContentLoaded", function() { 
+          if(textArray.length) setTimeout(type, 1000);
+        });
+
+
+        // --- Scroll Animation Script ---
+        const scrollElements = document.querySelectorAll(".animate-on-scroll");
+
+        const elementInView = (el, dividend = 1) => {
+            const elementTop = el.getBoundingClientRect().top;
+            return (
+                elementTop <= (window.innerHeight || document.documentElement.clientHeight) / dividend
+            );
+        };
+
+        const displayScrollElement = (element) => {
+            element.classList.add("visible");
+        };
+
+        const handleScrollAnimation = () => {
+            scrollElements.forEach((el) => {
+                if (elementInView(el, 1.25)) {
+                    displayScrollElement(el);
+                }
+            });
+        };
+
+        window.addEventListener("scroll", () => {
+            handleScrollAnimation();
+        });
+        
+        // Trigger animation for elements already in view on page load
+        handleScrollAnimation();
+
+    </script>
+</body>
+</html>
