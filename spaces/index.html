@@ -1,1 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Spaces</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <style>
+        /* --- Basic Setup & Colors --- */
+        :root {
+            --bg-color: #10121a;
+            --text-color: #d1d1d1;
+            --accent-cyan: #00bfff;
+            --line-color: #3f4251;
+            --node-color: var(--accent-cyan);
+        }
 
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Fira Code', 'Courier New', monospace;
+            margin: 0;
+            padding: 40px;
+        }
+
+        /* --- Main List Container --- */
+        #spaces-list-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            padding-left: 60px; /* Space for the timeline */
+        }
+
+        /* The main vertical timeline bar */
+        #spaces-list-container::before {
+            content: '';
+            position: absolute;
+            left: 24px; /* Centered with the node */
+            top: 20px;
+            bottom: 20px;
+            width: 2px;
+            background-color: var(--line-color);
+        }
+
+        /* --- Individual List Item Styling --- */
+        .list-item {
+            position: relative;
+            margin-bottom: 20px; /* Space between items */
+        }
+
+        /* The circle node on the timeline */
+        .node {
+            position: absolute;
+            left: -44px; /* Position it over the timeline */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid var(--node-color);
+            background-color: var(--bg-color);
+            z-index: 1;
+        }
+
+        /* --- Text Styling (from your example) --- */
+        .function-call {
+            color: var(--accent-cyan);
+            font-size: 1.5rem; /* Sized for a list */
+            text-decoration: none;
+            display: block; /* Makes the whole area clickable */
+        }
+
+        .function-call:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="spaces-list-container">
+        <div class="list-item">
+            <h1 style="font-size: 2.5rem; color: white;">.spaces()</h1>
+        </div>
+        </div>
+
+    <script>
+        // --- ⚙️ START: CONFIGURE THIS SECTION ⚙️ ---
+        const username = "TR4IS"; // ⚠️ CHANGE THIS to your GitHub username
+        const repoName = "TR4IS.gethub.io";     // ⚠️ CHANGE THIS to your repository name
+        // --- END: CONFIGURE THIS SECTION ---
+
+        const listContainer = document.getElementById("spaces-list-container");
+        const apiUrl = `https://api.github.com/repos/${username}/${repoName}/contents/spaces`;
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(item => {
+                    // We only want to list directories
+                    if (item.type === "dir") {
+                        // Create the HTML for one list item
+                        const itemHTML = `
+                        <div class="list-item">
+                            <div class="node"></div>
+                            <a href="${item.name}/" class="function-call">.${item.name}()</a>
+                        </div>
+                        `;
+                        // Add the item to the container
+                        listContainer.innerHTML += itemHTML;
+                    }
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching repository data:", error);
+                listContainer.innerHTML += '<div class="list-item"><a class="function-call" style="color: #ff5555;">.error()</a></div>';
+            });
+    </script>
+</body>
+</html>
