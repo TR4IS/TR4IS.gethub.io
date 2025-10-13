@@ -1,9 +1,306 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Msh | Crypto Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Global Styles & Theme --- */
+        :root {
+            --bg-dark: #0d0d1a;
+            --bg-light-translucent: rgba(20, 20, 40, 0.6);
+            --accent-cyan: #00f7ff;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0c0;
+            --border-color: rgba(0, 247, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            background: linear-gradient(-45deg, #0d0d1a, #1a1a3a, #0d0d1a, #1a0d1a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Layout & Structure --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        section {
+            padding: 60px 0;
+        }
+
+        /* --- Typography --- */
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: white;
+        }
+
+        h1 { font-size: 3.5rem; }
+        h2 { font-size: 2.5rem; margin-bottom: 40px; text-align: center; }
+        h3 { font-size: 1.5rem; margin-bottom: 10px; color: var(--accent-cyan); }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        code {
+            font-family: 'Roboto Mono', monospace;
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--accent-cyan);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* --- Header / Hero Section --- */
+        .hero {
+            text-align: center;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero .subtitle {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--accent-cyan);
+            margin-top: 10px;
+            margin-bottom: 30px;
+        }
+
+        /* --- Glassmorphism Card Style --- */
+        .glass-card {
+            background: var(--bg-light-translucent);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* --- About Section --- */
+        #about .glass-card {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* --- Skills Section --- */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            text-align: center;
+        }
+
+        .skill-item {
+            background-color: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            font-family: 'Roboto Mono', monospace;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px var(--border-color);
+        }
+
+        /* --- Projects Section --- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        .project-card {
+            transition: transform 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .project-tech {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .project-links a {
+            margin-top: 20px;
+            margin-right: 15px;
+        }
+
+        /* --- Buttons & Links --- */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent-cyan);
+            color: var(--bg-dark);
+        }
+
+        .btn-primary:hover {
+            background-color: white;
+            box-shadow: 0 0 20px var(--accent-cyan);
+        }
+
+        .btn-secondary {
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--accent-cyan);
+            color: var(--bg-dark);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .social-links a {
+            margin: 0 15px;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent-cyan);
+        }
+    </style>
+</head>
 <body>
 
-<h1> musharry  </h1>
+    <div class="container">
 
+        <header class="hero">
+            <h1>Msh</h1>
+            <p class="subtitle">Crypto Engineer & Smart Contract Developer</p>
+            <p style="max-width: 600px;">Building the secure, decentralized future on the blockchain, one line of code at a time.</p>
+            <div style="margin-top: 40px;">
+                <a href="#projects" class="btn btn-primary">View My Work</a>
+                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+            </div>
+        </header>
+
+        <main>
+            <section id="about">
+                <div class="glass-card">
+                    <h2>About Me</h2>
+                    <p>
+                        I'm a software engineer deeply passionate about cryptography and decentralized systems. With a strong foundation in computer science and security, I specialize in developing and auditing smart contracts on EVM-compatible chains. My goal is to contribute to a more transparent and equitable financial system through robust and innovative blockchain solutions.
+                    </p>
+                </div>
+            </section>
+
+            <section id="skills">
+                <h2>Tech Stack</h2>
+                <div class="skills-grid">
+                    <div class="skill-item">Solidity</div>
+                    <div class="skill-item">Rust</div>
+                    <div class="skill-item">Hardhat</div>
+                    <div class="skill-item">Foundry</div>
+                    <div class="skill-item">Ethers.js</div>
+                    <div class="skill-item">TypeScript</div>
+                    <div class="skill-item">The Graph</div>
+                    <div class="skill-item">IPFS</div>
+                </div>
+            </section>
+
+            <section id="projects">
+                <h2>Featured Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card glass-card">
+                        <h3>DeFi Oracle Aggregator</h3>
+                        <p>A decentralized application that pulls price feeds from multiple oracles (like Chainlink and Uniswap V3) to provide a more resilient and manipulation-resistant price for on-chain assets. Includes a robust testing suite.</p>
+                        <div class="project-tech">
+                            <code>Solidity</code> <code>Hardhat</code> <code>TypeScript</code> <code>Ethers.js</code> <code>Chainlink</code>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="btn btn-secondary">GitHub</a>
+                            <a href="#" class="btn btn-secondary">Live Demo</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card glass-card">
+                        <h3>NFT Minting Platform (Solana)</h3>
+                        <p>A high-performance NFT minting and marketplace platform built on Solana to leverage its low gas fees and fast transaction times. The smart contract (program) is written in Rust using the Anchor framework.</p>
+                        <div class="project-tech">
+                            <code>Rust</code> <code>Anchor</code> <code>Solana</code> <code>React</code> <code>Phantom</code>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="btn btn-secondary">GitHub</a>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card glass-card">
+                        <h3>DAO Governance Module</h3>
+                        <p>A modular and extensible governance system for Decentralized Autonomous Organizations (DAOs). It allows token holders to create proposals and vote on-chain, based on OpenZeppelin's Governor contracts.</p>
+                        <div class="project-tech">
+                            <code>Solidity</code> <code>OpenZeppelin</code> <code>The Graph</code> <code>Hardhat</code>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="btn btn-secondary">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer id="contact">
+            <h2>Connect With Me</h2>
+            <p>Looking to collaborate or have a question? Feel free to reach out.</p>
+            <div class="social-links" style="margin-top: 30px; margin-bottom: 30px;">
+                <a href="#" title="GitHub">GH</a>
+                <a href="#" title="LinkedIn">IN</a>
+                <a href="#" title="Twitter / X">X</a>
+            </div>
+            <p style="font-size: 0.9rem;">&copy; 2025 Msh. All Rights Reserved.</p>
+        </footer>
+
+    </div>
 
 </body>
 </html>
