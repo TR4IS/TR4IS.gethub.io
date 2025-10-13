@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Developer Spaces</title>
+    <title>reachflow.spaces()</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
     <style>
         /* --- Basic Setup & Colors --- */
@@ -13,6 +13,8 @@
             --accent-cyan: #00bfff;
             --line-color: #3f4251;
             --node-color: var(--accent-cyan);
+            --grid-color: rgba(255, 255, 255, 0.05);
+
         }
 
         body {
@@ -21,6 +23,12 @@
             font-family: 'Fira Code', 'Courier New', monospace;
             margin: 0;
             padding: 40px;
+            background-image:
+                linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            
+    
         }
 
         /* --- Main List Container --- */
@@ -36,11 +44,12 @@
             content: '';
             position: absolute;
             left: 24px; /* Centered with the node */
-            top: 20px;
+            top: -200px;
             bottom: 20px;
             width: 2px;
             background-color: var(--line-color);
         }
+
 
         /* --- Individual List Item Styling --- */
         .list-item {
