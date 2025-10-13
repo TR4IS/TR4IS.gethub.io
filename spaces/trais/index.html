@@ -1,9 +1,231 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Maker's Canvas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep-space: #00000a;
+            --primary-glow: #9f42c1;
+            --secondary-glow: #00bfff;
+            --text-primary: #e0e6f0;
+            --text-secondary: #a0a8b5;
+            --border-color: rgba(159, 66, 193, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            background-color: var(--bg-deep-space);
+            color: var(--text-primary);
+            font-family: 'Work Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .fullscreen-section {
+            height: 1080px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        #starfield {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        .container {
+            max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 20px; position: relative; z-index: 2;
+        }
+        
+        .section-content {
+            width: 100%;
+            text-align: center;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Orbitron', sans-serif; color: #ffffff; text-shadow: 0 0 10px var(--secondary-glow), 0 0 20px var(--primary-glow);
+        }
+        h1 { font-size: 5rem; line-height: 1.1; text-align: left; }
+        h2 { font-size: 3rem; margin-bottom: 50px; }
+        h3 { font-size: 1.8rem; margin-bottom: 15px; }
+        p {
+            font-size: 1.1rem; line-height: 1.8; color: var(--text-secondary); font-weight: 300;
+        }
+        .hero {
+            display: flex; align-items: center; position: relative; width: 100%;
+        }
+        .hero-text {
+            flex-basis: 50%;
+        }
+        .hero-text p {
+             text-align: left;
+        }
+        .hero-3d {
+            flex-basis: 50%; height: 800px;
+            
+            transform: translate(100px, 155px);
+        }
+        .hero-3d iframe {
+            width: 100%; height: 100%; border: none;
+        }
+        
+        .projects-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; text-align: left;
+        }
+        .project-card {
+            background: rgba(10, 10, 20, 0.5); border: 1px solid var(--border-color); border-radius: 15px; padding: 30px; backdrop-filter: blur(10px); transition: transform 0.4s, box-shadow 0.4s;
+        }
+        .project-card:hover {
+            transform: translateY(-10px); box-shadow: 0 0 40px var(--border-color);
+        }
+        .project-tech { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px; }
+        .tech-tag {
+            font-family: 'Orbitron', monospace; background: rgba(159, 66, 193, 0.2); color: var(--text-primary); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem;
+        }
+        #about p {
+            max-width: 800px; margin: 0 auto;
+        }
+        .cta-button {
+            display: inline-block; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; padding: 18px 36px; margin-top: 20px; text-decoration: none; color: #fff; background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow)); border-radius: 10px; transition: transform 0.3s, box-shadow 0.3s; border: none;
+        }
+        .cta-button:hover {
+            transform: scale(1.05); box-shadow: 0 0 30px var(--primary-glow);
+        }
+        @media (max-width: 900px) {
+            .hero { flex-direction: column; text-align: center; }
+            .hero-text, .hero-text p, h1 { text-align: center; }
+            .hero-3d { 
+                height: 500px; 
+                width: 100%;
+                transform: none; 
+            }
+            h1 { font-size: 3rem; }
+            .fullscreen-section { height: auto; padding: 120px 0; }
+        }
+    </style>
+</head>
 <body>
+    
+    <canvas id="starfield"></canvas>
 
-<h1> Muslih Aldosirry </h1>
+    <header class="hero fullscreen-section">
+        <div class="container">
+             <div class="section-content" data-speed="0.95" style="display: flex; align-items: center; width: 100%;">
+                <div class="hero-text">
+                    <h1>Crafting Worlds,<br>One Line at a Time.</h1>
+                    <p>I am a digital architect, developer, and creator, building immersive and intuitive experiences that push the boundaries of the web.</p>
+                </div>
+                <div class="hero-3d">
+                    <iframe src='https://my.spline.design/worldplanet-bNC0BZqgJFVhoNGXp99pYevg/' frameborder='0' width='100%' height='100%'></iframe>
+                </div>
+            </div>
+        </div>
+    </header>
 
+    <main>
+        <section id="about" class="fullscreen-section">
+            <div class="container">
+                <div class="section-content" data-speed="1.05">
+                    <h2>My Journey</h2>
+                    <p>
+                        My journey began with a single line of code, but it quickly evolved into a passion for creating entire digital ecosystems. I believe that the best technology feels like magic—intuitive, seamless, and powerful. My work is a constant pursuit of that magic, blending cutting-edge code with user-centric design to build things that are not just functional, but memorable.
+                    </p>
+                </div>
+            </div>
+        </section>
 
+        <section id="projects" class="fullscreen-section">
+            <div class="container">
+                <div class="section-content" data-speed="1.02">
+                    <h2>Project Constellation</h2>
+                    <div class="projects-grid">
+                        <div class="project-card">
+                            <h3>Project Hyperion</h3>
+                            <p>An interactive WebGL data visualization...</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">Three.js</span><span class="tech-tag">WebGL</span><span class="tech-tag">Node.js</span>
+                            </div>
+                        </div>
+                        <div class="project-card">
+                            <h3>Project Nova</h3>
+                            <p>A headless e-commerce framework...</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">Next.js</span><span class="tech-tag">GraphQL</span><span class="tech-tag">Framer Motion</span>
+                            </div>
+                        </div>
+                        <div class="project-card">
+                            <h3>Project Singularity</h3>
+                            <p>A decentralized social media concept...</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">SvelteKit</span><span class="tech-tag">IPFS</span><span class="tech-tag">Ethers.js</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer id="contact" class="fullscreen-section">
+        <div class="container">
+            <div class="section-content" data-speed="1.05">
+                <h2>Let's Create a Universe.</h2>
+                <p>Have an ambitious idea? Let's connect and build something extraordinary together.</p>
+                <a href="mailto:ziyad.tr.46@gmail.com" class="cta-button">Initiate Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        const stars = [];
+        for (let i = 0; i < 500; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.5,
+                alpha: Math.random(),
+                velocity: { x: (Math.random() - 0.5) * 0.2, y: (Math.random() - 0.5) * 0.2 }
+            });
+        }
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(224, 230, 240, ${star.alpha})`;
+                ctx.fill();
+                star.x += star.velocity.x;
+                star.y += star.velocity.y;
+                if (star.x < 0 || star.x > canvas.width) star.velocity.x *= -1;
+                if (star.y < 0 || star.y > canvas.height) star.velocity.y *= -1;
+            });
+            requestAnimationFrame(drawStars);
+        }
+        drawStars();
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            document.querySelectorAll('[data-speed]').forEach(el => {
+                const speed = parseFloat(el.getAttribute('data-speed'));
+                let yPos = -scrollY * (speed - 1);
+                el.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+    });
+    </script>
 </body>
 </html>
