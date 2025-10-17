@@ -157,3 +157,62 @@ section::before {
 .start {
     transform: translate(-500px, -300px); /* start far from final spot */
 }
+
+/* =================================== */
+/* == Mobile-Specific Styles == */
+/* =================================== */
+
+/* This block of code only applies to screens 768px wide or smaller */
+@media (max-width: 768px) {
+
+  /* Hide the vertical bar and the line for a cleaner mobile view */
+  .node,
+  section::before {
+    display: none;
+  }
+
+  /* Force the container to center all its content */
+  .content-wrapper {
+    display: flex; /* Use flexbox for robust centering */
+    flex-direction: column; /* Stack content vertically */
+    align-items: center; /* Center items horizontally */
+    text-align: center; /* Ensure text inside elements is centered too */
+    padding: 0 1.5rem; /* Add some space on the sides */
+  }
+
+  /* --- NEW & IMPORTANT --- */
+  /* Reset the desktop padding so the text can actually center */
+  .function-call,
+  .function-call2,
+  .subtitle,
+  .code-line {
+    padding-left: 0;
+  }
+  /* --- END NEW --- */
+  
+  /* Adjust margin on subtitle for mobile */
+  .subtitle {
+    margin-top: 0;
+  }
+
+  /* Make the main heading smaller */
+  .function-call2, .function-call1 {
+    font-size: 2.5rem;
+  }
+  
+  /* Make the section headings smaller */
+  .function-call {
+    font-size: 2.2rem;
+  }
+
+  /* Adjust subtitle font size for readability */
+  .subtitle {
+    font-size: 1.1rem;
+  }
+
+  /* Adjust the main text size and line height */
+  .code-line {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}
