@@ -79,11 +79,14 @@
         }
         .project-card {
             background: rgba(10, 10, 20, 0.5); border: 1px solid var(--border-color); border-radius: 15px; padding: 30px; backdrop-filter: blur(10px); transition: transform 0.4s, box-shadow 0.4s;
+            display: flex;
+            flex-direction: column;
         }
         .project-card:hover {
             transform: translateY(-10px); box-shadow: 0 0 40px var(--border-color);
+            
         }
-        .project-tech { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px; }
+        .project-tech { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px;margin-bottom: 25px }
         .tech-tag {
             font-family: 'Orbitron', monospace; background: rgba(159, 66, 193, 0.2); color: var(--text-primary); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem;
         }
@@ -100,7 +103,9 @@
             /* Sizing and Spacing */
             display: inline-block;
             padding: 10px 20px;
-            margin-top: 25px; /* Adds more space above the button */
+            margin-top: auto; /* Adds more space above the button */
+            align-self: flex-start;
+
 
             /* Thematic Styling */
             font-family: 'Orbitron', sans-serif;
@@ -171,24 +176,26 @@
                     <h2>Project Constellation</h2>
                     <div class="projects-grid">
                         <div class="project-card">
-                            <h3>Project Hyperion</h3>
-                            <p>An interactive WebGL data visualization...</p>
+                            <h3>Portfoilo Website</h3>
+                            <p>A website for developers to show their work in a better way than resume!</p>
                             <div class="project-tech">
-                                <span class="tech-tag">Three.js</span><span class="tech-tag">WebGL</span><span class="tech-tag">Node.js</span>
+                                <span class="tech-tag">HTML</span><span class="tech-tag">JavaScript</span><span class="tech-tag">CSS</span><span class="tech-tag">Figma</span><span class="tech-tag">Front-End Design</span>
                             </div>
+                            <a href="https://reachflow.site" class="project-button">View Project</a>
                         </div>
                         <div class="project-card">
-                            <h3>Project Nova</h3>
-                            <p>A headless e-commerce framework...</p>
+                            <h3>File Organizer</h3>
+                            <p>A simple and effective app that automatically organizes your Windows Downloads folder</p>
                             <div class="project-tech">
-                                <span class="tech-tag">Next.js</span><span class="tech-tag">GraphQL</span><span class="tech-tag">Framer Motion</span>
+                                <span class="tech-tag">Python</span><span class="tech-tag">automation</span><span class="tech-tag">GUI</span><span class="tech-tag">Windows Automation</span>
                             </div>
+                            <a href="https://github.com/TR4IS/windows-downloads-file-organizer" class="project-button">View Project</a>
                         </div>
                         <div class="project-card">
                             <h3>J2P</h3>
                             <p>An images to PDF converter</p>
                             <div class="project-tech">
-                                <span class="tech-tag">Python</span><span class="tech-tag">Flask</span><span class="tech-tag">Style</span><span class="tech-tag">JavaScript</span><span class="tech-tag">Full-Stack</span>
+                                <span class="tech-tag">Python</span><span class="tech-tag">Flask</span><span class="tech-tag">CSS</span><span class="tech-tag">JavaScript</span><span class="tech-tag">Full-Stack</span><span class="tech-tag">Software Development</span>
                             </div>
                             <a href="https://tr4is-gethub-io.onrender.com" class="project-button">View Project</a>
                         </div>
