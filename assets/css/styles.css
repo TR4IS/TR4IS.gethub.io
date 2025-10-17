@@ -169,7 +169,7 @@ section::before {
     transform: scale(1.05); box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
     transition: all 0.3s ease;
   }
-.fixed-gif1 {
+.fixed-gif1  {
     position: absolute; /* This is the key property! */
     bottom: 250px;    /* 20px from the bottom */
     right: 150px;     /* 20px from the right */
