@@ -96,6 +96,32 @@
         .cta-button:hover {
             transform: scale(1.05); box-shadow: 0 0 30px var(--primary-glow);
         }
+        .project-button {
+            /* Sizing and Spacing */
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 25px; /* Adds more space above the button */
+
+            /* Thematic Styling */
+            font-family: 'Orbitron', sans-serif;
+            color: var(--text-primary);
+            background-color: transparent;
+            border: 2px solid var(--secondary-glow); /* Glowing cyan border */
+            border-radius: 8px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            
+            /* Hover Effect */
+            transition: all 0.3s ease;
+        }
+
+        .project-button:hover {
+            background-color: var(--secondary-glow); /* Fill with cyan on hover */
+            color: var(--bg-deep-space); /* Change text to dark for contrast */
+            box-shadow: 0 0 20px var(--secondary-glow); /* Add the glow effect */
+        }
         @media (max-width: 900px) {
             .hero { flex-direction: column; text-align: center; }
             .hero-text, .hero-text p, h1 { text-align: center; }
@@ -162,8 +188,9 @@
                             <h3>J2P</h3>
                             <p>An images to PDF converter</p>
                             <div class="project-tech">
-                                <span class="tech-tag">SvelteKit</span><span class="tech-tag">IPFS</span><span class="tech-tag">Ethers.js</span>
+                                <span class="tech-tag">Python</span><span class="tech-tag">Flask</span><span class="tech-tag">Style</span><span class="tech-tag">JavaScript</span><span class="tech-tag">Full-Stack</span>
                             </div>
+                            <a href="https://tr4is-gethub-io.onrender.com" class="project-button">View Project</a>
                         </div>
                     </div>
                 </div>
