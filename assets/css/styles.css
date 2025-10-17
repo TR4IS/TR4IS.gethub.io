@@ -16,23 +16,19 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: 'Fira Code', 'Courier New', monospace;
-    margin: 0; /* Remove default margin */
-    overflow: hidden; /* Hide the body's scrollbar */
+    margin: 0; 
+    overflow: hidden; 
         text-align: left;
 
 }
 
 /* --- 1. The Scroll Snap Container --- */
 .snap-container {
-    /* This makes the container scrollable instead of the whole page */
-    height: 100vh; /* vh = viewport height */
+   
+    height: 100vh; 
     overflow-y: scroll;
     scroll-behavior: smooth;
     overflow-x: hidden;
-
-    /* This is the magic for snapping! */
-    /*scroll-snap-type: y mandatory;
-        text-align: left;
 
 }
 
@@ -70,7 +66,7 @@ section {
 }
 
 /* --- 4. Adjusting the Timeline --- */
-/* Instead of one long line, each section gets its own line segment */
+
 section::before {
      
 
@@ -98,7 +94,7 @@ section::before {
     z-index: 1;
 }
 
-/* --- Text Styling (Same as before) --- */
+/* --- Text Styling --- */
 .function-call {
     color: var(--accent-cyan);
     font-size: 2.5rem;
@@ -119,7 +115,7 @@ section::before {
     font-size: 1.2rem;
     color: #fff;
     padding-left: 100px;
-    margin-top: -30px; /* Use a negative value to pull it up. Adjust as needed! */
+    margin-top: -30px; 
 
 }
 
@@ -157,62 +153,138 @@ section::before {
 .start {
     transform: translate(-500px, -300px); /* start far from final spot */
 }
+.fixed-gif {
+    position: absolute; /* This is the key property! */
+    bottom: 400px;    /* 20px from the bottom */
+    right: 350px;     /* 20px from the right */
+    width: 500px;      /* Set a size for your GIF */
+    z-index: 1000;   /* A high z-index keeps it on top of other content */
+    border-radius: 10px; /* Optional: adds rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+    transition: transform 0.4s
+  }
+.fixed-gif:hover {
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+    transform: scale(1.05); box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+    transition: all 0.3s ease;
+  }
+.fixed-gif1 {
+    position: absolute; /* This is the key property! */
+    bottom: 250px;    /* 20px from the bottom */
+    right: 150px;     /* 20px from the right */
+    width: 500px;      /* Set a size for your GIF */
+    z-index: 1000;   /* A high z-index keeps it on top of other content */
+    border-radius: 10px; /* Optional: adds rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+    transition: transform 0.4s
+  }
+.fixed-gif1:hover {
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+    transform: scale(1.05); box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+    transition: all 0.3s ease;
+
+  }
 
 /* =================================== */
-/* == Mobile-Specific Styles == */
+/* == Mobile-Specific Styles        == */
 /* =================================== */
 
 /* This block of code only applies to screens 768px wide or smaller */
 @media (max-width: 768px) {
 
-  /* Hide the vertical bar and the line for a cleaner mobile view */
-  .node,
-  section::before {
-    display: none;
-  }
-
-  /* Force the container to center all its content */
-  .content-wrapper {
-    display: flex; /* Use flexbox for robust centering */
-    flex-direction: column; /* Stack content vertically */
-    align-items: center; /* Center items horizontally */
-    text-align: center; /* Ensure text inside elements is centered too */
-    padding: 0 1.5rem; /* Add some space on the sides */
-  }
-
-  /* --- NEW & IMPORTANT --- */
-  /* Reset the desktop padding so the text can actually center */
-  .function-call,
-  .function-call2,
-  .subtitle,
-  .code-line {
-    padding-left: 0;
-  }
-  /* --- END NEW --- */
-  
-  /* Adjust margin on subtitle for mobile */
-  .subtitle {
-    margin-top: 0;
+  /* 1. Hide the desktop timeline elements for a cleaner look */
+  .node,
+  section::before {
+    display: none;
   }
 
-  /* Make the main heading smaller */
-  .function-call2, .function-call1 {
-    font-size: 2.5rem;
-  }
-  
-  /* Make the section headings smaller */
-  .function-call {
-    font-size: 2.2rem;
-  }
+  /* 2. Center the main content container */
+  .content-wrapper {
+    display: flex;        /* Use flexbox for robust centering */
+    flex-direction: column; /* Stack content vertically */
+    align-items: center;    /* Center items horizontally */
+    text-align: center;   /* Ensure text inside elements is centered */
+    padding: 0 1.5rem;    /* Add some space on the sides */
+    justify-content: center; /* Center content vertically within the section */
+  }
 
-  /* Adjust subtitle font size for readability */
-  .subtitle {
-    font-size: 1.1rem;
-  }
+  /* 3. Reset desktop padding so the text can be properly centered */
+  
+  .function-call2,
+  .subtitle,
+  .code-line {
+    padding-left: 0;
+    text-shadow: 0 0px 30px rgba(255, 255, 255, 1);
+  }
+  .function-call {
+    padding-left: 0;
+    text-shadow: 0 0px 30px #00bfff;
+  }
+  .keyword{
+    text-shadow: 0 0px 30px #00bfff;
 
-  /* Adjust the main text size and line height */
-  .code-line {
-    font-size: 1rem;
-    line-height: 1.6;
-  }
+  }
+   .variable{
+    text-shadow: 0 0px 30px #00bfff;
+
+  }
+  .function-call1{
+    text-shadow: 0 0px 30px #00bfff;
+  }
+  .link{
+    text-shadow: 0 0px 30px #00bfff;
+  }
+  
+  /* 4. Adjust text sizes for better readability on small screens */
+  .function-call2, .function-call1 {
+    font-size: 2rem; /* Slightly smaller main title */
+  }
+  .function-call {
+    font-size: 1.8rem; /* Smaller section titles */
+  }
+  .subtitle {
+    font-size: 1.1rem;
+    margin-top: 0; /* Remove negative margin on mobile */
+  }
+  .code-line {
+    font-size: 1rem;
+    line-height: 1.6;
+
+
+  }
+
+  /* 5. Reposition and style the GIFs for a mobile layout */
+  .fixed-gif{
+    position: absolute; /* Change from 'absolute' to put them in the normal flow */
+    opacity: 0.9;
+    /* Reset the desktop position values */
+    top: 42%;
+    right: -10%;
+    
+    /* Size and spacing */
+    width: 85%;         /* Make them responsive to screen width */
+    max-width: 350px;   /* Prevent them from getting too big on tablets */
+    margin-top: 2rem;   /* Add space between the text and the first GIF */
+    z-index: -1;      /* Reset z-index */
+
+  }
+  .fixed-gif1 {
+    position: absolute; /* Change from 'absolute' to put them in the normal flow */
+    
+    /* Reset the desktop position values */
+    top: 30%;
+    right: 100px;
+    
+    /* Size and spacing */
+    width: 85%;         /* Make them responsive to screen width */
+    max-width: 350px;   /* Prevent them from getting too big on tablets */
+    margin-top: 2rem;   /* Add space between the text and the first GIF */
+    z-index: -1;      /* Reset z-index */
+  }
+  
+  .fixed-gif1 {
+    margin-top: 1.5rem; /* Add a bit of space between the two GIFs */
+  }
 }

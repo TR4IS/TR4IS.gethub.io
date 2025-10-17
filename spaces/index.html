@@ -71,17 +71,30 @@
             z-index: 1;
         }
 
-        /* --- Text Styling (from your example) --- */
+        /* --- Text Styling  --- */
         .function-call {
             color: var(--accent-cyan);
             font-size: 1.5rem; /* Sized for a list */
             text-decoration: none;
             display: block; /* Makes the whole area clickable */
+            
         }
 
         .function-call:hover {
             text-decoration: underline;
         }
+        @media (max-width: 768px) {
+        .function-call {
+            text-shadow: 0 0px 30px #00bfff;
+            
+        }
+        .list-item {
+            text-shadow: 0 0px 30px #ffffff;
+        }
+        .node {
+            box-shadow: 0 0px 30px #00bfff;
+        }
+
     </style>
 </head>
 <body>
@@ -93,10 +106,10 @@
         </div>
 
     <script>
-        // --- ⚙️ START: CONFIGURE THIS SECTION ⚙️ ---
-        const username = "TR4IS"; // ⚠️ CHANGE THIS to your GitHub username
-        const repoName = "TR4IS.gethub.io";     // ⚠️ CHANGE THIS to your repository name
-        // --- END: CONFIGURE THIS SECTION ---
+        // --- ⚙️ START: CONFIGURE THIS SECTION ⚙️ --- //
+        const username = "TR4IS"; 
+        const repoName = "TR4IS.gethub.io";     
+        // --- END: CONFIGURE THIS SECTION --- //
 
         const listContainer = document.getElementById("spaces-list-container");
         const apiUrl = `https://api.github.com/repos/${username}/${repoName}/contents/spaces`;
