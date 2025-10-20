@@ -1,0 +1,94 @@
+/* ======================================================
+   🎨 ReachFlow.spaces() — Stylesheet
+   Author: TRAIS
+   Description: Minimal dark-grid interface that lists GitHub folders dynamically.
+   ====================================================== */
+
+/* --- Theme Variables --- */
+:root {
+    --bg-color: #10121a;
+    --text-color: #d1d1d1;
+    --accent-cyan: #00bfff;
+    --line-color: #3f4251;
+    --node-color: var(--accent-cyan);
+    --grid-color: rgba(255, 255, 255, 0.05);
+}
+
+/* --- General Page Layout --- */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Fira Code', 'Courier New', monospace;
+    margin: 0;
+    padding: 40px;
+
+    /* Subtle grid background */
+    background-image:
+        linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+/* --- Main Container --- */
+#spaces-list-container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    padding-left: 60px;
+}
+
+/* Vertical line on the left side (like a timeline) */
+#spaces-list-container::before {
+    content: '';
+    position: absolute;
+    left: 24px;
+    top: -200px;
+    bottom: 20px;
+    width: 2px;
+    background-color: var(--line-color);
+}
+
+/* --- Each Item (a single folder link) --- */
+.list-item {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Small circular “node” connected to the line */
+.node {
+    position: absolute;
+    left: -44px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--node-color);
+    background-color: var(--bg-color);
+    z-index: 1;
+}
+
+/* --- Link Styling --- */
+.function-call {
+    color: var(--accent-cyan);
+    font-size: 1.5rem;
+    text-decoration: none;
+    display: block; /* makes the entire line clickable */
+}
+
+.function-call:hover {
+    text-decoration: underline;
+}
+
+/* --- Responsive Enhancements (for smaller screens) --- */
+@media (max-width: 768px) {
+    .function-call {
+        text-shadow: 0 0 30px #00bfff;
+    }
+    .list-item {
+        text-shadow: 0 0 30px #ffffff;
+    }
+    .node {
+        box-shadow: 0 0 30px #00bfff;
+    }
+}
