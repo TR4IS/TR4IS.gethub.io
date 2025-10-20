@@ -3,140 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>reachflow.spaces()</title>   
+    <title>reachflow.spaces()</title>
+
+    <!-- Fira Code font for that developer-style look -->
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
     <link rel="icon" type="icon" href="images/iconweb.png">
-    <style>
-        /* --- Basic Setup & Colors --- */
-        :root {
-            --bg-color: #10121a;
-            --text-color: #d1d1d1;
-            --accent-cyan: #00bfff;
-            --line-color: #3f4251;
-            --node-color: var(--accent-cyan);
-            --grid-color: rgba(255, 255, 255, 0.05);
 
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Fira Code', 'Courier New', monospace;
-            margin: 0;
-            padding: 40px;
-            background-image:
-                linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
-                linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
-            background-size: 40px 40px;
-            
-    
-        }
-
-        /* --- Main List Container --- */
-        #spaces-list-container {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            padding-left: 60px; /* Space for the timeline */
-        }
-
-        /* The main vertical timeline bar */
-        #spaces-list-container::before {
-            content: '';
-            position: absolute;
-            left: 24px; /* Centered with the node */
-            top: -200px;
-            bottom: 20px;
-            width: 2px;
-            background-color: var(--line-color);
-        }
-
-
-        /* --- Individual List Item Styling --- */
-        .list-item {
-            position: relative;
-            margin-bottom: 20px; /* Space between items */
-        }
-
-        /* The circle node on the timeline */
-        .node {
-            position: absolute;
-            left: -44px; /* Position it over the timeline */
-            top: 50%;
-            transform: translateY(-50%);
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: 2px solid var(--node-color);
-            background-color: var(--bg-color);
-            z-index: 1;
-        }
-
-        /* --- Text Styling  --- */
-        .function-call {
-            color: var(--accent-cyan);
-            font-size: 1.5rem; /* Sized for a list */
-            text-decoration: none;
-            display: block; /* Makes the whole area clickable */
-            
-        }
-
-        .function-call:hover {
-            text-decoration: underline;
-        }
-        @media (max-width: 768px) {
-        .function-call {
-            text-shadow: 0 0px 30px #00bfff;
-            
-        }
-        .list-item {
-            text-shadow: 0 0px 30px #ffffff;
-        }
-        .node {
-            box-shadow: 0 0px 30px #00bfff;
-        }
-
-    </style>
+    <!-- External CSS file for cleaner structure -->
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
 
+<body>
+    <!-- Container that holds all the “spaces” listed from the GitHub repo -->
     <div id="spaces-list-container">
         <div class="list-item">
             <h1 style="font-size: 2.5rem; color: white;">.spaces()</h1>
         </div>
-        </div>
+    </div>
 
-    <script>
-        // --- ⚙️ START: CONFIGURE THIS SECTION ⚙️ --- //
-        const username = "TR4IS"; 
-        const repoName = "TR4IS.gethub.io";     
-        // --- END: CONFIGURE THIS SECTION --- //
-
-        const listContainer = document.getElementById("spaces-list-container");
-        const apiUrl = `https://api.github.com/repos/${username}/${repoName}/contents/spaces`;
-
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(item => {
-                    // We only want to list directories
-                    if (item.type === "dir") {
-                        // Create the HTML for one list item
-                        const itemHTML = `
-                        <div class="list-item">
-                            <div class="node"></div>
-                            <a href="${item.name}/" class="function-call">.${item.name}()</a>
-                        </div>
-                        `;
-                        // Add the item to the container
-                        listContainer.innerHTML += itemHTML;
-                    }
-                });
-            })
-            .catch(error => {
-                console.error("Error fetching repository data:", error);
-                listContainer.innerHTML += '<div class="list-item"><a class="function-call" style="color: #ff5555;">.error()</a></div>';
-            });
-    </script>
+    <!-- External JS file for better organization -->
+    <script src="scripts.js"></script>
 </body>
 </html>
