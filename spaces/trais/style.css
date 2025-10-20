@@ -1,0 +1,202 @@
+/* ===========================================================
+   🎨 Trais worlD ! - Stylesheet
+   Description: Clean futuristic design with glowing accents.
+   =========================================================== */
+
+/* --- Theme Variables --- */
+:root {
+    --bg-deep-space: #00000a;
+    --primary-glow: #9f42c1;
+    --secondary-glow: #00bfff;
+    --text-primary: #e0e6f0;
+    --text-secondary: #a0a8b5;
+    --border-color: rgba(159, 66, 193, 0.2);
+}
+
+/* --- Global Reset --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    background-color: var(--bg-deep-space);
+    color: var(--text-primary);
+    font-family: 'Work Sans', sans-serif;
+    overflow-x: hidden;
+}
+
+/* --- Layout --- */
+.fullscreen-section {
+    height: 1080px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+#starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.section-content {
+    width: 100%;
+    text-align: center;
+}
+
+/* --- Typography --- */
+h1, h2, h3 {
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    text-shadow: 0 0 10px var(--secondary-glow),
+                 0 0 20px var(--primary-glow);
+}
+
+h1 { font-size: 5rem; line-height: 1.1; text-align: left; }
+h2 { font-size: 3rem; margin-bottom: 50px; }
+h3 { font-size: 1.8rem; margin-bottom: 15px; }
+
+p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    font-weight: 300;
+}
+
+/* --- Hero Section --- */
+.hero {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+.hero-text { flex-basis: 50%; }
+.hero-text p { text-align: left; }
+
+.hero-3d {
+    flex-basis: 50%;
+    height: 800px;
+    transform: translate(100px, 155px);
+}
+
+.hero-3d iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* --- Projects Section --- */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+    text-align: left;
+}
+
+.project-card {
+    background: rgba(10, 10, 20, 0.5);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.4s, box-shadow 0.4s;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 40px var(--border-color);
+}
+
+.project-tech {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.tech-tag {
+    font-family: 'Orbitron', monospace;
+    background: rgba(159, 66, 193, 0.2);
+    color: var(--text-primary);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+/* --- Buttons --- */
+.cta-button {
+    display: inline-block;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    padding: 18px 36px;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #fff;
+    background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: none;
+}
+
+.cta-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px var(--primary-glow);
+}
+
+.project-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: auto;
+    align-self: flex-start;
+    font-family: 'Orbitron', sans-serif;
+    color: var(--text-primary);
+    background-color: transparent;
+    border: 2px solid var(--secondary-glow);
+    border-radius: 8px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.project-button:hover {
+    background-color: var(--secondary-glow);
+    color: var(--bg-deep-space);
+    box-shadow: 0 0 20px var(--secondary-glow);
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+    .hero { flex-direction: column; text-align: center; }
+    .hero-text, .hero-text p, h1 { text-align: center; }
+    .hero-3d {
+        height: 500px;
+        width: 100%;
+        transform: none;
+    }
+    h1 { font-size: 3rem; }
+    .fullscreen-section { height: auto; padding: 120px 0; }
+}
