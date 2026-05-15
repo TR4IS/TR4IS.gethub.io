@@ -1,133 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trais worlD !</title>
-
-    <!-- Google Fonts (Orbitron for titles, Work Sans for body text) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link 
-        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Work+Sans:wght@300;400;600&display=swap" 
-        rel="stylesheet"
-    >
-
-    <!-- External stylesheet -->
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cracker — Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- ✨ Animated starfield canvas in the background -->
-    <canvas id="starfield"></canvas>
+  <div id="dot" aria-hidden="true"></div>
 
-    <!-- 🪐 HERO SECTION -->
-    <header class="hero fullscreen-section">
-        <div class="container">
-            <div class="section-content" data-speed="0.95" style="display: flex; align-items: center; width: 100%;">
-                <!-- Left: text intro -->
-                <div class="hero-text">
-                    <h1>Crafting Worlds,<br>One Line at a Time.</h1>
-                    <p>
-                        I am a digital architect, developer, and creator, building immersive and intuitive experiences that push the boundaries of the web.
-                    </p>
-                </div>
+  <div class="orb o1" aria-hidden="true"></div>
+  <div class="orb o2" aria-hidden="true"></div>
+  <div class="orb o3" aria-hidden="true"></div>
+  <div class="orb o4" aria-hidden="true"></div>
 
-                <!-- Right: 3D embed using Spline -->
-                <div class="hero-3d">
-                    <iframe 
-                        src="https://my.spline.design/worldplanet-bNC0BZqgJFVhoNGXp99pYevg/"
-                        frameborder="0"
-                        width="100%"
-                        height="100%">
-                    </iframe>
-                </div>
-            </div>
+  <nav>
+    <span class="nav-logo">Cracker</span>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-ghost" aria-hidden="true">Cracker</div>
+    <div class="hero-content reveal">
+      <h1 class="hero-headline rg">Crafting<br>Worlds.</h1>
+      <div class="hero-sub">
+        <div class="hero-line"></div>
+        <span class="hero-sub-text">Developer · Builder · Digital Architect</span>
+      </div>
+    </div>
+    <div class="scroll-cue" aria-hidden="true">Scroll</div>
+  </section>
+
+  <section id="about">
+    <div class="about reveal">
+      <div class="about-label">About</div>
+      <p class="about-text">
+        I’m <strong>Cracker</strong> — a developer who builds things that live on the internet.
+        Obsessed with pushing what’s possible, from <strong>shipping full-stack apps</strong>
+        to spinning up <strong>local AI servers</strong> from scratch.
+      </p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="skills">
+    <div class="skills-wrap">
+      <h2 class="section-title rg reveal">Skills</h2>
+      <div class="skills-grid">
+        <div class="sg sg-1 reveal">
+          <span class="skill-group-label">Languages</span>
+          <ul class="skill-list">
+            <li>Python</li>
+            <li>JavaScript</li>
+            <li>HTML &amp; CSS</li>
+          </ul>
         </div>
-    </header>
-
-    <!-- 🚀 ABOUT SECTION -->
-    <main>
-        <section id="about" class="fullscreen-section">
-            <div class="container">
-                <div class="section-content" data-speed="1.05">
-                    <h2>My Journey</h2>
-                    <p>
-                        My journey began with a single line of code, but it quickly evolved into a passion for creating entire digital ecosystems. 
-                        I believe the best technology feels like magic—intuitive, seamless, and powerful. 
-                        My work is a constant pursuit of that magic, blending cutting-edge code with design to build things that are not just functional, but memorable.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 🌌 PROJECTS SECTION -->
-        <section id="projects" class="fullscreen-section">
-            <div class="container">
-                <div class="section-content" data-speed="1.02">
-                    <h2>Project Constellation</h2>
-
-                    <!-- Responsive project cards -->
-                    <div class="projects-grid">
-                        <!-- Project 1 -->
-                        <div class="project-card">
-                            <h3>Portfolio Website</h3>
-                            <p>A website for developers to show their work in a more powerful and aesthetic way than a resume.</p>
-                            <div class="project-tech">
-                                <span class="tech-tag">HTML</span>
-                                <span class="tech-tag">JavaScript</span>
-                                <span class="tech-tag">CSS</span>
-                                <span class="tech-tag">Figma</span>
-                                <span class="tech-tag">Front-End Design</span>
-                            </div>
-                            <a href="https://reachflow.site" class="project-button">View Project</a>
-                        </div>
-
-                        <!-- Project 2 -->
-                        <div class="project-card">
-                            <h3>File Organizer</h3>
-                            <p>An app that automatically organizes your Windows Downloads folder for a cleaner workflow.</p>
-                            <div class="project-tech">
-                                <span class="tech-tag">Python</span>
-                                <span class="tech-tag">Automation</span>
-                                <span class="tech-tag">GUI</span>
-                                <span class="tech-tag">Windows Automation</span>
-                            </div>
-                            <a href="https://github.com/TR4IS/windows-downloads-file-organizer" class="project-button">View Project</a>
-                        </div>
-
-                        <!-- Project 3 -->
-                        <div class="project-card">
-                            <h3>J2P</h3>
-                            <p>An image-to-PDF converter built with Flask and a clean UI.</p>
-                            <div class="project-tech">
-                                <span class="tech-tag">Python</span>
-                                <span class="tech-tag">Flask</span>
-                                <span class="tech-tag">CSS</span>
-                                <span class="tech-tag">JavaScript</span>
-                                <span class="tech-tag">Full-Stack</span>
-                                <span class="tech-tag">Software Development</span>
-                            </div>
-                            <a href="https://tr4is-gethub-io.onrender.com" class="project-button">View Project</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- 🌠 CONTACT SECTION -->
-    <footer id="contact" class="fullscreen-section">
-        <div class="container">
-            <div class="section-content" data-speed="1.05">
-                <h2>Let's Create a Universe.</h2>
-                <p>Have an ambitious idea? Let’s connect and build something extraordinary together.</p>
-                <a href="mailto:ziyad.tr.46@gmail.com" class="cta-button">Initiate Contact</a>
-            </div>
+        <div class="sg sg-2 reveal">
+          <span class="skill-group-label">Frameworks &amp; Tools</span>
+          <ul class="skill-list">
+            <li>Flask</li>
+            <li>Figma</li>
+          </ul>
         </div>
-    </footer>
+        <div class="sg sg-3 reveal">
+          <span class="skill-group-label">AI &amp; Automation</span>
+          <ul class="skill-list">
+            <li>Prompt Engineering</li>
+            <li>Local LLM Deployment</li>
+            <li>AI Chatbot Dev</li>
+            <li>LLM API Integration</li>
+          </ul>
+        </div>
+        <div class="sg sg-4 reveal">
+          <span class="skill-group-label">Infrastructure</span>
+          <ul class="skill-list">
+            <li>Self-Hosted AI Servers</li>
+            <li>Home Lab Administration</li>
+            <li>Self-Hosted Cloud Storage</li>
+            <li>Web Server Deployment</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- External JavaScript -->
-    <script src="script.js"></script>
+  <div class="divider"></div>
+
+  <section id="projects">
+    <div class="projects-wrap">
+      <h2 class="section-title rg reveal">Projects</h2>
+      <div id="projects-list">
+        <!-- Populated by script.js -->
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="contact">
+    <div class="contact-wrap">
+      <h2 class="contact-headline reveal">
+        <span class="rg">Let’s build</span><br>
+        <span class="contact-dim">something</span><br>
+        <span class="rg">extraordinary.</span>
+      </h2>
+      <button class="scramble-btn reveal" id="scramble-btn">
+        <span id="scramble-text">Initiate Contact</span>
+        <span class="scramble-arrow">↗</span>
+      </button>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
 </body>
 </html>
