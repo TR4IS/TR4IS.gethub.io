@@ -1,63 +1,143 @@
-/* ===========================================================
-   💫 Trais worlD ! - JavaScript
-   Handles the animated starfield and parallax scroll effects.
-   =========================================================== */
+/* ── Cursor ── */
+const dot = document.getElementById('dot');
+document.addEventListener('mousemove', e => {
+  dot.style.left = e.clientX + 'px';
+  dot.style.top  = e.clientY + 'px';
+});
 
-document.addEventListener("DOMContentLoaded", () => {
-    const canvas = document.getElementById("starfield");
-    const ctx = canvas.getContext("2d");
+function attachCursorHovers() {
+  document.querySelectorAll('a, button, .project-row, .nav-links a').forEach(el => {
+    el.addEventListener('mouseenter', () => dot.classList.add('big'));
+    el.addEventListener('mouseleave', () => dot.classList.remove('big'));
+  });
+}
+attachCursorHovers();
 
-    // --- Resize canvas to full screen ---
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
+/* ── Scroll reveal ── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+    el.classList.add('is-visible');
+    observer.unobserve(el);
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-    // --- Create star objects ---
-    const stars = [];
-    for (let i = 0; i < 500; i++) {
-        stars.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            radius: Math.random() * 1.5,
-            alpha: Math.random(),
-            velocity: {
-                x: (Math.random() - 0.5) * 0.2,
-                y: (Math.random() - 0.5) * 0.2
-            }
-        });
-    }
+// Stagger skill groups
+document.querySelectorAll('.sg').forEach((el, i) => {
+  el.style.transitionDelay = (i * 100) + 'ms';
+});
 
-    // --- Animate stars moving gently ---
-    function drawStars() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        stars.forEach(star => {
-            ctx.beginPath();
-            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(224, 230, 240, ${star.alpha})`;
-            ctx.fill();
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-            // Move star
-            star.x += star.velocity.x;
-            star.y += star.velocity.y;
+/* ── Projects ── */
+const PROJECTS = [
+  {
+    repo: 'reachflow',
+    name: 'Reachflow',
+    desc: 'A developer community platform — each member gets their own space to showcase work, ideas, and projects.',
+    url: 'https://reachflow.site',
+    tags: ['HTML', 'CSS', 'JS']
+  },
+  {
+    repo: 'windows-downloads-file-organizer',
+    name: 'File Organizer',
+    desc: 'Automated Windows Downloads folder organizer — cleans your workflow without lifting a finger.',
+    url: 'https://github.com/TR4IS/windows-downloads-file-organizer',
+    tags: ['Python', 'Automation']
+  },
+  {
+    repo: 'windows-optimizer',
+    name: 'Windows Optimizer',
+    desc: 'Performance optimization tool for Windows — system tweaks and cleanup to keep your machine fast.',
+    url: 'https://github.com/TR4IS/windows-optimizer',
+    tags: ['Python', 'Windows']
+  }
+];
 
-            // Bounce off edges
-            if (star.x < 0 || star.x > canvas.width) star.velocity.x *= -1;
-            if (star.y < 0 || star.y > canvas.height) star.velocity.y *= -1;
-        });
-        requestAnimationFrame(drawStars);
-    }
-    drawStars();
+const ROW_COLORS = ['pr-1', 'pr-2', 'pr-3'];
 
-    // --- Parallax effect for scroll ---
-    window.addEventListener("scroll", () => {
-        const scrollY = window.scrollY;
-        document.querySelectorAll("[data-speed]").forEach(el => {
-            const speed = parseFloat(el.getAttribute("data-speed"));
-            const yPos = -scrollY * (speed - 1);
-            el.style.transform = `translateY(${yPos}px)`;
-        });
-    });
+function buildProjectRow(p, index) {
+  const row = document.createElement('a');
+  row.href = p.url;
+  row.target = '_blank';
+  row.rel = 'noopener';
+  row.className = `project-row ${ROW_COLORS[index % ROW_COLORS.length]} reveal`;
+  row.style.transitionDelay = (index * 80) + 'ms';
+  row.innerHTML = `
+    <span class="project-num">0${index + 1}</span>
+    <div class="project-info">
+      <div class="project-name">${p.name}</div>
+      <div class="project-desc">${p.desc}</div>
+    </div>
+    <div class="project-tags">${p.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>
+    <span class="project-arrow">↗</span>
+  `;
+  return row;
+}
+
+function renderProjects(projects) {
+  const list = document.getElementById('projects-list');
+  list.innerHTML = '';
+  projects.forEach((p, i) => {
+    const row = buildProjectRow(p, i);
+    list.appendChild(row);
+    observer.observe(row);
+  });
+  attachCursorHovers();
+}
+
+async function fetchAndRender() {
+  const resolved = await Promise.all(
+    PROJECTS.map(async p => {
+      try {
+        const res = await fetch(`https://api.github.com/repos/TR4IS/${p.repo}`);
+        if (!res.ok) return p;
+        const data = await res.json();
+        return {
+          ...p,
+          desc: data.description || p.desc,
+          url: p.url
+        };
+      } catch {
+        return p;
+      }
+    })
+  );
+  renderProjects(resolved);
+}
+
+fetchAndRender();
+
+/* ── Text scramble ── */
+const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*';
+const SCRAMBLE_TARGET = 'Initiate Contact';
+const scrambleEl  = document.getElementById('scramble-text');
+const scrambleBtn = document.getElementById('scramble-btn');
+let scrambleIv = null;
+
+scrambleBtn.addEventListener('click', () => {
+  window.location.href = 'mailto:ziyad.tr.46@gmail.com';
+});
+
+scrambleBtn.addEventListener('mouseenter', () => {
+  let iter = 0;
+  clearInterval(scrambleIv);
+  scrambleIv = setInterval(() => {
+    scrambleEl.textContent = SCRAMBLE_TARGET
+      .split('')
+      .map((ch, i) => {
+        if (ch === ' ') return ' ';
+        if (i < iter) return SCRAMBLE_TARGET[i];
+        return CHARS[Math.floor(Math.random() * CHARS.length)];
+      })
+      .join('');
+    if (iter >= SCRAMBLE_TARGET.length) clearInterval(scrambleIv);
+    iter += 0.6;
+  }, 35);
+});
+
+scrambleBtn.addEventListener('mouseleave', () => {
+  clearInterval(scrambleIv);
+  scrambleEl.textContent = SCRAMBLE_TARGET;
 });
