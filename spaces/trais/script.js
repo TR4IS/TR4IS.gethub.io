@@ -16,10 +16,7 @@ attachCursorHovers();
 /* ── Scroll reveal ── */
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    const el = entry.target;
-    el.classList.add('is-visible');
-    observer.unobserve(el);
+    entry.target.classList.toggle('is-visible', entry.isIntersecting);
   });
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
@@ -47,10 +44,10 @@ const PROJECTS = [
     tags: ['Python', 'Automation']
   },
   {
-    repo: 'windows-optimizer',
+    repo: 'WindowsOptimizer',
     name: 'Windows Optimizer',
     desc: 'Performance optimization tool for Windows — system tweaks and cleanup to keep your machine fast.',
-    url: 'https://github.com/TR4IS/windows-optimizer',
+    url: 'https://github.com/TR4IS/WindowsOptimizer',
     tags: ['Python', 'Windows']
   }
 ];

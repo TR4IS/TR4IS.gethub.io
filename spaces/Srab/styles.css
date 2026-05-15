@@ -1,0 +1,17 @@
+:root {
+    --bg-deep-space: #00000a;
+    --primary-glow: #9f42c1;
+    --secondary-glow: #00bfff;
+    --text-primary: #e0e6f0;
+    --text-secondary: #a0a8b5;
+    --border-color: rgba(159, 66, 193, 0.2);
+}
+
+h1, h2, h3,p {
+    font-family: 'Fira Code', sans-serif;
+    color: #000;
+}
+h1 { font-size: 3rem; line-height: 1.1; text-align: left; margin-left:180px ; margin-top:200px }
+.hero-text { flex-basis: 50%; }
+.hero-text p { text-align: left; }
+p {font-size: 1rem; margin-left:180px ; margin-top:0px}
