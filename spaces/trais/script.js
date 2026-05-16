@@ -1,11 +1,19 @@
 /* ── Cursor ── */
 const dot = document.getElementById('dot');
-document.addEventListener('mousemove', e => {
-  dot.style.left = e.clientX + 'px';
-  dot.style.top  = e.clientY + 'px';
-});
+const isTouch = window.matchMedia('(hover: none)').matches;
+
+if (isTouch) {
+  dot.style.display = 'none';
+  document.body.style.cursor = 'auto';
+} else {
+  document.addEventListener('mousemove', e => {
+    dot.style.left = e.clientX + 'px';
+    dot.style.top  = e.clientY + 'px';
+  });
+}
 
 function attachCursorHovers() {
+  if (isTouch) return;
   document.querySelectorAll('a, button, .project-row, .nav-links a').forEach(el => {
     el.addEventListener('mouseenter', () => dot.classList.add('big'));
     el.addEventListener('mouseleave', () => dot.classList.remove('big'));
