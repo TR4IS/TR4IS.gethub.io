@@ -135,6 +135,8 @@ function buildTemplate(user) {
     .nav-brand span{color:var(--accent)}
     .nav-back{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim);transition:color .2s}
     .nav-back:hover{color:var(--fg)}
+    .edit-btn{position:fixed;bottom:32px;right:32px;z-index:200;font-size:.55rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:var(--bg);background:var(--accent);padding:10px 18px;border:1.5px solid var(--accent);text-decoration:none;transition:background .25s,color .25s}
+    .edit-btn:hover{background:transparent;color:var(--accent)}
     .hero{height:100vh;min-height:600px;display:flex;align-items:flex-end;padding:0 var(--pad) 72px;position:relative;overflow:hidden}
     .hero-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:clamp(14rem,40vw,42rem);color:rgba(255,255,255,.012);letter-spacing:-20px;user-select:none;pointer-events:none;line-height:1}
     .hero-inner{position:relative;z-index:2;display:flex;align-items:flex-end;gap:40px}
@@ -193,6 +195,7 @@ function buildTemplate(user) {
       </div>
     </div>
   </section>
+  <a class="edit-btn" href="https://github.com/TR4IS/TR4IS.gethub.io/edit/main/spaces/${user.login}/index.html" target="_blank" rel="noopener">✏ Edit this page</a>
   <script>
     const cursor = document.getElementById('cursor');
     const isTouch = window.matchMedia('(hover: none)').matches;
