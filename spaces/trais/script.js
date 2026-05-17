@@ -146,3 +146,59 @@ scrambleBtn.addEventListener('mouseleave', () => {
   clearInterval(scrambleIv);
   scrambleEl.textContent = SCRAMBLE_TARGET;
 });
+
+/* ── Heading hover: scale + seamless rainbow speed-up ── */
+const SLOW_MS = 6000;
+const FAST_MS = 1500;
+
+function getRgEls(el) {
+  return el.classList.contains('rg') ? [el] : [...el.querySelectorAll('.rg')];
+}
+
+function switchRainbow(heading, fromMs, toMs) {
+  getRgEls(heading).forEach(el => {
+    const delayMs = parseFloat(getComputedStyle(el).animationDelay) * 1000 || 0;
+    const elapsed = performance.now() - delayMs;
+    const progress = (elapsed % fromMs) / fromMs;
+    el.style.animationDuration = toMs + 'ms';
+    el.style.animationDelay    = -(progress * toMs) + 'ms';
+  });
+}
+
+document.querySelectorAll('.hero-headline, .section-title, .contact-headline').forEach(heading => {
+  heading.addEventListener('mouseenter', () => switchRainbow(heading, SLOW_MS, FAST_MS));
+  heading.addEventListener('mouseleave', () => switchRainbow(heading, FAST_MS, SLOW_MS));
+});
+
+/* ── Extraordinary scramble ── */
+const EXT_TARGET = 'extraordinary.';
+const extEl = document.getElementById('ext-text');
+let extIv = null;
+
+function runExtScramble() {
+  let iter = 0;
+  clearInterval(extIv);
+  extIv = setInterval(() => {
+    extEl.textContent = EXT_TARGET
+      .split('')
+      .map((ch, i) => {
+        if (ch === '.') return '.';
+        if (i < iter) return EXT_TARGET[i];
+        return CHARS[Math.floor(Math.random() * CHARS.length)];
+      })
+      .join('');
+    if (iter >= EXT_TARGET.length) clearInterval(extIv);
+    iter += 0.35;
+  }, 55);
+}
+
+new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      runExtScramble();
+    } else {
+      clearInterval(extIv);
+      extEl.textContent = EXT_TARGET;
+    }
+  });
+}, { threshold: 0.8 }).observe(extEl);

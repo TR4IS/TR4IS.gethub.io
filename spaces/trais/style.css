@@ -90,6 +90,11 @@ nav {
   font-weight: 900; line-height: 1; letter-spacing: -2px;
   filter: drop-shadow(0 0 35px rgba(167,139,250,.22));
   overflow: visible;
+  transition: transform .45s var(--ease), filter .45s var(--ease);
+}
+.hero-headline:hover {
+  transform: scale(1.04);
+  filter: drop-shadow(0 0 60px rgba(167,139,250,.6));
 }
 .hero-sub { display: flex; align-items: center; gap: 14px; margin-top: 20px; }
 .hero-sub-text { font-size: .72rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,.3); }
@@ -129,6 +134,12 @@ nav {
   font-size: clamp(2rem, 4vw, 3.5rem);
   font-weight: 900; letter-spacing: -2px; margin-bottom: 52px;
   filter: drop-shadow(0 0 20px rgba(167,139,250,.18));
+  display: inline-block;
+  transition: transform .45s var(--ease), filter .45s var(--ease);
+}
+.section-title.is-visible:hover {
+  transform: translateY(0) scale(1.04);
+  filter: drop-shadow(0 0 45px rgba(167,139,250,.55));
 }
 .skills-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 44px; }
 .skill-group-label {
@@ -225,6 +236,11 @@ nav {
   font-weight: 900; letter-spacing: -3px; line-height: .95;
   margin-bottom: 48px;
   filter: drop-shadow(0 0 30px rgba(167,139,250,.18));
+  transition: transform .45s var(--ease), filter .45s var(--ease);
+}
+.contact-headline.is-visible:hover {
+  transform: translateY(0) scale(1.02);
+  filter: drop-shadow(0 0 55px rgba(167,139,250,.6));
 }
 .contact-dim {
   display: block;
