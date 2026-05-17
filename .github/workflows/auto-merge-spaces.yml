@@ -1,0 +1,115 @@
+name: Auto-merge member space edits
+
+# pull_request_target runs in the BASE repo context (has write token).
+# We NEVER checkout PR code — only GitHub API calls — so this is safe.
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  validate-and-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate files and auto-merge
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr      = context.payload.pull_request;
+            const author  = pr.user.login;
+            const prNum   = pr.number;
+            const headSha = pr.head.sha;
+
+            async function postComment(body) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo:  context.repo.repo,
+                issue_number: prNum,
+                body,
+              });
+            }
+
+            // 1 — Only handle PRs targeting main
+            if (pr.base.ref !== 'main') {
+              core.info(`Skipping — targets '${pr.base.ref}', not 'main'.`);
+              return;
+            }
+
+            // 2 — Build the allowed path prefix (case-insensitive)
+            //     e.g. author "TR4IS" → allowed prefix "spaces/tr4is/"
+            //     Prevents: "spaces/victim/", "spaces/tr4is/../victim/", etc.
+            const allowedPrefix = `spaces/${author}/`.toLowerCase();
+            core.info(`PR #${prNum} by @${author} — must be within: ${allowedPrefix}`);
+
+            // 3 — Fetch ALL changed files (paginated — GitHub caps at 100/page)
+            const files = await github.paginate(
+              github.rest.pulls.listFiles,
+              {
+                owner:       context.repo.owner,
+                repo:        context.repo.repo,
+                pull_number: prNum,
+                per_page:    100,
+              }
+            );
+
+            // 4 — Reject empty PRs
+            if (files.length === 0) {
+              core.info('No changed files — skipping.');
+              return;
+            }
+
+            // 5 — Every file must be strictly inside spaces/{author}/
+            //     Normalising to lowercase prevents case-bypass attacks.
+            //     path.normalize is not available here, but the GitHub API
+            //     already resolves paths — no ".." will appear in filenames
+            //     returned by the API (GitHub rejects such trees at push time).
+            const violations = files.filter(f =>
+              !f.filename.toLowerCase().startsWith(allowedPrefix)
+            );
+
+            if (violations.length > 0) {
+              const list = violations.map(f => `- \`${f.filename}\``).join('\n');
+              await postComment([
+                `❌ **Auto-merge blocked** — this PR touches files outside your space.`,
+                ``,
+                `You are only allowed to edit files inside \`spaces/${author}/\`.`,
+                ``,
+                `**Files that caused the block:**`,
+                list,
+                ``,
+                `Remove those changes and the PR will be auto-merged automatically.`,
+              ].join('\n'));
+              core.setFailed(`PR #${prNum} blocked: files outside spaces/${author}/`);
+              return;
+            }
+
+            // 6 — All files are inside spaces/{author}/ — merge the exact SHA
+            //     we just validated. If the author pushed new commits between
+            //     our check and this call, GitHub will reject the merge
+            //     (sha mismatch), preventing a race-condition bypass.
+            core.info(`All ${files.length} file(s) are within ${allowedPrefix} — merging SHA ${headSha}`);
+
+            try {
+              await github.rest.pulls.merge({
+                owner:          context.repo.owner,
+                repo:           context.repo.repo,
+                pull_number:    prNum,
+                sha:            headSha,
+                merge_method:   'squash',
+                commit_title:   `space(${author}): self-edit [PR #${prNum}]`,
+                commit_message: `Auto-merged — all changes are within spaces/${author}/`,
+              });
+              core.info(`✓ Merged PR #${prNum} for @${author}`);
+            } catch (err) {
+              core.error(`Merge failed: ${err.message}`);
+              await postComment(
+                `⚠️ Auto-merge failed: \`${err.message}\`\n\n` +
+                `This can happen if you pushed new commits while the check was running — just wait a moment and it will retry. ` +
+                `If the problem persists, contact the site owner.`
+              );
+            }
