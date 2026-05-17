@@ -14,7 +14,7 @@ if (isTouch) {
 
 function attachCursorHovers() {
   if (isTouch) return;
-  document.querySelectorAll('a, .space-row').forEach(el => {
+  document.querySelectorAll('a, .space-row, .search-input').forEach(el => {
     el.addEventListener('mouseenter', () => cursor.classList.add('big'));
     el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
   });
@@ -23,32 +23,54 @@ attachCursorHovers();
 
 /* ── Spaces list ── */
 const listContainer = document.getElementById('spaces-list-container');
+const searchInput   = document.getElementById('search-input');
+const searchCount   = document.getElementById('search-count');
 const apiUrl = `https://api.github.com/repos/TR4IS/TR4IS.gethub.io/contents/spaces`;
+
+let allDirs = [];
+
+function renderRows(dirs) {
+  listContainer.innerHTML = '';
+
+  if (dirs.length === 0) {
+    listContainer.innerHTML = '<p class="spaces-loading">// no match found</p>';
+    return;
+  }
+
+  dirs.forEach((item, index) => {
+    const num = String(index + 1).padStart(2, '0');
+    const row = document.createElement('a');
+    row.href = `${item.name}/`;
+    row.className = 'space-row';
+    row.innerHTML = `
+      <span class="space-num">${num}</span>
+      <span class="space-name">.${item.name}()</span>
+      <span class="space-arrow">↗</span>
+    `;
+    listContainer.appendChild(row);
+  });
+
+  attachCursorHovers();
+}
 
 listContainer.innerHTML = '<p class="spaces-loading">// loading spaces...</p>';
 
 fetch(apiUrl)
   .then(res => res.json())
   .then(data => {
-    const dirs = data.filter(item => item.type === 'dir');
-    listContainer.innerHTML = '';
+    allDirs = data.filter(item => item.type === 'dir');
+    renderRows(allDirs);
 
-    dirs.forEach((item, index) => {
-      const row = document.createElement('a');
-      row.href = `${item.name}/`;
-      row.className = 'space-row';
-      row.innerHTML = `
-        <span class="space-num">0${index + 1}</span>
-        <span class="space-name">.${item.name}()</span>
-        <span class="space-arrow">↗</span>
-      `;
-      listContainer.appendChild(row);
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.trim().toLowerCase();
+      const filtered = q
+        ? allDirs.filter(d => d.name.toLowerCase().includes(q))
+        : allDirs;
+      renderRows(filtered);
+      searchCount.textContent = q ? `${filtered.length} / ${allDirs.length}` : '';
     });
-
-    attachCursorHovers();
   })
-  .catch(err => {
-    console.error('Error fetching spaces:', err);
+  .catch(() => {
     listContainer.innerHTML = `
       <div class="space-row">
         <span class="space-name" style="color:#ff5555">.error() — could not load spaces</span>

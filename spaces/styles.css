@@ -91,6 +91,33 @@ main {
   border-bottom: 1px solid var(--border);
 }
 
+/* ── Search ── */
+.search-wrap {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 0;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+  transition: border-color .25s;
+}
+.search-wrap:focus-within { border-bottom-color: var(--accent); }
+
+.search-prefix {
+  font-size: .55rem; color: var(--accent);
+  letter-spacing: 2px; white-space: nowrap; flex-shrink: 0;
+}
+.search-input {
+  flex: 1;
+  background: none; border: none; outline: none;
+  font-family: var(--font-mono); font-size: .85rem; font-weight: 400;
+  color: var(--fg); caret-color: var(--accent);
+  cursor: none; letter-spacing: 1px;
+}
+.search-input::placeholder { color: var(--dim); }
+.search-count {
+  font-size: .5rem; color: var(--dim);
+  letter-spacing: 2px; white-space: nowrap; flex-shrink: 0;
+}
+
 /* ── Space rows ── */
 .space-row {
   display: flex; align-items: center; gap: 20px;
