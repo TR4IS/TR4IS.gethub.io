@@ -1,29 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>reachflow.spaces()</title>
-
-    <!-- Fira Code font for that developer-style look -->
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
-
-    <!-- Favicon -->
-    <link rel="icon" type="icon" href="images/iconweb.png">
-
-    <!-- External CSS file for cleaner structure -->
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reachflow — spaces</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="icon" href="../images/iconweb.png">
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <!-- Container that holds all the “spaces” listed from the GitHub repo -->
-    <div id="spaces-list-container">
-        <div class="list-item">
-            <h1 style="font-size: 2.5rem; color: white;">.spaces()</h1>
-        </div>
-    </div>
 
-    <!-- External JS file for better organization -->
-    <script src="scripts.js"></script>
+  <div id="cursor" aria-hidden="true"></div>
+
+  <nav>
+    <a href="/" class="nav-brand">REACH<span class="accent">_</span>FLOW</a>
+    <a href="/" class="nav-back">← back</a>
+  </nav>
+
+  <main>
+    <header class="page-header">
+      <div class="header-label">
+        <span class="label-num">02/</span><span class="label-name">spaces</span>
+      </div>
+      <h1 class="page-title">.spaces()</h1>
+      <p class="page-sub">Handpicked developers. Each with their own space.</p>
+    </header>
+
+    <div id="spaces-list-container">
+      <!-- Populated by scripts.js -->
+    </div>
+  </main>
+
+  <script src="scripts.js"></script>
 </body>
 </html>

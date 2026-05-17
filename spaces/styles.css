@@ -1,94 +1,161 @@
-/* ======================================================
-   🎨 ReachFlow.spaces() — Stylesheet
-   Author: TRAIS
-   Description: Minimal dark-grid interface that lists GitHub folders dynamically.
-   ====================================================== */
-
-/* --- Theme Variables --- */
+/* ── Root ── */
 :root {
-    --bg-color: #10121a;
-    --text-color: #d1d1d1;
-    --accent-cyan: #00bfff;
-    --line-color: #3f4251;
-    --node-color: var(--accent-cyan);
-    --grid-color: rgba(255, 255, 255, 0.05);
+  --bg: #060606;
+  --fg: #efefef;
+  --accent: #00ff88;
+  --dim: rgba(239,239,239,.28);
+  --border: rgba(239,239,239,.07);
+  --ease: cubic-bezier(.23,1,.32,1);
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --pad: 64px;
 }
 
-/* --- General Page Layout --- */
+/* ── Reset ── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: 'Fira Code', 'Courier New', monospace;
-    margin: 0;
-    padding: 40px;
-
-    /* Subtle grid background */
-    background-image:
-        linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
-    background-size: 40px 40px;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+  background-size: 72px 72px;
+  color: var(--fg);
+  font-family: var(--font-mono);
+  min-height: 100vh;
+  cursor: none;
 }
 
-/* --- Main Container --- */
-#spaces-list-container {
-    max-width: 800px;
-    margin: 0 auto;
-    position: relative;
-    padding-left: 60px;
+a { color: inherit; text-decoration: none; }
+
+/* ── Cursor ── */
+#cursor {
+  position: fixed; z-index: 9999; pointer-events: none;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent);
+  transform: translate(-50%, -50%);
+  transition: width .25s var(--ease), height .25s var(--ease), opacity .2s;
+  mix-blend-mode: exclusion;
+}
+#cursor.big { width: 40px; height: 40px; opacity: .4; }
+
+/* ── Nav ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 26px var(--pad);
+  display: flex; justify-content: space-between; align-items: center;
+  background: linear-gradient(to bottom, rgba(6,6,6,.95) 60%, transparent);
+}
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: 1.2rem; letter-spacing: 5px; color: var(--fg);
+}
+.nav-brand .accent { color: var(--accent); }
+.nav-back {
+  font-size: .6rem; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--dim); transition: color .2s;
+}
+.nav-back:hover { color: var(--fg); }
+
+/* ── Main layout ── */
+main {
+  max-width: 900px; margin: 0 auto;
+  padding: 140px var(--pad) 100px;
 }
 
-/* Vertical line on the left side (like a timeline) */
-#spaces-list-container::before {
-    content: '';
-    position: absolute;
-    left: 24px;
-    top: -200px;
-    bottom: 20px;
-    width: 2px;
-    background-color: var(--line-color);
+/* ── Page header ── */
+.header-label {
+  display: flex; align-items: baseline; gap: 4px;
+  margin-bottom: 16px;
+}
+.label-num { font-size: .52rem; color: var(--accent); letter-spacing: 2px; }
+.label-name {
+  font-size: .52rem; color: var(--dim);
+  letter-spacing: 3px; text-transform: uppercase;
 }
 
-/* --- Each Item (a single folder link) --- */
-.list-item {
-    position: relative;
-    margin-bottom: 20px;
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  color: var(--accent);
+  letter-spacing: 2px; line-height: .85;
+  margin-bottom: 20px;
 }
 
-/* Small circular “node” connected to the line */
-.node {
-    position: absolute;
-    left: -44px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    border: 2px solid var(--node-color);
-    background-color: var(--bg-color);
-    z-index: 1;
+.page-sub {
+  font-size: .7rem; color: var(--dim);
+  letter-spacing: 1px; line-height: 1.6;
+  margin-bottom: 56px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--border);
 }
 
-/* --- Link Styling --- */
-.function-call {
-    color: var(--accent-cyan);
-    font-size: 1.5rem;
-    text-decoration: none;
-    display: block; /* makes the entire line clickable */
+/* ── Space rows ── */
+.space-row {
+  display: flex; align-items: center; gap: 20px;
+  border-top: 1px solid var(--border);
+  padding: 20px 0 20px 16px;
+  position: relative;
+  text-decoration: none; color: inherit;
+  cursor: none;
+  transition: padding-left .3s var(--ease);
+}
+.space-row:last-child { border-bottom: 1px solid var(--border); }
+
+.space-row::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px; background: var(--accent);
+  transform: scaleY(0); transform-origin: top;
+  transition: transform .35s var(--ease);
+}
+.space-row:hover { padding-left: 22px; }
+.space-row:hover::before { transform: scaleY(1); }
+
+.space-num {
+  font-size: .65rem; font-weight: 700;
+  color: rgba(239,239,239,.07);
+  min-width: 36px; transition: color .3s;
+}
+.space-row:hover .space-num { color: rgba(0,255,136,.3); }
+
+.space-name {
+  font-size: .95rem; font-weight: 700; color: var(--fg);
+  transition: color .25s, transform .35s var(--ease);
+  transform-origin: left; display: inline-block;
+}
+.space-row:hover .space-name { color: var(--accent); transform: scale(1.05); }
+
+.space-arrow {
+  margin-left: auto;
+  font-size: .85rem; color: var(--dim);
+  transition: transform .3s var(--ease), color .25s;
+}
+.space-row:hover .space-arrow { transform: translate(3px,-3px); color: var(--accent); }
+
+/* ── Loading state ── */
+.spaces-loading {
+  font-size: .65rem; color: var(--dim);
+  letter-spacing: 2px; padding: 24px 0;
+  animation: blink 1.2s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+/* ══════════════════════════════
+   TABLET  (≤ 1024px)
+══════════════════════════════ */
+@media (max-width: 1024px) {
+  :root { --pad: 36px; }
 }
 
-.function-call:hover {
-    text-decoration: underline;
-}
-
-/* --- Responsive Enhancements (for smaller screens) --- */
+/* ══════════════════════════════
+   MOBILE  (≤ 768px)
+══════════════════════════════ */
 @media (max-width: 768px) {
-    .function-call {
-        text-shadow: 0 0 30px #00bfff;
-    }
-    .list-item {
-        text-shadow: 0 0 30px #ffffff;
-    }
-    .node {
-        box-shadow: 0 0 30px #00bfff;
-    }
+  :root { --pad: 24px; }
+  body { cursor: auto; }
+  #cursor { display: none; }
+  nav { padding: 18px var(--pad); }
+  main { padding-top: 100px; }
 }

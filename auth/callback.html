@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reachflow — signing in</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #060606; --fg: #efefef; --accent: #00ff88;
+      --dim: rgba(239,239,239,.28);
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size: 72px 72px;
+      color: var(--fg);
+      font-family: var(--font-mono);
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .box {
+      text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 24px;
+    }
+    .status-label {
+      font-size: .52rem; color: var(--accent);
+      letter-spacing: 3px; text-transform: uppercase;
+    }
+    .status-text {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 6rem);
+      color: var(--fg); letter-spacing: 2px; line-height: 1;
+    }
+    .status-text.error { color: #ff5555; }
+    .status-text.success { color: var(--accent); }
+    .sub {
+      font-size: .65rem; color: var(--dim);
+      letter-spacing: 1px; line-height: 1.7;
+    }
+    .blink { animation: blink 1.1s step-end infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .back-link {
+      font-size: .6rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--dim); text-decoration: none;
+      border-bottom: 1px solid rgba(239,239,239,.1);
+      padding-bottom: 2px;
+      transition: color .2s;
+    }
+    .back-link:hover { color: var(--fg); }
+  </style>
+</head>
+<body>
+  <div class="box" id="box">
+    <p class="status-label">// reachflow auth</p>
+    <p class="status-text" id="headline">Authenticating<span class="blink">_</span></p>
+    <p class="sub" id="sub">Talking to GitHub, hang tight.</p>
+  </div>
+
+  <script>
+    /* ── Config — update WORKER_URL after you deploy the worker ── */
+    const WORKER_URL = 'https://reachflow-auth.cr4cker.workers.dev';
+
+    const headline = document.getElementById('headline');
+    const sub = document.getElementById('sub');
+
+    function setError(msg) {
+      headline.textContent = 'Error';
+      headline.className = 'status-text error';
+      sub.innerHTML = msg + '<br><br><a href="/" class="back-link">← back to reachflow</a>';
+    }
+
+    function setSuccess(username, created) {
+      headline.textContent = created ? 'Space Created' : 'Welcome Back';
+      headline.className = 'status-text success';
+      sub.textContent = created
+        ? `Your space is live at /spaces/${username} — redirecting…`
+        : `Welcome back, ${username} — redirecting…`;
+      setTimeout(() => { window.location.href = `/spaces/${username}/`; }, 1800);
+    }
+
+    async function run() {
+      const code = new URLSearchParams(window.location.search).get('code');
+      if (!code) { setError('No auth code found. Did you come here by accident?'); return; }
+
+      try {
+        const res = await fetch(`${WORKER_URL}/exchange?code=${encodeURIComponent(code)}`);
+        const data = await res.json();
+        if (data.error) { setError(data.error); return; }
+        setSuccess(data.username, data.created);
+      } catch (err) {
+        setError('Could not reach the auth server. Try again.');
+      }
+    }
+
+    run();
+  </script>
+</body>
+</html>

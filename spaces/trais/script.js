@@ -1,22 +1,22 @@
 /* ── Cursor ── */
-const dot = document.getElementById('dot');
+const cursor = document.getElementById('cursor');
 const isTouch = window.matchMedia('(hover: none)').matches;
 
 if (isTouch) {
-  dot.style.display = 'none';
+  cursor.style.display = 'none';
   document.body.style.cursor = 'auto';
 } else {
   document.addEventListener('mousemove', e => {
-    dot.style.left = e.clientX + 'px';
-    dot.style.top  = e.clientY + 'px';
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
   });
 }
 
 function attachCursorHovers() {
   if (isTouch) return;
-  document.querySelectorAll('a, button, .project-row, .nav-links a').forEach(el => {
-    el.addEventListener('mouseenter', () => dot.classList.add('big'));
-    el.addEventListener('mouseleave', () => dot.classList.remove('big'));
+  document.querySelectorAll('a, button, .project-row, .skill-list li').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
   });
 }
 attachCursorHovers();
@@ -26,12 +26,7 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     entry.target.classList.toggle('is-visible', entry.isIntersecting);
   });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-// Stagger skill groups
-document.querySelectorAll('.sg').forEach((el, i) => {
-  el.style.transitionDelay = (i * 100) + 'ms';
-});
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
@@ -60,15 +55,13 @@ const PROJECTS = [
   }
 ];
 
-const ROW_COLORS = ['pr-1', 'pr-2', 'pr-3'];
-
 function buildProjectRow(p, index) {
   const row = document.createElement('a');
   row.href = p.url;
   row.target = '_blank';
   row.rel = 'noopener';
-  row.className = `project-row ${ROW_COLORS[index % ROW_COLORS.length]} reveal`;
-  row.style.transitionDelay = (index * 80) + 'ms';
+  row.className = 'project-row reveal';
+  row.style.transitionDelay = (index * 70) + 'ms';
   row.innerHTML = `
     <span class="project-num">0${index + 1}</span>
     <div class="project-info">
@@ -99,14 +92,8 @@ async function fetchAndRender() {
         const res = await fetch(`https://api.github.com/repos/TR4IS/${p.repo}`);
         if (!res.ok) return p;
         const data = await res.json();
-        return {
-          ...p,
-          desc: data.description || p.desc,
-          url: p.url
-        };
-      } catch {
-        return p;
-      }
+        return { ...p, desc: data.description || p.desc };
+      } catch { return p; }
     })
   );
   renderProjects(resolved);
@@ -114,41 +101,34 @@ async function fetchAndRender() {
 
 fetchAndRender();
 
-/* ── Contact button ── */
+/* ── Extraordinary scramble ── */
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*';
-const scrambleBtn = document.getElementById('scramble-btn');
+const EXT_TARGET = 'extraordinary.';
+const extEl = document.getElementById('ext-text');
+let extIv = null;
 
-scrambleBtn.addEventListener('click', () => {
-  window.location.href = 'mailto:ziyad.tr.46@gmail.com';
-});
-
-/* ── Heading hover: scale + seamless rainbow speed-up ── */
-const SLOW_MS = 6000;
-const FAST_MS = 1500;
-const rainbowMs = new WeakMap();
-
-function getRgEls(el) {
-  return el.classList.contains('rg') ? [el] : [...el.querySelectorAll('.rg')];
+function runExtScramble() {
+  let iter = 0;
+  clearInterval(extIv);
+  extIv = setInterval(() => {
+    extEl.textContent = EXT_TARGET.split('').map((ch, i) => {
+      if (ch === '.') return '.';
+      if (i < iter) return EXT_TARGET[i];
+      return CHARS[Math.floor(Math.random() * CHARS.length)];
+    }).join('');
+    if (iter >= EXT_TARGET.length) clearInterval(extIv);
+    iter += 0.35;
+  }, 55);
 }
 
-function switchRainbow(heading, toMs) {
-  getRgEls(heading).forEach(el => {
-    const fromMs = rainbowMs.get(el) ?? SLOW_MS;
-    const delayMs = parseFloat(getComputedStyle(el).animationDelay) * 1000 || 0;
-    const elapsed = performance.now() - delayMs;
-    const progress = (elapsed % fromMs) / fromMs;
-    rainbowMs.set(el, toMs);
-    el.style.animationDuration = toMs + 'ms';
-    el.style.animationDelay    = -(progress * toMs) + 'ms';
+new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) runExtScramble();
+    else { clearInterval(extIv); extEl.textContent = EXT_TARGET; }
   });
-}
+}, { threshold: 0.8 }).observe(extEl);
 
-document.querySelectorAll('.hero-headline, .section-title, .contact-headline').forEach(heading => {
-  heading.addEventListener('mouseenter', () => switchRainbow(heading, FAST_MS));
-  heading.addEventListener('mouseleave', () => switchRainbow(heading, SLOW_MS));
-});
-
-/* ── About text word hover ── */
+/* ── About word hover ── */
 function wrapWordsIn(el) {
   [...el.childNodes].forEach(node => {
     if (node.nodeType === Node.TEXT_NODE) {
@@ -171,36 +151,3 @@ function wrapWordsIn(el) {
   });
 }
 wrapWordsIn(document.querySelector('.about-text'));
-
-/* ── Extraordinary scramble ── */
-const EXT_TARGET = 'extraordinary.';
-const extEl = document.getElementById('ext-text');
-let extIv = null;
-
-function runExtScramble() {
-  let iter = 0;
-  clearInterval(extIv);
-  extIv = setInterval(() => {
-    extEl.textContent = EXT_TARGET
-      .split('')
-      .map((ch, i) => {
-        if (ch === '.') return '.';
-        if (i < iter) return EXT_TARGET[i];
-        return CHARS[Math.floor(Math.random() * CHARS.length)];
-      })
-      .join('');
-    if (iter >= EXT_TARGET.length) clearInterval(extIv);
-    iter += 0.35;
-  }, 55);
-}
-
-new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      runExtScramble();
-    } else {
-      clearInterval(extIv);
-      extEl.textContent = EXT_TARGET;
-    }
-  });
-}, { threshold: 0.8 }).observe(extEl);

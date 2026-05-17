@@ -1,290 +1,206 @@
-/* --- Global Styles & Font (Same as before) --- */
+/* ── Root ── */
 :root {
-    --bg-color: #10121a;
-    --grid-color: rgba(255, 255, 255, 0.05);
-    --text-color: #d1d1d1;
-    --accent-cyan: #00bfff;
-    --accent-green: #a3c9a8;
-    --line-color: #3f4251;
-    --node-color: var(--accent-cyan);
-    --white:white;
-      
-
+  --bg: #060606;
+  --fg: #efefef;
+  --accent: #00ff88;
+  --dim: rgba(239,239,239,.28);
+  --border: rgba(239,239,239,.07);
+  --ease: cubic-bezier(.23,1,.32,1);
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --pad: 64px;
 }
+
+/* ── Reset ── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: 'Fira Code', 'Courier New', monospace;
-    margin: 0; 
-    overflow: hidden; 
-        text-align: left;
-
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+  background-size: 72px 72px;
+  color: var(--fg);
+  font-family: var(--font-mono);
+  overflow: hidden;
+  cursor: none;
 }
 
-/* --- 1. The Scroll Snap Container --- */
+a { color: inherit; text-decoration: none; }
+
+/* ── Cursor ── */
+#cursor {
+  position: fixed; z-index: 9999; pointer-events: none;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent);
+  transform: translate(-50%, -50%);
+  transition: width .25s var(--ease), height .25s var(--ease), opacity .2s;
+  mix-blend-mode: exclusion;
+}
+#cursor.big { width: 40px; height: 40px; opacity: .4; }
+
+/* ── Nav ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 26px var(--pad);
+  display: flex; justify-content: space-between; align-items: center;
+  background: linear-gradient(to bottom, rgba(6,6,6,.95) 60%, transparent);
+}
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: 1.2rem; letter-spacing: 5px;
+  color: var(--fg);
+}
+.nav-brand .accent { color: var(--accent); }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  font-size: .58rem; letter-spacing: 2px;
+  color: var(--dim); transition: color .2s;
+  display: inline-flex; gap: 5px; align-items: baseline;
+}
+.nav-links a:hover { color: var(--fg); }
+.link-num { color: var(--accent); font-size: .5rem; }
+.nav-join {
+  font-size: .6rem; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--bg); background: var(--accent);
+  padding: 8px 16px; font-family: var(--font-mono); font-weight: 700;
+  border: 1.5px solid var(--accent);
+  transition: background .25s, color .25s;
+}
+.nav-join:hover { background: transparent; color: var(--accent); }
+
+/* ── Scroll snap container ── */
 .snap-container {
-   
-    height: 100vh; 
-    overflow-y: scroll;
-    scroll-behavior: smooth;
-    overflow-x: hidden;
-
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
-/* --- 2. The Full-Screen Sections --- */
+/* ── Sections ── */
 section {
-    /* Make each section take up the full screen */
-    height: 100vh;
-    width: 100%; /* vw = viewport width */
-    
-    /* This tells the container where to snap this section */
-    scroll-snap-align: start;
-
-    /* Use Flexbox to center the content vertically and horizontally */
-    display: flex;
-    /*justify-content: center;*/
-    align-items: center;
-
-    /* Add the grid background to each section */
-    background-image:
-        linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
-    background-size: 40px 40px;
-
-    position: relative; /* Needed for the timeline element */
-        
-
+  height: 100vh;
+  width: 100%;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
 }
 
-/* --- 3. The Content within each Section --- */
-.content-wrapper {
-      
-
-    max-width: 800px;
-    padding: 40px;
+/* ── Section tag ── */
+.section-tag {
+  display: flex; align-items: baseline; gap: 3px;
+  margin-bottom: 24px;
+}
+.tag-num { font-size: .52rem; color: var(--accent); letter-spacing: 2px; }
+.tag-slash { font-size: .52rem; color: var(--dim); }
+.tag-name {
+  font-size: .52rem; color: var(--dim);
+  letter-spacing: 3px; text-transform: uppercase;
 }
 
-/* --- 4. Adjusting the Timeline --- */
-
-section::before {
-     
-
-    content: '';
-    position: absolute;
-    left: 40px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background-color: var(--line-color);
+/* ── Section content ── */
+.section-content {
+  padding: 0 var(--pad);
+  max-width: 780px;
+  position: relative; z-index: 2;
 }
 
-.node {
-      
+/* ── Hero headline (#site) ── */
+.hero-link { display: inline-block; }
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 14vw, 15rem);
+  line-height: .85; letter-spacing: 2px;
+  margin-bottom: 28px;
+  transition: letter-spacing .4s var(--ease);
+}
+.hero-link:hover .hero-headline { letter-spacing: 6px; }
+.hl-white { color: var(--fg); }
+.hl-accent { color: var(--accent); }
 
-    position: absolute;
-    left: 32px; /* Adjusted position */
-    top: 50%; /* Center it vertically */
-    transform: translateY(-50%); /* Precise centering */
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    border: 2px solid var(--node-color);
-    background-color: var(--bg-color);
-    z-index: 1;
+/* ── Section headline (#space, #about) ── */
+.section-headline {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 10vw, 10rem);
+  color: var(--accent);
+  letter-spacing: 2px; line-height: .85;
+  margin-bottom: 28px;
+  display: inline-block;
+  transition: letter-spacing .4s var(--ease);
+}
+.hero-link:hover .section-headline { letter-spacing: 8px; }
+
+/* ── Text ── */
+.tagline {
+  font-size: clamp(.85rem, 1.5vw, 1.15rem);
+  color: var(--fg); font-weight: 400;
+  letter-spacing: .5px; margin-bottom: 18px;
+}
+.accent-text { color: var(--accent); }
+
+.body-text {
+  font-size: clamp(.7rem, 1.1vw, .88rem);
+  color: var(--dim); line-height: 1.85; font-weight: 300;
+}
+.inline-link { color: var(--accent); transition: opacity .2s; }
+.inline-link:hover { opacity: .7; }
+.muted-link { color: rgba(239,239,239,.45); }
+.hint {
+  display: inline-block; margin-top: 16px;
+  font-size: .55rem; color: rgba(239,239,239,.2);
+  letter-spacing: 2px;
 }
 
-/* --- Text Styling --- */
-.function-call {
-    color: var(--accent-cyan);
-    font-size: 2.5rem;
-    padding-left: 100px;
-    
+/* ── GIF cluster ── */
+.gif-cluster {
+  position: absolute; right: var(--pad); bottom: 60px;
+  z-index: 1;
+  display: flex; flex-direction: column;
+  gap: 14px; align-items: flex-end;
 }
-.function-call1 {
-    color: var(--accent-cyan);
-    font-size: 2.5rem;
-    
+.gif-a, .gif-b {
+  border-radius: 6px;
+  box-shadow: 0 16px 56px rgba(0,0,0,.8);
+  transition: transform .4s var(--ease), box-shadow .4s;
 }
-.function-call2 {
-    color: var(white);
-    font-size: 2.5rem;
-     padding-left: 100px;
-}
-.subtitle {
-    font-size: 1.2rem;
-    color: #fff;
-    padding-left: 100px;
-    margin-top: -30px; 
-
+.gif-a { width: 340px; }
+.gif-b { width: 270px; }
+.gif-a:hover, .gif-b:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 60px rgba(0,255,136,.08), 0 16px 56px rgba(0,0,0,.8);
 }
 
-.code-line {
-    font-size: 1rem;
-         padding-left: 100px;
-
+/* ══════════════════════════════
+   TABLET  (≤ 1024px)
+══════════════════════════════ */
+@media (max-width: 1024px) {
+  :root { --pad: 36px; }
+  .gif-a { width: 260px; }
+  .gif-b { width: 200px; }
 }
 
-.keyword { color: var(--accent-cyan);     ;
-}
-.variable { color: var(--accent-cyan);    ;
-}
-.link { color: var(--accent-cyan); cursor: pointer;     ;
-}
-.unstyled-link {
-  color: inherit; /* Makes the link color the same as the surrounding text */
-  text-decoration: none; /* Removes the underline */
-}
-
-.floating-image, .floating-image2, .floating-image3, .floating-image4 {
-    position: absolute;
-    width: 200px;
-    opacity: 0; /* start invisible */
-    transition: transform 1s ease-out, opacity 1s ease-out;
-}
-
-/* Final positions of images */
-.floating-image { top: 1400px; left: 1200px; }
-.floating-image2 { top: 400px; left: 300px; }
-.floating-image3 { top: 500px; left: 600px; }
-.floating-image4 { top: 600px; left: 900px; }
-
-/* Start positions (off-screen) */
-.start {
-    transform: translate(-500px, -300px); /* start far from final spot */
-}
-.fixed-gif {
-    position: absolute; /* This is the key property! */
-    bottom: 400px;    /* 20px from the bottom */
-    right: 350px;     /* 20px from the right */
-    width: 500px;      /* Set a size for your GIF */
-    z-index: 1000;   /* A high z-index keeps it on top of other content */
-    border-radius: 10px; /* Optional: adds rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
-    transition: transform 0.4s
-  }
-.fixed-gif:hover {
-
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
-    transform: scale(1.05); box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
-    transition: all 0.3s ease;
-  }
-.fixed-gif1  {
-    position: absolute; /* This is the key property! */
-    bottom: 250px;    /* 20px from the bottom */
-    right: 150px;     /* 20px from the right */
-    width: 500px;      /* Set a size for your GIF */
-    z-index: 1000;   /* A high z-index keeps it on top of other content */
-    border-radius: 10px; /* Optional: adds rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
-    transition: transform 0.4s
-  }
-.fixed-gif1:hover {
-
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
-    transform: scale(1.05); box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
-    transition: all 0.3s ease;
-
-  }
-
-/* =================================== */
-/* == Mobile-Specific Styles        == */
-/* =================================== */
-
-/* This block of code only applies to screens 768px wide or smaller */
+/* ══════════════════════════════
+   MOBILE  (≤ 768px)
+══════════════════════════════ */
 @media (max-width: 768px) {
+  :root { --pad: 24px; }
+  body { cursor: auto; }
+  #cursor { display: none; }
 
-  /* 1. Hide the desktop timeline elements for a cleaner look */
-  .node,
-  section::before {
-    display: none;
-  }
+  nav { padding: 18px var(--pad); }
+  .nav-links { display: none; }
 
-  /* 2. Center the main content container */
-  .content-wrapper {
-    display: flex;        /* Use flexbox for robust centering */
-    flex-direction: column; /* Stack content vertically */
-    align-items: center;    /* Center items horizontally */
-    text-align: center;   /* Ensure text inside elements is centered */
-    padding: 0 1.5rem;    /* Add some space on the sides */
-    justify-content: center; /* Center content vertically within the section */
-  }
+  .hero-headline { font-size: clamp(4rem, 20vw, 8rem); }
+  .section-headline { font-size: clamp(3rem, 18vw, 7rem); }
 
-  /* 3. Reset desktop padding so the text can be properly centered */
-  
-  .function-call2,
-  .subtitle,
-  .code-line {
-    padding-left: 0;
-    text-shadow: 0 0px 30px rgba(255, 255, 255, 1);
+  .gif-cluster {
+    opacity: .18; right: 0; bottom: 0;
+    pointer-events: none;
   }
-  .function-call {
-    padding-left: 0;
-    text-shadow: 0 0px 30px #00bfff;
-  }
-  .keyword{
-    text-shadow: 0 0px 30px #00bfff;
-
-  }
-   .variable{
-    text-shadow: 0 0px 30px #00bfff;
-
-  }
-  .function-call1{
-    text-shadow: 0 0px 30px #00bfff;
-  }
-  .link{
-    text-shadow: 0 0px 30px #00bfff;
-  }
-  
-  /* 4. Adjust text sizes for better readability on small screens */
-  .function-call2, .function-call1 {
-    font-size: 2rem; /* Slightly smaller main title */
-  }
-  .function-call {
-    font-size: 1.8rem; /* Smaller section titles */
-  }
-  .subtitle {
-    font-size: 1.1rem;
-    margin-top: 0; /* Remove negative margin on mobile */
-  }
-  .code-line {
-    font-size: 1rem;
-    line-height: 1.6;
-
-
-  }
-
-  /* 5. Reposition and style the GIFs for a mobile layout */
-  .fixed-gif{
-    position: absolute; /* Change from 'absolute' to put them in the normal flow */
-    opacity: 0.9;
-    /* Reset the desktop position values */
-    top: 42%;
-    right: -10%;
-    
-    /* Size and spacing */
-    width: 85%;         /* Make them responsive to screen width */
-    max-width: 350px;   /* Prevent them from getting too big on tablets */
-    margin-top: 2rem;   /* Add space between the text and the first GIF */
-    z-index: -1;      /* Reset z-index */
-
-  }
-  .fixed-gif1 {
-    position: absolute; /* Change from 'absolute' to put them in the normal flow */
-    
-    /* Reset the desktop position values */
-    top: 30%;
-    right: 100px;
-    
-    /* Size and spacing */
-    width: 85%;         /* Make them responsive to screen width */
-    max-width: 350px;   /* Prevent them from getting too big on tablets */
-    margin-top: 2rem;   /* Add space between the text and the first GIF */
-    z-index: -1;      /* Reset z-index */
-  }
-  
-  .fixed-gif1 {
-    margin-top: 1.5rem; /* Add a bit of space between the two GIFs */
-  }
+  .gif-a { width: 180px; }
+  .gif-b { width: 140px; }
 }

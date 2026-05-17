@@ -1,72 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="icon" href="images/iconweb.png">
-
-    <title>reachflow.site()</title>
-    
-    <link rel="preload" href="assets/css/styles.css" as="style" />
-    <link rel="stylesheet" href="assets/css/styles.css" />
-    
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="icon" href="images/iconweb.png">
+  <title>reachflow.site()</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
 
-    <main class="snap-container">
+  <div id="cursor" aria-hidden="true"></div>
 
-        <section id="site">
-            <div class="content-wrapper">
-                <div class="node"></div>
-                  <a href="https://reachflow.site" class="unstyled-link">
-                    <h1 class="function-call2">reachflow<span class="function-call1">.site()
-                    </span>
-                  </h1>
+  <nav>
+    <a href="#site" class="nav-brand">REACH<span class="accent">_</span>FLOW</a>
+    <ul class="nav-links">
+      <li><a href="#site"><span class="link-num">01/</span>.site()</a></li>
+      <li><a href="#space"><span class="link-num">02/</span>.space()</a></li>
+      <li><a href="#about"><span class="link-num">03/</span>.about()</a></li>
+    </ul>
+    <a href="#" class="nav-join" id="join-btn">.join()</a>
+  </nav>
 
-                </a>
-                <img src="images/gif1.gif" alt="Cool Fixed GIF" class="fixed-gif">
-                <img src="images/gif2.gif" alt="Cool Fixed GIF" class="fixed-gif1">
+  <main class="snap-container">
 
-                <p class="subtitle">Developers <span class="keyword">Hangout.</span></p>
-                <p class="code-line">
-                    <span class="keyword">private</span> network of handpicked <span class="variable">developers</span>, <br>
-                    each with their own <a href="https://reachflow.site/spaces" class="unstyled-link"> <span class="link">.space()</span></a>, <span class="link">.projects()</span>, and <span class="link">.ideas()</span>.
-                </p>
-            </div>
-        </section>
+    <section id="site">
+      <div class="section-content">
+        <div class="section-tag">
+          <span class="tag-num">01</span><span class="tag-slash">/</span><span class="tag-name">site</span>
+        </div>
+        <a href="https://reachflow.site" class="hero-link">
+          <h1 class="hero-headline">
+            <span class="hl-white">Reach</span><span class="hl-accent">flow.</span>
+          </h1>
+        </a>
+        <p class="tagline">Developers <span class="accent-text">Hangout.</span></p>
+        <p class="body-text">
+          A <span class="accent-text">private</span> network of handpicked developers,<br>
+          each with their own <a href="https://reachflow.site/spaces" class="inline-link">.space()</a>,
+          <span class="muted-link">.projects()</span>, and <span class="muted-link">.ideas()</span>.
+        </p>
+      </div>
+    </section>
 
-        <section id="space">
-            <div class="content-wrapper">
-                <div class="node"></div>
-                <a href="https://reachflow.site/spaces" class="unstyled-link">
+    <section id="space">
+      <div class="section-content">
+        <div class="section-tag">
+          <span class="tag-num">02</span><span class="tag-slash">/</span><span class="tag-name">space</span>
+        </div>
+        <a href="https://reachflow.site/spaces" class="hero-link">
+          <h2 class="section-headline">.space()</h2>
+        </a>
+        <p class="tagline">Space from the <span class="accent-text">internet</span> for you.</p>
+        <p class="body-text">
+          Room to <span class="accent-text">express</span> anything you're interested in —
+          <a href="https://reachflow.site/spaces" class="inline-link">.ideas()</a>,
+          <span class="muted-link">.projects()</span>, and topics.<br>
+          <span class="hint">↑ Click .space() above to explore</span>
+        </p>
+      </div>
+    </section>
 
-                <h2 class="function-call">.space()</h2>
-              </a>
-                <p class="subtitle">Space from the <span class="variable">internet</span> for you.</p>
-                <p class="code-line">
-                    Space for you to <span class="keyword">express</span> anything you interested in, <span class="link">.ideas()</span>, <span class="link">.projects()</span> and topics.
-                    <br></br>
-                        <br>Hint: Click .space() above</br>
-                    
-                </p>
-            </div>
-        </section>
+    <section id="about">
+      <div class="section-content">
+        <div class="section-tag">
+          <span class="tag-num">03</span><span class="tag-slash">/</span><span class="tag-name">about</span>
+        </div>
+        <h2 class="section-headline">.about()</h2>
+        <p class="tagline">You should be <span class="accent-text">seen.</span></p>
+        <p class="body-text">
+          Reachflow was built to bring <span class="accent-text">developers</span> and their creativity<br>into the spotlight.
+          Every developer deserves a <a href="https://reachflow.site/spaces" class="inline-link">.space()</a> to share
+          their work, ideas, and passion — not just a <span class="muted-link">resume</span>.
+        </p>
+      </div>
+    </section>
 
-        <section id="about">
-            <div class="content-wrapper">
-                <div class="node"></div>
-                <h2 class="function-call">.about()</h2>
-                <p class="subtitle">You should be <span class="keyword">seen.</span></p>
-                <p class="code-line">
-                    Reachflow was built to bring <span class="variable">developers</span> and their <span class="variable">creativity</span> into the spotlight.
-                    We believe every developer deserves a <span class="link">.space()</span> to share their work, <span class="variable">.ideas()</span>, and passion with the world - not just a <span class="variable">resume</span>.
-                </p>
-            </div>
-        </section>
+  </main>
 
-    </main>
-<script src="assets/js/app.js"></script>
+  <script src="assets/js/app.js"></script>
 </body>
 </html>
