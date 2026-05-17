@@ -114,37 +114,12 @@ async function fetchAndRender() {
 
 fetchAndRender();
 
-/* ── Text scramble ── */
+/* ── Contact button ── */
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*';
-const SCRAMBLE_TARGET = 'Initiate Contact';
-const scrambleEl  = document.getElementById('scramble-text');
 const scrambleBtn = document.getElementById('scramble-btn');
-let scrambleIv = null;
 
 scrambleBtn.addEventListener('click', () => {
   window.location.href = 'mailto:ziyad.tr.46@gmail.com';
-});
-
-scrambleBtn.addEventListener('mouseenter', () => {
-  let iter = 0;
-  clearInterval(scrambleIv);
-  scrambleIv = setInterval(() => {
-    scrambleEl.textContent = SCRAMBLE_TARGET
-      .split('')
-      .map((ch, i) => {
-        if (ch === ' ') return ' ';
-        if (i < iter) return SCRAMBLE_TARGET[i];
-        return CHARS[Math.floor(Math.random() * CHARS.length)];
-      })
-      .join('');
-    if (iter >= SCRAMBLE_TARGET.length) clearInterval(scrambleIv);
-    iter += 0.6;
-  }, 35);
-});
-
-scrambleBtn.addEventListener('mouseleave', () => {
-  clearInterval(scrambleIv);
-  scrambleEl.textContent = SCRAMBLE_TARGET;
 });
 
 /* ── Heading hover: scale + seamless rainbow speed-up ── */
@@ -190,7 +165,7 @@ function wrapWordsIn(el) {
         }
       });
       node.replaceWith(frag);
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
+    } else if (node.nodeType === Node.ELEMENT_NODE && !node.classList.contains('cracker-name')) {
       wrapWordsIn(node);
     }
   });
