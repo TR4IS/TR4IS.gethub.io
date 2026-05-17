@@ -1,97 +1,707 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sold1er76 &#8212; reachflow</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOLDIER76</title>
   <style>
-    :root{--bg:#060606;--fg:#efefef;--accent:#00ff88;--dim:rgba(239,239,239,.28);--border:rgba(239,239,239,.07);--ease:cubic-bezier(.23,1,.32,1);--pad:64px}
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{background-color:var(--bg);background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:72px 72px;color:var(--fg);font-family:'JetBrains Mono',monospace;overflow-x:hidden;cursor:none}
-    a{color:inherit;text-decoration:none}
-    #cursor{position:fixed;z-index:9999;pointer-events:none;width:8px;height:8px;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%);transition:width .25s var(--ease),height .25s var(--ease);mix-blend-mode:exclusion}
-    #cursor.big{width:36px;height:36px;opacity:.4}
-    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:26px var(--pad);display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(6,6,6,.95) 60%,transparent)}
-    .nav-brand{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:5px;color:var(--fg)}
-    .nav-brand span{color:var(--accent)}
-    .nav-back{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim);transition:color .2s}
-    .nav-back:hover{color:var(--fg)}
-    .edit-btn{position:fixed;bottom:32px;right:32px;z-index:200;font-size:.55rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:var(--bg);background:var(--accent);padding:10px 18px;border:1.5px solid var(--accent);text-decoration:none;transition:background .25s,color .25s}
-    .edit-btn:hover{background:transparent;color:var(--accent)}
-    .hero{height:100vh;min-height:600px;display:flex;align-items:flex-end;padding:0 var(--pad) 72px;position:relative;overflow:hidden}
-    .hero-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:clamp(14rem,40vw,42rem);color:rgba(255,255,255,.012);letter-spacing:-20px;user-select:none;pointer-events:none;line-height:1}
-    .hero-inner{position:relative;z-index:2;display:flex;align-items:flex-end;gap:40px}
-    .hero-avatar{width:80px;height:80px;border-radius:50%;border:2px solid var(--border);margin-bottom:8px;flex-shrink:0}
-    .hero-label{font-size:.6rem;letter-spacing:1.5px;color:var(--accent);margin-bottom:16px;opacity:.8}
-    .hero-headline{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,12vw,13rem);line-height:.85;letter-spacing:2px;color:var(--fg)}
-    section:not(.hero){border-top:1px solid var(--border)}
-    .sc-wrap{max-width:1100px;margin:0 auto;padding:88px var(--pad);display:grid;grid-template-columns:140px 1fr;gap:56px}
-    .sc-label{display:flex;flex-direction:column;gap:6px;padding-top:4px}
-    .sc-num{font-size:.52rem;color:var(--accent);letter-spacing:2px}
-    .sc-name{font-size:.55rem;color:var(--dim);letter-spacing:4px;text-transform:uppercase}
-    .about-text{font-size:clamp(1rem,1.8vw,1.5rem);font-weight:300;line-height:1.7;color:rgba(239,239,239,.5)}
-    .contact-btn{display:inline-flex;align-items:center;gap:12px;font-size:.65rem;letter-spacing:4px;text-transform:uppercase;font-weight:700;color:var(--bg);background:var(--accent);padding:14px 28px;border:1.5px solid var(--accent);transition:background .3s,color .3s}
-    .contact-btn:hover{background:transparent;color:var(--accent)}
-    .scroll-cue{position:absolute;bottom:40px;right:var(--pad);display:flex;flex-direction:column;align-items:center;gap:10px}
-    .sc-line{width:1px;height:48px;background:linear-gradient(to bottom,transparent,var(--dim));display:block}
-    .sc-text{font-size:.5rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);writing-mode:vertical-rl}
-    @media(max-width:768px){:root{--pad:24px}body{cursor:auto}#cursor{display:none}nav{padding:18px var(--pad)}.sc-wrap{grid-template-columns:1fr;gap:20px;padding:56px var(--pad)}.sc-label{flex-direction:row;align-items:center;gap:10px}}
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&display=swap');
+
+    :root {
+      --bg: #0a0a0f;
+      --panel: #12121c;
+      --blue: #1a78c2;
+      --cyan: #00e5ff;
+      --red: #ff2244;
+      --yellow: #ffe600;
+      --white: #e8eaf6;
+      --dim: #4a5568;
+      --pixel: 4px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Press Start 2P', monospace;
+      overflow-x: hidden;
+      image-rendering: pixelated;
+    }
+
+    /* CRT scanline overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(0,0,0,0.18) 3px,
+        rgba(0,0,0,0.18) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── PIXEL ART HELPERS ─────────────────── */
+    .px-border {
+      box-shadow:
+        0 -4px 0 0 var(--cyan),
+        0  4px 0 0 var(--cyan),
+        -4px 0 0 0 var(--cyan),
+         4px 0 0 0 var(--cyan);
+    }
+    .px-border-red {
+      box-shadow:
+        0 -4px 0 0 var(--red),
+        0  4px 0 0 var(--red),
+        -4px 0 0 0 var(--red),
+         4px 0 0 0 var(--red);
+    }
+
+    /* ── BLINK ─────────────────────────────── */
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    @keyframes scanUp {
+      0%   { background-position: 0 0; }
+      100% { background-position: 0 -200px; }
+    }
+    @keyframes glitch {
+      0%,100% { clip-path: inset(0 0 100% 0); transform: translate(0); }
+      10% { clip-path: inset(15% 0 60% 0); transform: translate(-4px, 1px); }
+      20% { clip-path: inset(60% 0 10% 0); transform: translate(4px,-1px); }
+      30% { clip-path: inset(40% 0 30% 0); transform: translate(-2px, 2px); }
+      40% { clip-path: inset(5%  0 80% 0); transform: translate(2px, -2px); }
+      50% { clip-path: inset(80% 0 5%  0); transform: translate(0); }
+      60% { clip-path: inset(0   0 0   0); transform: translate(0); }
+    }
+    @keyframes flicker {
+      0%,95%,100% { opacity: 1; }
+      96% { opacity: 0.6; }
+      97% { opacity: 1; }
+      98% { opacity: 0.4; }
+    }
+    @keyframes march {
+      from { background-position: 0 0; }
+      to   { background-position: 32px 0; }
+    }
+    @keyframes pulse {
+      0%,100% { text-shadow: 0 0 8px var(--cyan), 0 0 20px var(--cyan); }
+      50%     { text-shadow: 0 0 2px var(--cyan); }
+    }
+    @keyframes slideIn {
+      from { transform: translateY(30px); opacity:0; }
+      to   { transform: translateY(0);    opacity:1; }
+    }
+    @keyframes barFill { from { width: 0%; } to { width: var(--w); } }
+    @keyframes float {
+      0%,100% { transform: translateY(0px); }
+      50%     { transform: translateY(-8px); }
+    }
+    @keyframes hpBeat {
+      0%,100% { transform: scale(1); }
+      50%     { transform: scale(1.04); }
+    }
+
+    /* ── NAV ───────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--panel);
+      border-bottom: 4px solid var(--cyan);
+      padding: 12px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      animation: flicker 8s infinite;
+    }
+    .nav-logo {
+      font-size: 10px; color: var(--cyan);
+      letter-spacing: 2px;
+      animation: pulse 3s infinite;
+    }
+    .nav-links { display: flex; gap: 24px; list-style: none; }
+    .nav-links a {
+      color: var(--dim); font-size: 7px; text-decoration: none;
+      letter-spacing: 1px; transition: color .15s;
+    }
+    .nav-links a:hover { color: var(--yellow); }
+    .nav-status {
+      font-size: 7px; color: var(--red);
+      animation: blink 1s step-start infinite;
+    }
+
+    /* ── HERO ──────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 100px 20px 60px;
+      position: relative; overflow: hidden;
+      background:
+        radial-gradient(ellipse 60% 40% at 50% 60%, rgba(26,120,194,.18) 0%, transparent 70%),
+        var(--bg);
+    }
+
+    /* Pixel grid bg */
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+      animation: scanUp 12s linear infinite;
+      pointer-events: none;
+    }
+
+    /* ── SPRITE – pixel art soldier ───────── */
+    .sprite-wrap {
+      position: relative; margin-bottom: 32px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* 48×64 pixel-art figure drawn with box-shadow */
+    .sprite {
+      width: 8px; height: 8px;
+      position: relative; z-index: 1;
+      /* Each "pixel" = 8px box-shadow unit */
+      image-rendering: pixelated;
+    }
+
+    /* We use a canvas-like div grid for the soldier sprite */
+    .pixel-canvas {
+      display: grid;
+      grid-template-columns: repeat(12, 8px);
+      grid-template-rows: repeat(16, 8px);
+      gap: 0;
+      image-rendering: pixelated;
+    }
+    .p { width:8px; height:8px; }
+    .c-h { background: #e8c18a; } /* skin */
+    .c-b { background: #1a3a6b; } /* blue armor */
+    .c-B { background: #0d2448; } /* dark armor */
+    .c-r { background: #b01020; } /* red visor */
+    .c-R { background: #ff2244; } /* red accent */
+    .c-g { background: #607080; } /* gun grey */
+    .c-G { background: #344050; } /* dark gun */
+    .c-w { background: #c8d0e0; } /* white stripe */
+    .c-y { background: #ffe600; } /* yellow */
+    .c-_ { background: transparent; }
+
+    .badge {
+      position: absolute; bottom: -8px; right: -16px;
+      background: var(--red);
+      color: #fff; font-size: 6px; padding: 4px 6px;
+      animation: blink 1.5s step-start infinite;
+    }
+
+    /* ── TITLE ─────────────────────────────── */
+    .hero-title {
+      font-size: clamp(24px, 5vw, 48px);
+      color: var(--white);
+      letter-spacing: 6px;
+      text-align: center;
+      line-height: 1.4;
+      position: relative; z-index: 1;
+      animation: slideIn .6s ease both;
+    }
+    .hero-title span { color: var(--cyan); }
+
+    /* Glitch duplicate */
+    .hero-title::before {
+      content: attr(data-text);
+      position: absolute; inset: 0;
+      color: var(--red); opacity: .7;
+      animation: glitch 6s infinite;
+      pointer-events: none;
+    }
+
+    .hero-sub {
+      font-family: 'VT323', monospace;
+      font-size: 22px; color: var(--dim);
+      margin-top: 12px; letter-spacing: 3px;
+      animation: slideIn .9s ease both;
+      position: relative; z-index: 1;
+    }
+
+    .hero-cta {
+      margin-top: 40px; display: flex; gap: 16px; flex-wrap: wrap;
+      justify-content: center; position: relative; z-index: 1;
+    }
+
+    /* ── BUTTONS ───────────────────────────── */
+    .btn {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px; padding: 12px 20px;
+      border: none; cursor: pointer;
+      text-transform: uppercase; letter-spacing: 1px;
+      position: relative; transition: transform .1s;
+      image-rendering: pixelated;
+    }
+    .btn:active { transform: translate(2px,2px); }
+
+    .btn-primary {
+      background: var(--cyan); color: #000;
+      box-shadow: 4px 4px 0 0 #007090, inset 0 0 0 2px rgba(255,255,255,.3);
+    }
+    .btn-primary:hover { background: #00ffff; }
+
+    .btn-secondary {
+      background: transparent; color: var(--cyan);
+      box-shadow:
+        inset 0 0 0 4px var(--cyan),
+        4px 4px 0 0 #003348;
+    }
+    .btn-secondary:hover { background: rgba(0,229,255,.1); }
+
+    /* ── DASHED MARCHING BORDER ────────────── */
+    .march-border {
+      border: 4px dashed var(--cyan);
+      padding: 24px;
+      background: rgba(0,229,255,.04);
+      animation: march .6s linear infinite;
+      background-image: none;
+    }
+
+    /* ── SECTION WRAPPER ───────────────────── */
+    section {
+      max-width: 960px; margin: 0 auto;
+      padding: 60px 20px;
+    }
+    .section-title {
+      font-size: 12px; color: var(--cyan);
+      margin-bottom: 32px; letter-spacing: 3px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-title::before,
+    .section-title::after {
+      content: ''; flex: 1; height: 4px;
+      background: repeating-linear-gradient(
+        90deg, var(--cyan) 0, var(--cyan) 8px, transparent 8px, transparent 16px
+      );
+    }
+
+    /* ── STATS BAR ─────────────────────────── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+    .stat-card {
+      background: var(--panel);
+      border-left: 4px solid var(--cyan);
+      padding: 20px;
+      animation: slideIn .5s ease both;
+    }
+    .stat-card:nth-child(2) { border-color: var(--yellow); animation-delay:.1s; }
+    .stat-card:nth-child(3) { border-color: var(--red);    animation-delay:.2s; }
+    .stat-card:nth-child(4) { border-color: #a040ff;       animation-delay:.3s; }
+
+    .stat-label { font-size: 7px; color: var(--dim); margin-bottom: 12px; }
+    .stat-bar-wrap {
+      background: #1e1e2a; height: 12px;
+      position: relative; overflow: hidden;
+    }
+    .stat-bar {
+      height: 100%;
+      width: var(--w);
+      animation: barFill 1.2s ease-out both;
+      image-rendering: pixelated;
+    }
+    .stat-card:nth-child(1) .stat-bar { background: var(--cyan); --w: 92%; }
+    .stat-card:nth-child(2) .stat-bar { background: var(--yellow); --w: 78%; }
+    .stat-card:nth-child(3) .stat-bar { background: var(--red); --w: 88%; }
+    .stat-card:nth-child(4) .stat-bar { background: #a040ff; --w: 65%; }
+
+    .stat-value {
+      font-size: 20px; font-family: 'VT323', monospace;
+      color: var(--white); margin-top: 8px;
+    }
+
+    /* ── HP BAR ────────────────────────────── */
+    .hp-section {
+      background: var(--panel);
+      padding: 32px; margin: 20px 0;
+      border-top: 4px solid var(--red);
+      border-bottom: 4px solid var(--red);
+    }
+    .hp-header {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 16px;
+    }
+    .hp-label { font-size: 9px; color: var(--red); }
+    .hp-value {
+      font-family: 'VT323', monospace; font-size: 28px; color: var(--red);
+      animation: hpBeat 1s ease-in-out infinite;
+    }
+    .hp-bar-wrap {
+      height: 20px; background: #1e1e2a;
+      position: relative; overflow: hidden;
+    }
+    .hp-bar {
+      height: 100%; width: 72%;
+      background: repeating-linear-gradient(
+        90deg, var(--red) 0, var(--red) 12px, #9a0010 12px, #9a0010 16px
+      );
+      animation: barFill 1.8s ease-out both;
+      --w: 72%;
+    }
+    .hp-bar::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(255,255,255,.15) 0%, transparent 60%);
+    }
+
+    /* ── ABILITY CARDS ─────────────────────── */
+    .abilities {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .ability-card {
+      background: var(--panel);
+      padding: 20px; text-align: center;
+      border: 4px solid transparent;
+      transition: border-color .2s, transform .15s;
+      cursor: default;
+      position: relative; overflow: hidden;
+    }
+    .ability-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(0,229,255,.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .ability-card:hover {
+      border-color: var(--cyan);
+      transform: translateY(-4px);
+    }
+    .ability-icon {
+      font-family: 'VT323', monospace;
+      font-size: 40px; display: block;
+      margin-bottom: 12px;
+    }
+    .ability-name {
+      font-size: 7px; color: var(--yellow);
+      margin-bottom: 8px; letter-spacing: 1px;
+    }
+    .ability-desc {
+      font-family: 'VT323', monospace;
+      font-size: 16px; color: var(--dim); line-height: 1.4;
+    }
+    .ability-key {
+      position: absolute; top: 8px; right: 8px;
+      background: var(--cyan); color: #000;
+      font-size: 7px; padding: 3px 5px;
+    }
+    .cd-bar {
+      height: 4px; background: #1e1e2a; margin-top: 12px;
+    }
+    .cd-fill {
+      height: 4px; background: var(--cyan);
+    }
+
+    /* ── MISSION LOG ───────────────────────── */
+    .mission-log {
+      background: #080810;
+      border: 4px solid var(--dim);
+      padding: 24px;
+      font-family: 'VT323', monospace;
+      font-size: 18px;
+    }
+    .log-header {
+      color: var(--cyan); font-family: 'Press Start 2P', monospace;
+      font-size: 8px; margin-bottom: 16px;
+      border-bottom: 2px solid var(--dim); padding-bottom: 8px;
+    }
+    .log-line {
+      color: var(--dim); line-height: 2;
+      display: flex; gap: 12px;
+    }
+    .log-line .ts { color: #334; min-width: 80px; }
+    .log-line.ok  .msg { color: #40ff80; }
+    .log-line.err .msg { color: var(--red); }
+    .log-line.warn .msg { color: var(--yellow); }
+    .log-line.info .msg { color: var(--cyan); }
+    .cursor-blink {
+      display: inline-block;
+      width: 10px; height: 18px;
+      background: var(--cyan);
+      animation: blink .8s step-start infinite;
+      vertical-align: bottom;
+    }
+
+    /* ── GALLERY STRIP ─────────────────────── */
+    .gallery {
+      display: flex; gap: 12px; overflow-x: auto;
+      padding-bottom: 12px;
+    }
+    .gallery::-webkit-scrollbar { height: 6px; }
+    .gallery::-webkit-scrollbar-track { background: var(--panel); }
+    .gallery::-webkit-scrollbar-thumb { background: var(--cyan); }
+
+    .gallery-card {
+      min-width: 160px; height: 120px;
+      background: var(--panel);
+      border: 4px solid var(--dim);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      font-family: 'VT323', monospace;
+      font-size: 14px; color: var(--dim);
+      flex-shrink: 0; cursor: pointer;
+      transition: border-color .2s;
+      position: relative;
+    }
+    .gallery-card:hover { border-color: var(--cyan); }
+    .gallery-card .thumb {
+      font-size: 36px; margin-bottom: 4px;
+    }
+    .gallery-card .kills-badge {
+      position: absolute; top:4px; right:4px;
+      background: var(--red); color:#fff;
+      font-size: 12px; padding: 2px 5px;
+    }
+
+    /* ── FOOTER ────────────────────────────── */
+    footer {
+      background: var(--panel);
+      border-top: 4px solid var(--cyan);
+      text-align: center; padding: 32px 20px;
+    }
+    .footer-logo {
+      font-size: 9px; color: var(--cyan); margin-bottom: 12px;
+      animation: pulse 3s infinite;
+    }
+    .footer-sub {
+      font-family: 'VT323', monospace;
+      font-size: 18px; color: var(--dim);
+    }
+    .pixel-divider {
+      height: 8px; margin: 8px 0;
+      background: repeating-linear-gradient(
+        90deg, var(--cyan) 0, var(--cyan) 8px,
+        transparent 8px, transparent 16px
+      );
+      opacity: .3;
+    }
+
+    /* ── RESPONSIVE ────────────────────────── */
+    @media (max-width: 480px) {
+      .hero-title { font-size: 18px; }
+      .nav-links { display: none; }
+    }
   </style>
 </head>
 <body>
-  <div id="cursor" aria-hidden="true"></div>
-  <nav>
-    <a href="/" class="nav-brand">REACH<span>_</span>FLOW</a>
-    <a href="/spaces" class="nav-back">← spaces</a>
-  </nav>
-  <section class="hero">
-    <div class="hero-bg" aria-hidden="true">SO</div>
-    <div class="hero-inner">
-      <img src="https://avatars.githubusercontent.com/u/285501692?v=4" alt="Sold1er76" class="hero-avatar">
-      <div>
-        <p class="hero-label">// Sold1er76 · reachflow member</p>
-        <h1 class="hero-headline">Sold1er76</h1>
-      </div>
+
+<!-- ── NAV ─────────────────────────────────────── -->
+<nav>
+  <div class="nav-logo">▶ S76</div>
+  <ul class="nav-links">
+    <li><a href="#stats">STATS</a></li>
+    <li><a href="#abilities">ABILITIES</a></li>
+    <li><a href="#log">LOG</a></li>
+    <li><a href="#gallery">GALLERY</a></li>
+  </ul>
+  <div class="nav-status">● ONLINE</div>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────── -->
+<div class="hero">
+
+  <!-- Pixel-art soldier sprite -->
+  <div class="sprite-wrap">
+    <div class="pixel-canvas">
+      <!-- Row 1-3: helmet -->
+      <div class="p c-_"></div><div class="p c-_"></div><div class="p c-_"></div><div class="p c-B"></div><div class="p c-B"></div><div class="p c-B"></div><div class="p c-B"></div><div class="p c-B"></div><div class="p c-B"></div><div class="p c-_"></div><div class="p c-_"></div><div class="p c-_"></div>
+      <div class="p c-_"></div><div class="p c-_"></div><div class="p c-b"></div><div class="p c-B"></div><div class="p c-r"></div><div class="p c-r"></div><div class="p c-r"></div><div class="p c-r"></div><div class="p c-B"></div><div class="p c-b"></div><div class="p c-_"></div><div class="p c-_"></div>
+      <div class="p c-_"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-w"></div><div class="p c-r"></div><div class="p c-R"></div><div class="p c-R"></div><div class="p c-r"></div><div class="p c-w"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-_"></div>
+      <!-- Row 4-5: face -->
+      <div class="p c-_"></div><div class="p c-b"></div><div class="p c-h"></div><div class="p c-h"></div><div class="p c-h"></div><div class="p c-h"></div><div class="p c-h"></div><div class="p c-h"></div><div class="p c-h"></div><div class="p c-h"></div><div class="p c-b"></div><div class="p c-_"></div>
+      <div class="p c-_"></div><div class="p c-b"></div><div class="p c-h"></div><div class="p c-B"></div><div class="p c-h"></div><div class="p c-h"></div><div class="p c-h"></div><div class="p c-h"></div><div class="p c-B"></div><div class="p c-h"></div><div class="p c-b"></div><div class="p c-_"></div>
+      <!-- Row 6: neck -->
+      <div class="p c-_"></div><div class="p c-_"></div><div class="p c-b"></div><div class="p c-h"></div><div class="p c-h"></div><div class="p c-h"></div><div class="p c-h"></div><div class="p c-h"></div><div class="p c-h"></div><div class="p c-b"></div><div class="p c-_"></div><div class="p c-_"></div>
+      <!-- Row 7-9: torso -->
+      <div class="p c-_"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-w"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-w"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-_"></div>
+      <div class="p c-g"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-R"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-R"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-g"></div>
+      <div class="p c-G"></div><div class="p c-g"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-g"></div><div class="p c-G"></div>
+      <!-- Row 10-11: gun row -->
+      <div class="p c-G"></div><div class="p c-G"></div><div class="p c-g"></div><div class="p c-g"></div><div class="p c-g"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-_"></div>
+      <div class="p c-G"></div><div class="p c-y"></div><div class="p c-G"></div><div class="p c-g"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-_"></div><div class="p c-_"></div>
+      <!-- Row 12-13: legs upper -->
+      <div class="p c-_"></div><div class="p c-_"></div><div class="p c-B"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-B"></div><div class="p c-B"></div><div class="p c-b"></div><div class="p c-b"></div><div class="p c-B"></div><div class="p c-_"></div><div class="p c-_"></div>
+      <div class="p c-_"></div><div class="p c-_"></div><div class="p c-B"></div><div class="p c-b"></div><div class="p c-B"></div><div class="p c-_"></div><div class="p c-_"></div><div class="p c-B"></div><div class="p c-b"></div><div class="p c-B"></div><div class="p c-_"></div><div class="p c-_"></div>
+      <!-- Row 14-15: boots -->
+      <div class="p c-_"></div><div class="p c-_"></div><div class="p c-B"></div><div class="p c-B"></div><div class="p c-B"></div><div class="p c-_"></div><div class="p c-_"></div><div class="p c-B"></div><div class="p c-B"></div><div class="p c-B"></div><div class="p c-_"></div><div class="p c-_"></div>
+      <div class="p c-_"></div><div class="p c-b"></div><div class="p c-B"></div><div class="p c-B"></div><div class="p c-_"></div><div class="p c-_"></div><div class="p c-_"></div><div class="p c-_"></div><div class="p c-B"></div><div class="p c-B"></div><div class="p c-b"></div><div class="p c-_"></div>
+      <!-- Row 16: shadow -->
+      <div class="p c-_"></div><div class="p c-B"></div><div class="p c-B"></div><div class="p c-_"></div><div class="p c-_"></div><div class="p c-_"></div><div class="p c-_"></div><div class="p c-_"></div><div class="p c-_"></div><div class="p c-B"></div><div class="p c-B"></div><div class="p c-_"></div>
     </div>
-    <div class="scroll-cue" aria-hidden="true">
-      <span class="sc-line"></span>
-      <span class="sc-text">scroll</span>
+    <div class="badge">P1</div>
+  </div>
+
+  <h1 class="hero-title" data-text="SOLDIER: 76">
+    SOLDIER<span>:</span> 76
+  </h1>
+  <p class="hero-sub">[ STRIKE COMMANDER — CLASSIFIED ]</p>
+
+  <div class="hero-cta">
+    <button class="btn btn-primary">▶ DEPLOY NOW</button>
+    <button class="btn btn-secondary">◈ VIEW DOSSIER</button>
+  </div>
+
+  <!-- XP bar -->
+  <div style="width:100%;max-width:500px;margin-top:40px;position:relative;z-index:1;">
+    <div style="display:flex;justify-content:space-between;font-size:7px;color:var(--dim);margin-bottom:6px;">
+      <span>XP</span><span>LVL 76</span>
     </div>
-  </section>
-  <section id="about">
-    <div class="sc-wrap">
-      <div class="sc-label"><span class="sc-num">01</span><span class="sc-name">About</span></div>
-      <div>
-        <p class="about-text">Developer. Builder.</p>
-      </div>
+    <div style="height:8px;background:#1e1e2a;">
+      <div style="height:8px;width:76%;background:linear-gradient(90deg,var(--cyan),#0066aa);animation:barFill 2s ease-out both;--w:76%;"></div>
     </div>
-  </section>
-  <section id="contact">
-    <div class="sc-wrap">
-      <div class="sc-label"><span class="sc-num">02</span><span class="sc-name">Contact</span></div>
-      <div>
-        <a class="contact-btn" href="https://github.com/Sold1er76" target="_blank" rel="noopener">
-          View on GitHub ↗
-        </a>
-      </div>
+  </div>
+</div>
+
+<!-- ── STATS ─────────────────────────────────────── -->
+<section id="stats">
+  <div class="section-title">COMBAT STATS</div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">ACCURACY</div>
+      <div class="stat-bar-wrap"><div class="stat-bar"></div></div>
+      <div class="stat-value">92%</div>
     </div>
-  </section>
-  <a class="edit-btn" href="https://github.com/TR4IS/TR4IS.gethub.io/edit/main/spaces/Sold1er76/index.html" target="_blank" rel="noopener">&#x270F; Edit this page</a>
-  <footer style="padding:24px var(--pad);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:.48rem;color:rgba(239,239,239,.18);letter-spacing:2px">
-    <span>&#169; 2026 reachflow.site · TR4IS · All rights reserved</span>
-    <a href="/terms.html" style="color:rgba(239,239,239,.18);transition:color .2s" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='rgba(239,239,239,.18)'">.terms()</a>
-  </footer>
-  <script>
-    const cursor = document.getElementById('cursor');
-    const isTouch = window.matchMedia('(hover: none)').matches;
-    if(!isTouch){
-      document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px'});
-      document.querySelectorAll('a').forEach(el=>{el.addEventListener('mouseenter',()=>cursor.classList.add('big'));el.addEventListener('mouseleave',()=>cursor.classList.remove('big'))});
-    } else { cursor.style.display='none'; }
-  </script>
+    <div class="stat-card">
+      <div class="stat-label">AGILITY</div>
+      <div class="stat-bar-wrap"><div class="stat-bar"></div></div>
+      <div class="stat-value">78%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">FIREPOWER</div>
+      <div class="stat-bar-wrap"><div class="stat-bar"></div></div>
+      <div class="stat-value">88%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">STEALTH</div>
+      <div class="stat-bar-wrap"><div class="stat-bar"></div></div>
+      <div class="stat-value">65%</div>
+    </div>
+  </div>
+
+  <!-- HP bar -->
+  <div class="hp-section" style="margin-top:32px;">
+    <div class="hp-header">
+      <span class="hp-label">HEALTH POINTS</span>
+      <span class="hp-value">200 / 280 HP</span>
+    </div>
+    <div class="hp-bar-wrap"><div class="hp-bar"></div></div>
+  </div>
+</section>
+
+<!-- ── ABILITIES ─────────────────────────────────── -->
+<section id="abilities">
+  <div class="section-title">ABILITIES</div>
+  <div class="abilities">
+    <div class="ability-card">
+      <span class="ability-key">LMB</span>
+      <span class="ability-icon">🔫</span>
+      <div class="ability-name">HEAVY PULSE RIFLE</div>
+      <div class="ability-desc">Fully automatic. 25 dmg/shot. Long range.</div>
+      <div class="cd-bar"><div class="cd-fill" style="width:100%"></div></div>
+    </div>
+    <div class="ability-card">
+      <span class="ability-key">SHIFT</span>
+      <span class="ability-icon">💨</span>
+      <div class="ability-name">SPRINT</div>
+      <div class="ability-desc">Move faster than normal for a short burst.</div>
+      <div class="cd-bar"><div class="cd-fill" style="width:100%"></div></div>
+    </div>
+    <div class="ability-card">
+      <span class="ability-key">E</span>
+      <span class="ability-icon">🩹</span>
+      <div class="ability-name">BIOTIC FIELD</div>
+      <div class="ability-desc">Drop a device that heals nearby allies. 5s CD.</div>
+      <div class="cd-bar"><div class="cd-fill" style="width:35%"></div></div>
+    </div>
+    <div class="ability-card">
+      <span class="ability-key">Q</span>
+      <span class="ability-icon">🎯</span>
+      <div class="ability-name">TACTICAL VISOR</div>
+      <div class="ability-desc">Auto-aim. 6s duration. 15s cooldown.</div>
+      <div class="cd-bar"><div class="cd-fill" style="width:60%"></div></div>
+    </div>
+    <div class="ability-card">
+      <span class="ability-key">F</span>
+      <span class="ability-icon">💥</span>
+      <div class="ability-name">HELIX ROCKETS</div>
+      <div class="ability-desc">Fires 3 explosive rockets. Deals 120 AoE dmg.</div>
+      <div class="cd-bar"><div class="cd-fill" style="width:80%"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MISSION LOG ────────────────────────────────── -->
+<section id="log" style="max-width:960px;margin:0 auto;padding:60px 20px;">
+  <div class="section-title">MISSION LOG</div>
+  <div class="mission-log">
+    <div class="log-header">// SECURE TERMINAL — CLASSIFIED CHANNEL</div>
+    <div class="log-line ok"><span class="ts">08:14:02</span><span class="msg">▶ Mission GIBRALTAR complete. All hostiles neutralized.</span></div>
+    <div class="log-line warn"><span class="ts">09:31:55</span><span class="msg">⚠ Talon operatives spotted near extraction zone.</span></div>
+    <div class="log-line err"><span class="ts">11:02:17</span><span class="msg">✖ Overwatch recall signal intercepted. Source unknown.</span></div>
+    <div class="log-line info"><span class="ts">13:44:01</span><span class="msg">◈ Rendezvous with agent — location: encrypted.</span></div>
+    <div class="log-line ok"><span class="ts">17:59:30</span><span class="msg">▶ Field kit resupplied. HP restored. Ready for ops.</span></div>
+    <div class="log-line warn"><span class="ts">20:00:00</span><span class="msg">⚠ New directive incoming…</span></div>
+    <div style="margin-top:12px;color:var(--cyan);">root@s76 ~ $ <span class="cursor-blink"></span></div>
+  </div>
+</section>
+
+<!-- ── GALLERY ────────────────────────────────────── -->
+<section id="gallery" style="max-width:960px;margin:0 auto;padding:60px 20px;">
+  <div class="section-title">KILL FEED</div>
+  <div class="gallery">
+    <div class="gallery-card">
+      <div class="thumb">💀</div>
+      <div>KING'S ROW</div>
+      <div class="kills-badge">32K</div>
+    </div>
+    <div class="gallery-card">
+      <div class="thumb">🎖️</div>
+      <div>HANAMURA</div>
+      <div class="kills-badge">28K</div>
+    </div>
+    <div class="gallery-card">
+      <div class="thumb">🔥</div>
+      <div>NUMBANI</div>
+      <div class="kills-badge">41K</div>
+    </div>
+    <div class="gallery-card">
+      <div class="thumb">⚡</div>
+      <div>DORADO</div>
+      <div class="kills-badge">19K</div>
+    </div>
+    <div class="gallery-card">
+      <div class="thumb">🛡️</div>
+      <div>GIBRALTAR</div>
+      <div class="kills-badge">55K</div>
+    </div>
+    <div class="gallery-card">
+      <div class="thumb">🌌</div>
+      <div>HORIZON</div>
+      <div class="kills-badge">12K</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────── -->
+<footer>
+  <div class="pixel-divider"></div>
+  <div class="footer-logo">SOLDIER: 76</div>
+  <div class="footer-sub">OVERWATCH — CLASSIFIED DOSSIER</div>
+  <div style="margin-top:12px;font-family:'VT323',monospace;font-size:14px;color:#222;">
+    &copy; S76 • ALL RIGHTS RESERVED • STAY FROSTY
+  </div>
+  <div class="pixel-divider" style="margin-top:16px;"></div>
+</footer>
+
 </body>
 </html>
