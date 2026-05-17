@@ -78,12 +78,31 @@
     }
 
     function setSuccess(username, created) {
-      headline.textContent = created ? 'Space Created' : 'Welcome Back';
+      if (!created) {
+        headline.textContent = 'Welcome Back';
+        headline.className = 'status-text success';
+        sub.textContent = `Welcome back, ${username} — redirecting…`;
+        setTimeout(() => { window.location.href = `/spaces/${username}/`; }, 1800);
+        return;
+      }
+
+      // New space — GitHub Pages needs ~60s to rebuild
+      headline.textContent = 'Building Space';
       headline.className = 'status-text success';
-      sub.textContent = created
-        ? `Your space is live at /spaces/${username} — redirecting…`
-        : `Welcome back, ${username} — redirecting…`;
-      setTimeout(() => { window.location.href = `/spaces/${username}/`; }, 1800);
+
+      let seconds = 60;
+      function tick() {
+        sub.innerHTML = `Setting up <span style="color:var(--accent)">/spaces/${username}/</span><br>
+          GitHub is building your page — <span style="color:var(--accent)">${seconds}s</span> left…`;
+        if (seconds <= 0) {
+          sub.innerHTML = `Redirecting to your space…`;
+          window.location.href = `/spaces/${username}/`;
+          return;
+        }
+        seconds--;
+        setTimeout(tick, 1000);
+      }
+      tick();
     }
 
     async function run() {

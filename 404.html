@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reachflow — building…</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#060606; --fg:#efefef; --accent:#00ff88; --dim:rgba(239,239,239,.28); }
+    *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background-color:var(--bg);
+      background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+      background-size:72px 72px;
+      color:var(--fg); font-family:'JetBrains Mono',monospace;
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+    }
+    .box { text-align:center; display:flex; flex-direction:column; align-items:center; gap:24px; }
+    .label { font-size:.52rem; color:var(--accent); letter-spacing:3px; text-transform:uppercase; }
+    .headline { font-family:'Bebas Neue',sans-serif; font-size:clamp(3rem,8vw,6rem); line-height:1; letter-spacing:2px; }
+    .sub { font-size:.65rem; color:var(--dim); letter-spacing:1px; line-height:1.8; }
+    .sub span { color:var(--accent); }
+    .dot { display:inline-block; animation:blink 1.1s step-end infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .back { font-size:.6rem; letter-spacing:2px; text-transform:uppercase; color:var(--dim); text-decoration:none; border-bottom:1px solid rgba(239,239,239,.1); padding-bottom:2px; transition:color .2s; }
+    .back:hover { color:var(--fg); }
+  </style>
+</head>
+<body>
+  <div class="box" id="box">
+    <p class="label">// reachflow</p>
+    <p class="headline" id="headline">404</p>
+    <p class="sub" id="sub">This page doesn't exist.<br><br><a href="/" class="back">← back to reachflow</a></p>
+  </div>
+
+  <script>
+    const path = window.location.pathname;
+
+    // If this looks like a freshly created space, poll until it's live
+    if (path.startsWith('/spaces/') && path.split('/').filter(Boolean).length === 2) {
+      const username = path.split('/').filter(Boolean)[1];
+      document.getElementById('headline').textContent = 'Building';
+      document.getElementById('sub').innerHTML =
+        `<span>/spaces/${username}/</span> is being built by GitHub.<br>This page will refresh automatically<span class="dot">_</span>`;
+
+      let attempts = 0;
+      const maxAttempts = 24; // ~2 minutes max
+
+      async function poll() {
+        attempts++;
+        try {
+          const res = await fetch(path, { method: 'HEAD', cache: 'no-store' });
+          if (res.ok) {
+            document.getElementById('sub').innerHTML = `Space is live — loading<span class="dot">_</span>`;
+            window.location.href = path;
+            return;
+          }
+        } catch {}
+
+        if (attempts >= maxAttempts) {
+          document.getElementById('headline').textContent = 'Taking long…';
+          document.getElementById('sub').innerHTML =
+            `GitHub is still building. <a href="${path}" class="back">Try loading your space →</a><br><br><a href="/" class="back">← back to reachflow</a>`;
+          return;
+        }
+
+        setTimeout(poll, 5000);
+      }
+
+      setTimeout(poll, 5000);
+    }
+  </script>
+</body>
+</html>
