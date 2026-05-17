@@ -223,8 +223,12 @@ nav {
 }
 .project-name {
   font-size: 1.25rem; font-weight: 600;
-  color: #e8eef4; letter-spacing: -.3px; transition: color .25s;
+  color: #e8eef4; letter-spacing: -.3px;
+  display: inline-block;
+  transition: color .25s, transform .35s var(--ease);
+  transform-origin: left center;
 }
+.project-row:hover .project-name { transform: scale(1.1); }
 .project-desc {
   font-size: .77rem; color: rgba(255,255,255,.28);
   max-width: 300px; line-height: 1.5;
