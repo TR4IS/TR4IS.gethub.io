@@ -84,6 +84,15 @@ async function handleExchange(url, env) {
 
 /* ── Helpers ── */
 
+function esc(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
 function ghHeaders(env) {
   return {
     Authorization: `Bearer ${env.REPO_TOKEN}`,
@@ -108,17 +117,18 @@ function toBase64(str) {
 
 /* ── Space template ── */
 function buildTemplate(user) {
-  const name = user.name || user.login;
-  const bio = user.bio || 'Developer. Builder.';
-  const avatar = user.avatar_url;
-  const github = `https://github.com/${user.login}`;
+  const name = esc(user.name || user.login);
+  const bio = esc(user.bio || 'Developer. Builder.');
+  const avatar = esc(user.avatar_url);
+  const login = esc(user.login);
+  const github = `https://github.com/${login}`;
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${name} — reachflow</title>
+  <title>${name} &#8212; reachflow</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
@@ -164,11 +174,11 @@ function buildTemplate(user) {
     <a href="/spaces" class="nav-back">← spaces</a>
   </nav>
   <section class="hero">
-    <div class="hero-bg" aria-hidden="true">${user.login.slice(0, 2).toUpperCase()}</div>
+    <div class="hero-bg" aria-hidden="true">${login.slice(0, 2).toUpperCase()}</div>
     <div class="hero-inner">
       <img src="${avatar}" alt="${name}" class="hero-avatar">
       <div>
-        <p class="hero-label">// ${user.login} · reachflow member</p>
+        <p class="hero-label">// ${login} · reachflow member</p>
         <h1 class="hero-headline">${name}</h1>
       </div>
     </div>
@@ -195,7 +205,7 @@ function buildTemplate(user) {
       </div>
     </div>
   </section>
-  <a class="edit-btn" href="https://github.com/TR4IS/TR4IS.gethub.io/edit/main/spaces/${user.login}/index.html" target="_blank" rel="noopener">✏ Edit this page</a>
+  <a class="edit-btn" href="https://github.com/TR4IS/TR4IS.gethub.io/edit/main/spaces/${login}/index.html" target="_blank" rel="noopener">&#x270F; Edit this page</a>
   <script>
     const cursor = document.getElementById('cursor');
     const isTouch = window.matchMedia('(hover: none)').matches;

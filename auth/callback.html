@@ -74,7 +74,14 @@
     function setError(msg) {
       headline.textContent = 'Error';
       headline.className = 'status-text error';
-      sub.innerHTML = msg + '<br><br><a href="/" class="back-link">← back to reachflow</a>';
+      sub.textContent = msg;
+      const br1 = document.createElement('br');
+      const br2 = document.createElement('br');
+      const link = document.createElement('a');
+      link.href = '/';
+      link.className = 'back-link';
+      link.textContent = '← back to reachflow';
+      sub.append(br1, br2, link);
     }
 
     function setSuccess(username, created) {
@@ -118,8 +125,14 @@
     }
 
     async function run() {
-      const code = new URLSearchParams(window.location.search).get('code');
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+      const returnedState = params.get('state');
+      const savedState = sessionStorage.getItem('oauth_state');
+      sessionStorage.removeItem('oauth_state');
+
       if (!code) { setError('No auth code found. Did you come here by accident?'); return; }
+      if (!returnedState || returnedState !== savedState) { setError('Security check failed. Please try signing in again.'); return; }
 
       try {
         const res = await fetch(`${WORKER_URL}/exchange?code=${encodeURIComponent(code)}`);

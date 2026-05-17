@@ -5,7 +5,9 @@ const CALLBACK_URL = 'https://reachflow.site/auth/callback';
 /* ── Join button ── */
 function doJoin(e) {
   e.preventDefault();
-  const authUrl = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${encodeURIComponent(CALLBACK_URL)}&scope=read:user`;
+  const state = crypto.randomUUID();
+  sessionStorage.setItem('oauth_state', state);
+  const authUrl = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${encodeURIComponent(CALLBACK_URL)}&scope=read:user&state=${state}`;
   window.location.href = authUrl;
 }
 
