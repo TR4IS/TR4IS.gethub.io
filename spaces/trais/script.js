@@ -150,25 +150,52 @@ scrambleBtn.addEventListener('mouseleave', () => {
 /* ── Heading hover: scale + seamless rainbow speed-up ── */
 const SLOW_MS = 6000;
 const FAST_MS = 1500;
+const rainbowMs = new WeakMap();
 
 function getRgEls(el) {
   return el.classList.contains('rg') ? [el] : [...el.querySelectorAll('.rg')];
 }
 
-function switchRainbow(heading, fromMs, toMs) {
+function switchRainbow(heading, toMs) {
   getRgEls(heading).forEach(el => {
+    const fromMs = rainbowMs.get(el) ?? SLOW_MS;
     const delayMs = parseFloat(getComputedStyle(el).animationDelay) * 1000 || 0;
     const elapsed = performance.now() - delayMs;
     const progress = (elapsed % fromMs) / fromMs;
+    rainbowMs.set(el, toMs);
     el.style.animationDuration = toMs + 'ms';
     el.style.animationDelay    = -(progress * toMs) + 'ms';
   });
 }
 
 document.querySelectorAll('.hero-headline, .section-title, .contact-headline').forEach(heading => {
-  heading.addEventListener('mouseenter', () => switchRainbow(heading, SLOW_MS, FAST_MS));
-  heading.addEventListener('mouseleave', () => switchRainbow(heading, FAST_MS, SLOW_MS));
+  heading.addEventListener('mouseenter', () => switchRainbow(heading, FAST_MS));
+  heading.addEventListener('mouseleave', () => switchRainbow(heading, SLOW_MS));
 });
+
+/* ── About text word hover ── */
+function wrapWordsIn(el) {
+  [...el.childNodes].forEach(node => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const parts = node.textContent.split(/(\s+)/);
+      const frag = document.createDocumentFragment();
+      parts.forEach(part => {
+        if (/^\s+$/.test(part) || part === '') {
+          frag.appendChild(document.createTextNode(part));
+        } else {
+          const span = document.createElement('span');
+          span.className = 'about-word';
+          span.textContent = part;
+          frag.appendChild(span);
+        }
+      });
+      node.replaceWith(frag);
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      wrapWordsIn(node);
+    }
+  });
+}
+wrapWordsIn(document.querySelector('.about-text'));
 
 /* ── Extraordinary scramble ── */
 const EXT_TARGET = 'extraordinary.';

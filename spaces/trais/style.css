@@ -121,6 +121,11 @@ nav {
   color: rgba(255,255,255,.6); letter-spacing: -.3px;
 }
 .about-text strong { color: #fff; font-weight: 700; }
+.about-word {
+  display: inline-block;
+  transition: transform .28s var(--ease);
+}
+.about-word:hover { transform: scale(1.18); }
 
 /* ── Divider ── */
 .divider {
