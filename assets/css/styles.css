@@ -55,12 +55,12 @@ nav {
 .nav-brand .accent { color: var(--accent); }
 .nav-links { display: flex; gap: 32px; list-style: none; }
 .nav-links a {
-  font-size: .58rem; letter-spacing: 2px;
+  font-size: 1.2rem; letter-spacing: 2px;
   color: var(--dim); transition: color .2s;
   display: inline-flex; gap: 5px; align-items: baseline;
 }
 .nav-links a:hover { color: var(--fg); }
-.link-num { color: var(--accent); font-size: .5rem; }
+.link-num { color: var(--accent); font-size: 1rem; }
 /* ── Join hint (hero section) ── */
 .join-hint {
   display: flex; align-items: center; gap: 20px;
@@ -86,9 +86,9 @@ nav {
 .join-hint-btn:hover .join-arrow { transform: translate(3px,-3px); }
 
 .nav-join {
-  font-size: .6rem; letter-spacing: 3px; text-transform: uppercase;
+  font-size: 1.2rem; letter-spacing: 3px; text-transform: uppercase;
   color: var(--bg); background: var(--accent);
-  padding: 8px 16px; font-family: var(--font-mono); font-weight: 700;
+  padding: 8px 20px; font-family: var(--font-mono); font-weight: 700;
   border: 1.5px solid var(--accent);
   transition: background .25s, color .25s;
 }
