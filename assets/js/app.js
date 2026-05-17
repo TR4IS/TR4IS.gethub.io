@@ -3,11 +3,14 @@ const GITHUB_CLIENT_ID = 'Ov23likbVZBfG5a3rnEu';
 const CALLBACK_URL = 'https://reachflow.site/auth/callback';
 
 /* ── Join button ── */
-document.getElementById('join-btn').addEventListener('click', e => {
+function doJoin(e) {
   e.preventDefault();
   const authUrl = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${encodeURIComponent(CALLBACK_URL)}&scope=read:user`;
   window.location.href = authUrl;
-});
+}
+
+document.getElementById('join-btn').addEventListener('click', doJoin);
+document.getElementById('join-btn-hero').addEventListener('click', doJoin);
 
 /* ── Cursor ── */
 const cursor = document.getElementById('cursor');
