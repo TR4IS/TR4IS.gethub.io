@@ -90,6 +90,7 @@ nav {
   font-weight: 900; line-height: 1; letter-spacing: -2px;
   filter: drop-shadow(0 0 35px rgba(167,139,250,.22));
   overflow: visible;
+  padding-right: 10px;
   transition: transform .45s var(--ease), filter .45s var(--ease);
 }
 .hero-headline:hover {
@@ -269,6 +270,7 @@ nav {
   font-size: clamp(2.5rem, 6vw, 5.5rem);
   font-weight: 900; letter-spacing: -3px; line-height: .95;
   margin-bottom: 48px;
+  width: fit-content;
   filter: drop-shadow(0 0 30px rgba(167,139,250,.18));
   transition: transform .45s var(--ease), filter .45s var(--ease);
 }
