@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reachflow — .terms()</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #060606;
+      --fg: #efefef;
+      --accent: #00ff88;
+      --dim: rgba(239,239,239,.28);
+      --border: rgba(239,239,239,.07);
+      --red: #ff4d4d;
+      --amber: #ffaa00;
+      --ease: cubic-bezier(.23,1,.32,1);
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --pad: 64px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size: 72px 72px;
+      color: var(--fg);
+      font-family: var(--font-mono);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Cursor ── */
+    #cursor {
+      position: fixed; z-index: 9999; pointer-events: none;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent);
+      transform: translate(-50%, -50%);
+      transition: width .25s var(--ease), height .25s var(--ease), opacity .2s;
+      mix-blend-mode: exclusion;
+    }
+    #cursor.big { width: 40px; height: 40px; opacity: .4; }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 26px var(--pad);
+      display: flex; justify-content: space-between; align-items: center;
+      background: linear-gradient(to bottom, rgba(6,6,6,.95) 60%, transparent);
+    }
+    .nav-brand {
+      font-family: var(--font-display);
+      font-size: 1.2rem; letter-spacing: 5px;
+    }
+    .nav-brand .acc { color: var(--accent); }
+    .nav-back {
+      font-size: .58rem; letter-spacing: 2px; color: var(--dim);
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--fg); }
+    .nav-back .num { color: var(--accent); font-size: .5rem; margin-right: 4px; }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 65vh;
+      display: flex; align-items: flex-end;
+      padding: 100px var(--pad) 72px;
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-size: clamp(8rem, 26vw, 30rem);
+      color: rgba(0,255,136,.025);
+      letter-spacing: -12px;
+      user-select: none; pointer-events: none;
+      line-height: 1;
+    }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-tag {
+      display: flex; align-items: baseline; gap: 3px;
+      margin-bottom: 24px;
+    }
+    .tag-num { font-size: .52rem; color: var(--accent); letter-spacing: 2px; }
+    .tag-slash { font-size: .52rem; color: var(--dim); }
+    .tag-name { font-size: .52rem; color: var(--dim); letter-spacing: 3px; text-transform: uppercase; }
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 16vw, 16rem);
+      line-height: .82; letter-spacing: 2px;
+      color: var(--accent);
+      animation: fadeUp .8s var(--ease) both;
+    }
+    .hero-meta {
+      margin-top: 28px;
+      font-size: .52rem; color: var(--dim); letter-spacing: 2px;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      animation: fadeUp .8s var(--ease) .15s both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ── Body ── */
+    .terms-body {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 var(--pad) 120px;
+    }
+
+    /* ── Section ── */
+    .ts {
+      padding: 72px 0;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 48px;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .55s var(--ease), transform .55s var(--ease);
+    }
+    .ts.visible { opacity: 1; transform: none; }
+    .ts:last-child { border-bottom: none; }
+
+    .ts-label {
+      display: flex; flex-direction: column; gap: 6px;
+      padding-top: 6px;
+    }
+    .ts-num { font-size: .52rem; color: var(--accent); letter-spacing: 2px; }
+    .ts-name { font-size: .5rem; color: var(--dim); letter-spacing: 4px; text-transform: uppercase; }
+
+    .ts-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 4.5rem);
+      letter-spacing: 2px; line-height: .88;
+      color: var(--fg);
+      margin-bottom: 24px;
+    }
+    .ts-text {
+      font-size: clamp(.68rem, 1vw, .83rem);
+      color: var(--dim); line-height: 1.9; font-weight: 300;
+    }
+    .ts-text + .ts-text { margin-top: 14px; }
+    .hi { color: var(--fg); }
+    .red { color: var(--red); }
+
+    /* ── Rule list ── */
+    .rule-list {
+      list-style: none;
+      margin-top: 24px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .rule-list li {
+      font-size: clamp(.65rem, .95vw, .8rem);
+      color: var(--dim); line-height: 1.65;
+      padding-left: 26px;
+      position: relative;
+    }
+    .rule-list li::before {
+      position: absolute; left: 0;
+      font-weight: 700; font-size: .75rem;
+    }
+    .rule-list li.deny::before { content: '×'; color: var(--red); }
+    .rule-list li.warn::before { content: '!'; color: var(--amber); }
+    .rule-list li.ok::before   { content: '→'; color: var(--accent); }
+
+    /* ── Footer ── */
+    footer {
+      padding: 40px var(--pad);
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-txt { font-size: .5rem; color: var(--dim); letter-spacing: 2px; }
+    .footer-link { font-size: .5rem; color: var(--dim); letter-spacing: 2px; transition: color .2s; }
+    .footer-link:hover { color: var(--accent); }
+
+    @media (max-width: 768px) {
+      :root { --pad: 24px; }
+      body { cursor: auto; }
+      #cursor { display: none; }
+      nav { padding: 18px var(--pad); }
+      .ts { grid-template-columns: 1fr; gap: 16px; }
+      .ts-label { flex-direction: row; align-items: center; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="cursor" aria-hidden="true"></div>
+
+  <nav>
+    <a href="/" class="nav-brand">REACH<span class="acc">_</span>FLOW</a>
+    <a href="/" class="nav-back"><span class="num">←</span> back to .site()</a>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-bg" aria-hidden="true">TOS</div>
+    <div class="hero-content">
+      <div class="hero-tag">
+        <span class="tag-num">00</span><span class="tag-slash">/</span><span class="tag-name">legal</span>
+      </div>
+      <h1 class="hero-headline">.terms()</h1>
+      <p class="hero-meta">// last compiled: May 2026 &nbsp;·&nbsp; applies to all spaces and members</p>
+    </div>
+  </div>
+
+  <div class="terms-body">
+
+    <div class="ts">
+      <div class="ts-label">
+        <span class="ts-num">01</span>
+        <span class="ts-name">Overview</span>
+      </div>
+      <div>
+        <h2 class="ts-title">What This Is</h2>
+        <p class="ts-text">
+          Reachflow is a <span class="hi">private network of handpicked developers</span>.
+          Each member gets a public-facing space hosted under their GitHub identity.
+        </p>
+        <p class="ts-text">
+          By creating or editing your space, you agree to everything on this page.
+          If you disagree with any part — stop using your space.
+        </p>
+      </div>
+    </div>
+
+    <div class="ts">
+      <div class="ts-label">
+        <span class="ts-num">02</span>
+        <span class="ts-name">Responsibility</span>
+      </div>
+      <div>
+        <h2 class="ts-title">Your Space, Your Problem</h2>
+        <p class="ts-text">
+          You own what you publish. We host it.
+          Your space is <span class="hi">publicly accessible on the internet</span>,
+          linked to your GitHub account, and entirely your responsibility.
+        </p>
+        <p class="ts-text">
+          If your content causes legal, ethical, or community problems —
+          you are accountable, not reachflow.
+        </p>
+      </div>
+    </div>
+
+    <div class="ts">
+      <div class="ts-label">
+        <span class="ts-num">03</span>
+        <span class="ts-name">Rules</span>
+      </div>
+      <div>
+        <h2 class="ts-title">What's Not Allowed</h2>
+        <p class="ts-text">The following will get your space <span class="red">removed immediately</span>, no warning.</p>
+        <ul class="rule-list">
+          <li class="deny"><span class="red">Child sexual abuse material (CSAM)</span> — zero tolerance. Reported to authorities and GitHub.</li>
+          <li class="deny">Illegal content of any kind — piracy, fraud, hacking tools targeting others.</li>
+          <li class="deny">Hate speech, threats, or targeted harassment of any individual or group.</li>
+          <li class="deny">Spam, phishing, or malware distribution.</li>
+          <li class="deny">Content that infringes copyright, trademarks, or intellectual property.</li>
+          <li class="deny">Impersonation of any person or organization.</li>
+          <li class="deny">Anything designed to deceive, manipulate, or harm others.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ts">
+      <div class="ts-label">
+        <span class="ts-num">04</span>
+        <span class="ts-name">Enforcement</span>
+      </div>
+      <div>
+        <h2 class="ts-title">How We Handle It</h2>
+        <p class="ts-text">
+          The site owner reserves the right to remove any space, at any time,
+          with or without notice, for any violation of these terms.
+        </p>
+        <ul class="rule-list">
+          <li class="ok">Reachflow is curated — membership is a privilege, not a right.</li>
+          <li class="ok">Serious violations may be reported to GitHub and relevant authorities.</li>
+          <li class="warn">There is no formal appeals process. Owner discretion is final.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ts">
+      <div class="ts-label">
+        <span class="ts-num">05</span>
+        <span class="ts-name">Privacy</span>
+      </div>
+      <div>
+        <h2 class="ts-title">What We Store</h2>
+        <p class="ts-text">
+          Reachflow stores only what GitHub provides at sign-in:
+          your <span class="hi">username</span>, <span class="hi">display name</span>,
+          <span class="hi">bio</span>, and <span class="hi">avatar</span>.
+        </p>
+        <ul class="rule-list">
+          <li class="ok">No passwords. No emails. No tracking cookies.</li>
+          <li class="ok">Your space content lives in a public GitHub repository.</li>
+          <li class="ok">Anyone can view or fork that repository — it's open source.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ts">
+      <div class="ts-label">
+        <span class="ts-num">06</span>
+        <span class="ts-name">Changes</span>
+      </div>
+      <div>
+        <h2 class="ts-title">Updates</h2>
+        <p class="ts-text">
+          These terms can change at any time.
+          Continued use of your space means you accept whatever they say at that point.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span class="footer-txt">// reachflow.site · all spaces are public · owner: TR4IS</span>
+    <a href="/" class="footer-link">← .site()</a>
+  </footer>
+
+  <script>
+    /* ── Cursor ── */
+    const cursor = document.getElementById('cursor');
+    const isTouch = window.matchMedia('(hover: none)').matches;
+    if (isTouch) {
+      cursor.style.display = 'none';
+      document.body.style.cursor = 'auto';
+    } else {
+      document.addEventListener('mousemove', e => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top  = e.clientY + 'px';
+      });
+      document.querySelectorAll('a').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+      });
+    }
+
+    /* ── Scroll reveal ── */
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      }),
+      { threshold: 0.08 }
+    );
+    document.querySelectorAll('.ts').forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.04}s`;
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>

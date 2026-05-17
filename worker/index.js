@@ -206,6 +206,10 @@ function buildTemplate(user) {
     </div>
   </section>
   <a class="edit-btn" href="https://github.com/TR4IS/TR4IS.gethub.io/edit/main/spaces/${login}/index.html" target="_blank" rel="noopener">&#x270F; Edit this page</a>
+  <footer style="padding:24px var(--pad);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:.48rem;color:rgba(239,239,239,.18);letter-spacing:2px">
+    <span>reachflow.site · all spaces are public</span>
+    <a href="/terms.html" style="color:rgba(239,239,239,.18);transition:color .2s" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='rgba(239,239,239,.18)'">.terms()</a>
+  </footer>
   <script>
     const cursor = document.getElementById('cursor');
     const isTouch = window.matchMedia('(hover: none)').matches;

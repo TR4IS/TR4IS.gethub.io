@@ -111,14 +111,32 @@
           headline.textContent = 'Space Ready';
           sub.innerHTML = `
             Your space is live at <span style="color:var(--accent)">/spaces/${username}/</span><br><br>
-            <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:8px">
+            <div id="terms-gate" style="margin:20px auto 0;max-width:480px;padding:20px 24px;border:1px solid rgba(239,239,239,.1);text-align:left;background:rgba(0,255,136,.03)">
+              <p style="font-size:.52rem;color:var(--accent);letter-spacing:2px;margin-bottom:12px">// before you edit</p>
+              <p style="font-size:.62rem;color:rgba(239,239,239,.5);line-height:1.75;margin-bottom:16px">
+                Your space is <strong style="color:#efefef">publicly accessible</strong> on the internet.
+                No illegal content, hate speech, spam, or harmful material.
+                Violations result in immediate removal.
+              </p>
+              <label style="display:flex;align-items:flex-start;gap:10px;cursor:none;font-size:.58rem;color:rgba(239,239,239,.45);line-height:1.6">
+                <input type="checkbox" id="terms-check" style="margin-top:2px;accent-color:#00ff88;cursor:none;flex-shrink:0">
+                I have read and agree to the
+                <a href="/terms.html" target="_blank" rel="noopener" style="color:#00ff88;text-decoration:underline;text-underline-offset:3px">reachflow Terms of Use</a>
+              </label>
+            </div>
+            <div id="action-btns" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:20px;opacity:.25;pointer-events:none;transition:opacity .4s">
               <a href="${spaceUrl}" style="display:inline-flex;align-items:center;gap:8px;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;font-weight:700;color:#060606;background:#00ff88;padding:12px 24px;border:1.5px solid #00ff88;text-decoration:none">
                 View Space ↗
               </a>
               <a href="${editUrl}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;font-weight:700;color:#00ff88;background:transparent;padding:12px 24px;border:1.5px solid #00ff88;text-decoration:none">
-                Edit on GitHub ✏
+                Edit on GitHub &#x270F;
               </a>
             </div>`;
+          document.getElementById('terms-check').addEventListener('change', function() {
+            const btns = document.getElementById('action-btns');
+            btns.style.opacity = this.checked ? '1' : '.25';
+            btns.style.pointerEvents = this.checked ? 'auto' : 'none';
+          });
         }
       }
       tick();
