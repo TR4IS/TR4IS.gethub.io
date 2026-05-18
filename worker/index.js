@@ -11,7 +11,8 @@ export default {
     const url = new URL(request.url);
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
     if (url.pathname === '/exchange') return handleExchange(url, env);
-    if (url.pathname === '/save' && request.method === 'POST') return handleSave(request, env);
+    if (url.pathname === '/create-space' && request.method === 'POST') return handleCreateSpace(request, env);
+    if (url.pathname === '/save'         && request.method === 'POST') return handleSave(request, env);
     return new Response('Not found', { status: 404 });
   },
 };
@@ -142,39 +143,81 @@ async function handleExchange(url, env) {
     `https://api.github.com/repos/TR4IS/TR4IS.gethub.io/contents/spaces/${username}`,
     { headers: ghHeaders(env) }
   );
+  const exists = checkRes.status === 200;
 
-  let created = false;
-  if (checkRes.status !== 200) {
-    const spaceData = {
-      login:       user.login,
-      name:        user.name || user.login,
-      text:        user.bio  || '',
-      avatar:      user.avatar_url,
-      github:      `https://github.com/${user.login}`,
-      bgUrl:       '',
-      musicUrl:    '',
-      accentColor: '#00ff88',
-    };
-    const createRes = await fetch(
-      `https://api.github.com/repos/TR4IS/TR4IS.gethub.io/contents/spaces/${username}/index.html`,
-      {
-        method: 'PUT',
-        headers: ghHeaders(env),
-        body: JSON.stringify({
-          message: `feat: add space for ${username}`,
-          content: toBase64(buildTemplate(sanitizeData(spaceData))),
-        }),
-      }
-    );
-    if (!createRes.ok) {
-      const err = await createRes.json();
-      return json({ error: 'Failed to create space', detail: err }, 500);
-    }
-    created = true;
-  }
+  // Store GitHub profile data in token so /create-space can use it
+  // (access token is only available during this exchange)
+  const profile = {
+    login:  user.login,
+    name:   user.name || user.login,
+    bio:    user.bio  || '',
+    avatar: user.avatar_url,
+    github: `https://github.com/${user.login}`,
+  };
 
   const sessionToken = await issueToken(username, env);
-  return json({ username, created, sessionToken });
+  return json({ username, exists, sessionToken, profile: exists ? null : profile });
+}
+
+/* ── Create space (called after terms accepted) ── */
+
+async function handleCreateSpace(request, env) {
+  let body;
+  try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400); }
+
+  const { token, profile: rawProfile } = body;
+  if (!token) return json({ error: 'Missing token' }, 400);
+
+  let username;
+  try { username = await verifyToken(token, env); } catch (e) { return json({ error: e.message }, 401); }
+
+  // Idempotent — if space already exists, that's fine
+  const checkRes = await fetch(
+    `https://api.github.com/repos/TR4IS/TR4IS.gethub.io/contents/spaces/${username}`,
+    { headers: ghHeaders(env) }
+  );
+  if (checkRes.status === 200) return json({ ok: true });
+
+  // Use profile from client (sent back from exchange response) or fall back to GitHub API
+  let profile = rawProfile && typeof rawProfile === 'object' ? rawProfile : null;
+  if (!profile) {
+    const uRes = await fetch(`https://api.github.com/users/${username}`, {
+      headers: { ...ghHeaders(env), Accept: 'application/vnd.github+json' },
+    });
+    if (uRes.ok) {
+      const u = await uRes.json();
+      profile = { login: u.login, name: u.name || u.login, bio: u.bio || '', avatar: u.avatar_url, github: `https://github.com/${u.login}` };
+    }
+  }
+
+  const spaceData = sanitizeData({
+    login:       username,
+    name:        profile?.name  || username,
+    text:        profile?.bio   || '',
+    avatar:      profile?.avatar || '',
+    github:      profile?.github || `https://github.com/${username}`,
+    bgUrl:       '',
+    musicUrl:    '',
+    accentColor: '#00ff88',
+  });
+
+  const createRes = await fetch(
+    `https://api.github.com/repos/TR4IS/TR4IS.gethub.io/contents/spaces/${username}/index.html`,
+    {
+      method: 'PUT',
+      headers: ghHeaders(env),
+      body: JSON.stringify({
+        message: `feat: add space for ${username}`,
+        content: toBase64(buildTemplate(spaceData)),
+      }),
+    }
+  );
+  if (!createRes.ok) {
+    const err = await createRes.json();
+    return json({ error: 'Failed to create space', detail: err }, 500);
+  }
+
+  return json({ ok: true });
 }
 
 /* ── Save ── */
