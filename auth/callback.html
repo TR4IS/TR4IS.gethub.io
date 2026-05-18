@@ -144,18 +144,34 @@
 
     async function run() {
       const params = new URLSearchParams(window.location.search);
-      const code = params.get('code');
+      const code          = params.get('code');
       const returnedState = params.get('state');
-      const savedState = sessionStorage.getItem('oauth_state');
+      const savedState    = sessionStorage.getItem('oauth_state');
       sessionStorage.removeItem('oauth_state');
 
       if (!code) { setError('No auth code found. Did you come here by accident?'); return; }
       if (!returnedState || returnedState !== savedState) { setError('Security check failed. Please try signing in again.'); return; }
 
       try {
-        const res = await fetch(`${WORKER_URL}/exchange?code=${encodeURIComponent(code)}`);
+        const res  = await fetch(`${WORKER_URL}/exchange?code=${encodeURIComponent(code)}`);
         const data = await res.json();
         if (data.error) { setError(data.error); return; }
+
+        // Store session token for the editor (always, regardless of flow)
+        if (data.sessionToken) {
+          sessionStorage.setItem('rf_token', data.sessionToken);
+          sessionStorage.setItem('rf_user',  data.username);
+        }
+
+        // Edit flow: state = "edit:{username}:{nonce}" — just redirect back to space
+        if (savedState && savedState.startsWith('edit:')) {
+          headline.textContent = 'Authenticated';
+          headline.className   = 'status-text success';
+          sub.textContent      = 'Opening editor…';
+          setTimeout(() => { window.location.href = `/spaces/${data.username}/`; }, 800);
+          return;
+        }
+
         setSuccess(data.username, data.created);
       } catch (err) {
         setError('Could not reach the auth server. Try again.');
