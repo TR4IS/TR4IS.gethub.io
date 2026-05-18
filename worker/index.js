@@ -162,7 +162,7 @@ async function handleExchange(url, env) {
         headers: ghHeaders(env),
         body: JSON.stringify({
           message: `feat: add space for ${username}`,
-          content: toBase64(buildTemplate(spaceData)),
+          content: toBase64(buildTemplate(sanitizeData(spaceData))),
         }),
       }
     );
