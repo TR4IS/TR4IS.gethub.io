@@ -5,12 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>li2x</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap" rel="stylesheet">
+
 <style>
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:sans-serif;
+  font-family:'Inter',sans-serif;
 }
 
 body{
@@ -23,17 +25,17 @@ body{
   background:black;
 }
 
-/* 🎥 فيديو الخلفية */
+/* 🎥 فيديو */
 video{
   position:fixed;
   width:100%;
   height:100%;
   object-fit:cover;
   z-index:-1;
-  filter:brightness(0.4);
+  filter:brightness(0.35);
 }
 
-/* 🎬 شاشة الدخول */
+/* 🎬 دخول */
 .overlay{
   position:fixed;
   width:100%;
@@ -47,7 +49,7 @@ video{
 }
 
 .overlay h1{
-  font-size:30px;
+  font-size:28px;
   animation:pulse 1s infinite;
 }
 
@@ -55,38 +57,60 @@ video{
   50%{opacity:0.5;}
 }
 
-/* 🧊 الكرت */
+/* 🧊 كرت */
 .card{
   text-align:center;
   padding:30px;
   border-radius:20px;
-  backdrop-filter:blur(15px);
+  backdrop-filter:blur(20px);
   background:rgba(255,255,255,0.05);
   border:1px solid rgba(255,255,255,0.1);
 }
 
 /* 🧑 صورة */
 .avatar{
-  width:100px;
-  height:100px;
+  width:110px;
+  height:110px;
   border-radius:50%;
+  border:3px solid white;
   margin-bottom:15px;
-  border:3px solid #00ffff;
 }
 
-/* ✨ الاسم */
+/* ✨ اسم */
 .name{
-  font-size:28px;
-  background:linear-gradient(90deg,#00ffff,#00ff99);
-  -webkit-background-clip:text;
-  color:transparent;
+  font-size:30px;
+  font-weight:bold;
 }
 
-.box{
+/* 🧠 وصف */
+.bio{
+  margin:10px 0;
+  color:#ccc;
+}
+
+/* 🎮 بوكس */
+.discord{
   margin-top:15px;
   padding:10px;
   border-radius:15px;
   background:rgba(0,0,0,0.5);
+}
+
+/* 🔥 أيقونات */
+.icons{
+  margin-top:15px;
+}
+
+.icons span{
+  font-size:22px;
+  margin:0 6px;
+  filter:grayscale(1);
+  transition:0.3s;
+}
+
+.icons span:hover{
+  filter:grayscale(0);
+  transform:scale(1.2);
 }
 
 </style>
@@ -104,25 +128,32 @@ video{
   <source src="https://r2.guns.lol/687f862d-49bd-48dc-9cc0-e7713908a0a6.mp4" type="video/mp4">
 </video>
 
-<!-- 🧊 المحتوى -->
 <div class="card">
-  <img src="https://i.pravatar.cc/150" class="avatar">
+
+  <!-- 🧑 غير الصورة هنا -->
+  <img src="image.jpg" class="avatar">
 
   <div class="name">li2x</div>
 
-  <div class="box">
+  <div class="icons">
+    💎 🧊 🎧 🔥 🖤
+  </div>
+
+  <div class="bio">
+    あの世で会えるといいな
+  </div>
+
+  <div class="discord">
     🎧 Discord: <b>z65_</b>
   </div>
+
 </div>
 
 <script>
 function startSite(){
-  document.querySelector(".overlay").style.display = "none";
-
+  document.querySelector(".overlay").style.display="none";
   const video = document.getElementById("bgVideo");
-
   video.muted = false;
-  video.volume = 1;
   video.play();
 }
 </script>
