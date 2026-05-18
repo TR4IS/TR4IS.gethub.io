@@ -6,13 +6,11 @@
 <title>li2x</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap');
-
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:'Inter',sans-serif;
+  font-family:sans-serif;
 }
 
 body{
@@ -22,113 +20,17 @@ body{
   justify-content:center;
   align-items:center;
   color:white;
+  background:black;
 }
 
-/* 🎥 خلفية فيديو */
+/* 🎥 الفيديو */
 video{
   position:fixed;
   width:100%;
   height:100%;
   object-fit:cover;
   z-index:-1;
-  filter:brightness(0.35);
-}
-
-/* 🧊 كرت */
-.card{
-  text-align:center;
-  padding:30px;
-  border-radius:20px;
-  backdrop-filter: blur(20px);
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.1);
-  animation:fade 1s ease;
-}
-
-@keyframes fade{
-  from{opacity:0; transform:translateY(30px);}
-  to{opacity:1; transform:translateY(0);}
-}
-
-/* 🧑 صورة */
-.avatar{
-  width:100px;
-  height:100px;
-  border-radius:50%;
-  border:3px solid #38bdf8;
-  margin-bottom:15px;
-  animation:float 3s infinite ease-in-out;
-}
-
-@keyframes float{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-10px);}
-}
-
-/* ✨ اسم */
-.name{
-  font-size:28px;
-  background:linear-gradient(90deg,#22c55e,#38bdf8);
-  -webkit-background-clip:text;
-  color:transparent;
-  animation:glow 2s infinite alternate;
-}
-
-@keyframes glow{
-  from{text-shadow:0 0 5px #38bdf8;}
-  to{text-shadow:0 0 25px #22c55e;}
-}
-
-/* 🧠 كتابة متحركة */
-.typing{
-  margin-top:10px;
-  font-size:14px;
-  color:#ccc;
-  border-right:2px solid white;
-  white-space:nowrap;
-  overflow:hidden;
-  width:0;
-  animation:typing 4s steps(40,end) forwards, blink 0.8s infinite;
-}
-
-@keyframes typing{
-  to{width:100%;}
-}
-
-@keyframes blink{
-  50%{border-color:transparent;}
-}
-
-/* 🎮 بوكس */
-.box{
-  margin-top:20px;
-  padding:10px;
-  border-radius:15px;
-  background:rgba(0,0,0,0.5);
-}
-
-/* 🔗 روابط */
-.links{
-  margin-top:20px;
-}
-
-.links a{
-  font-size:22px;
-  margin:0 10px;
-  text-decoration:none;
-  transition:0.3s;
-}
-
-.links a:hover{
-  transform:scale(1.2);
-}
-
-/* 👁️ */
-.views{
-  position:absolute;
-  bottom:20px;
-  left:20px;
-  color:#aaa;
+  filter:brightness(0.4);
 }
 
 /* 🎬 شاشة دخول */
@@ -145,8 +47,7 @@ video{
 }
 
 .overlay h1{
-  font-size:30px;
-  color:white;
+  font-size:28px;
   animation:pulse 1s infinite;
 }
 
@@ -154,59 +55,75 @@ video{
   50%{opacity:0.5;}
 }
 
+/* 🧊 الكرت */
+.card{
+  text-align:center;
+  padding:30px;
+  border-radius:20px;
+  backdrop-filter:blur(15px);
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+}
+
+/* 🧑 صورة */
+.avatar{
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  margin-bottom:15px;
+  border:3px solid #00ffff;
+}
+
+/* ✨ الاسم */
+.name{
+  font-size:28px;
+  background:linear-gradient(90deg,#00ffff,#00ff99);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+/* 📦 بوكس */
+.box{
+  margin-top:15px;
+  padding:10px;
+  border-radius:15px;
+  background:rgba(0,0,0,0.5);
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- 🎬 شاشة دخول -->
-<div class="overlay" onclick="enterSite()">
+<!-- 🎬 شاشة الدخول -->
+<div class="overlay" onclick="start()">
   <h1>Click to enter</h1>
 </div>
 
-<!-- 🎥 فيديو -->
+<!-- 🎥 الفيديو -->
 <video id="bgVideo" loop>
-  <source src="https://cdn.coverr.co/videos/coverr-dark-room-5178/1080p.mp4" type="video/mp4">
+  <source src="https://r2.guns.lol/687f862d-49bd-48dc-9cc0-e7713908a0a6.mp4" type="video/mp4">
 </video>
 
-<!-- 🎧 صوت -->
-<audio id="music" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
-</audio>
-
 <div class="card">
-
   <img src="https://i.pravatar.cc/150" class="avatar">
 
   <div class="name">li2x</div>
 
-  <div class="typing">
-    We are in a time where respect is rare...
-  </div>
-
   <div class="box">
     🎧 Discord: <b>z65_</b>
   </div>
-
-  <div class="links">
-    <a href="#">💬</a>
-    <a href="#">👑</a>
-    <a href="#">🔥</a>
-  </div>
-
 </div>
 
-<div class="views">👁️ 240</div>
-
 <script>
-function enterSite(){
+function start(){
   document.querySelector(".overlay").style.display="none";
 
   const video = document.getElementById("bgVideo");
-  const music = document.getElementById("music");
 
+  video.muted = false;
+  video.volume = 1;
   video.play();
-  music.play();
 }
 </script>
 
