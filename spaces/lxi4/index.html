@@ -1,195 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Moj — reachflow</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
-  <style>
-    :root{--accent:#00ff88;--bg:#060606;--fg:#efefef;--dim:rgba(239,239,239,.28);--ease:cubic-bezier(.23,1,.32,1)}
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    html,body{height:100%}
-    body{background:var(--bg);color:var(--fg);font-family:'JetBrains Mono',monospace;
-      min-height:100vh;cursor:none;display:flex;align-items:center;justify-content:center;overflow:hidden}
-    a{color:inherit;text-decoration:none}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>li2x</title>
 
-    #cursor{position:fixed;z-index:9999;pointer-events:none;width:8px;height:8px;border-radius:50%;
-      background:var(--accent);transform:translate(-50%,-50%);mix-blend-mode:exclusion;
-      transition:width .25s var(--ease),height .25s var(--ease)}
-    #cursor.big{width:36px;height:36px;opacity:.4}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap" rel="stylesheet">
 
-    #bg-vid,#bg-img,#bg-grid{position:fixed;inset:0;z-index:0}
-    #bg-vid{width:100%;height:100%;object-fit:cover}
-    #bg-img{background-size:cover;background-position:center;background-repeat:no-repeat}
-    #bg-grid{background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:72px 72px}
-    .bg-overlay{position:fixed;inset:0;z-index:1;background:rgba(6,6,6,.52)}
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Inter',sans-serif;
+}
 
-    nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:20px 40px;
-      display:flex;justify-content:space-between;align-items:center;
-      background:linear-gradient(to bottom,rgba(6,6,6,.85),transparent)}
-    .nav-brand{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:5px}
-    .nav-brand span{color:var(--accent)}
-    .nav-back{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim);transition:color .2s}
-    .nav-back:hover{color:var(--fg)}
+body{
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  background:black;
+}
 
-    .stage{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;
-      gap:20px;text-align:center;padding:20px;max-width:640px}
+/* 🎥 فيديو */
+video{
+  position:fixed;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:-1;
+  filter:brightness(0.35);
+}
 
-    .av-ring{width:136px;height:136px;border-radius:50%;padding:3px;flex-shrink:0;
-      background:conic-gradient(var(--accent) 0%,transparent 40%,var(--accent) 80%,transparent 100%);
-      animation:spin 5s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .av-inner{width:100%;height:100%;border-radius:50%;overflow:hidden;background:var(--bg);border:3px solid var(--bg)}
-    .av-img{width:100%;height:100%;object-fit:cover;display:block}
+/* 🎬 دخول */
+.overlay{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:black;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:10;
+  cursor:pointer;
+}
 
-    .sp-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,10vw,7rem);
-      letter-spacing:4px;line-height:1;text-shadow:0 0 80px var(--accent)}
-    .sp-text{font-size:clamp(.75rem,1.4vw,.9rem);color:var(--dim);line-height:1.85;
-      max-width:500px;white-space:pre-wrap;word-break:break-word}
-    .sp-gh{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:3px;
-      text-transform:uppercase;font-weight:700;color:var(--accent);
-      border:1.5px solid var(--accent);padding:9px 20px;display:inline-block;
-      transition:background .25s,color .25s}
-    .sp-gh:hover{background:var(--accent);color:var(--bg)}
+.overlay h1{
+  font-size:26px;
+  animation:pulse 1s infinite;
+}
 
-    #audio-ctrl{position:fixed;bottom:28px;left:28px;z-index:100;
-      background:rgba(6,6,6,.88);border:1px solid rgba(239,239,239,.1);
-      backdrop-filter:blur(10px);padding:10px 14px;
-      display:flex;align-items:center;gap:10px;
-      font-size:.5rem;letter-spacing:1px;color:var(--dim)}
-    #audio-play,#audio-mute{background:none;border:none;cursor:none;padding:0;
-      line-height:1;transition:color .2s}
-    #audio-play{color:var(--accent);font-size:.9rem}
-    #audio-play:hover{opacity:.7}
-    #audio-mute{color:var(--dim);font-size:.82rem}
-    #audio-mute:hover{color:var(--accent)}
-    #audio-vol{width:56px;accent-color:var(--accent);cursor:none}
-    #audio-lbl{font-size:.45rem;letter-spacing:1px;color:rgba(239,239,239,.25)}
+@keyframes pulse{
+  50%{opacity:0.5;}
+}
 
-    #edit-btn{position:fixed;bottom:28px;right:28px;z-index:100;
-      font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:2px;
-      text-transform:uppercase;font-weight:700;color:var(--bg);background:var(--accent);
-      padding:11px 20px;border:1.5px solid var(--accent);cursor:none;
-      text-decoration:none;display:none;align-items:center;gap:8px;
-      transition:background .25s,color .25s}
-    #edit-btn:hover{background:transparent;color:var(--accent)}
+/* 🧑 صورة */
+.avatar{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  border:3px solid white;
+  margin-bottom:15px;
+}
 
-    footer{position:fixed;bottom:0;left:0;right:0;z-index:10;padding:8px 40px;
-      display:flex;justify-content:space-between;font-size:.4rem;
-      color:rgba(239,239,239,.12);letter-spacing:2px;pointer-events:none}
-    footer a{pointer-events:auto;color:rgba(239,239,239,.12);transition:color .2s;text-decoration:none}
-    footer a:hover{color:rgba(239,239,239,.4)}
+/* ✨ اسم (Glow ناعم) */
+.name{
+  font-size:34px;
+  font-weight:bold;
+  text-shadow:0 0 6px rgba(255,255,255,0.5);
+}
 
-    @media(max-width:768px){
-      body{cursor:auto;overflow-y:auto}
-      #cursor{display:none}
-      nav{padding:14px 20px}
-      .stage{padding:100px 20px 90px}
-      .av-ring{width:96px;height:96px}
-      #audio-ctrl{bottom:14px;left:14px;padding:8px 10px;gap:7px}
-      #edit-btn{bottom:14px;right:14px;padding:9px 14px}
-      #audio-lbl{display:none}
-    }
-  </style>
+/* 🧠 وصف */
+.bio{
+  margin:10px 0;
+  color:#ccc;
+}
+
+/* 🔥 أيقونات مثل الصورة */
+.icons{
+  margin:12px 0;
+  font-size:20px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+}
+
+.icons img{
+  width:22px;
+  height:22px;
+  filter:grayscale(1);
+  transition:0.3s;
+}
+
+.icons img:hover{
+  filter:grayscale(0);
+  transform:scale(1.2);
+}
+
+/* 🎧 Discord أيقونة */
+.discord{
+  margin-top:12px;
+}
+
+.discord img{
+  width:28px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.discord img:hover{
+  transform:scale(1.2);
+}
+
+/* 👁️ المشاهدات */
+.views{
+  position:absolute;
+  bottom:20px;
+  left:20px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  color:#ccc;
+  font-size:14px;
+}
+
+.eye{
+  width:18px;
+  opacity:0.7;
+}
+
+</style>
 </head>
+
 <body>
-  <script id="rf-data" type="application/json">{"login":"lxi4","name":"Moj","text":"aus","avatar":"https://avatars.githubusercontent.com/u/285852152?v=4","github":"https://github.com/lxi4","bgUrl":"","musicUrl":"","accentColor":"#00ff88"}</script>
 
-  <div id="cursor" aria-hidden="true"></div>
+<!-- شاشة الدخول -->
+<div class="overlay" onclick="startSite()">
+  <h1>Click to Enter</h1>
+</div>
 
-  <nav>
-    <a href="/" class="nav-brand">REACH<span>_</span>FLOW</a>
-    <a href="/spaces" class="nav-back">&#8592; spaces</a>
-  </nav>
+<!-- الفيديو -->
+<video id="bgVideo" loop>
+  <source src="https://files.catbox.moe/jm9c1p.mp4" type="video/mp4">
+</video>
 
-  <div id="bg-grid"></div>
-  <div class="bg-overlay"></div>
+<!-- الصوت -->
+<audio id="bgMusic">
+  <source src="https://files.catbox.moe/r9ig2d.mp3" type="audio/mpeg">
+</audio>
 
-  <div class="stage">
-    <div class="av-ring">
-      <div class="av-inner">
-        <img class="av-img" src="https://avatars.githubusercontent.com/u/285852152?v=4" alt="Moj">
-      </div>
-    </div>
-    <div class="sp-name">Moj</div>
-    <p class="sp-text">aus</p>
-    <a href="https://github.com/lxi4" target="_blank" rel="noopener" class="sp-gh">GitHub &#8599;</a>
+<div style="text-align:center;">
+
+  <!-- صورتك -->
+  <img src="https://cdn.discordapp.com/attachments/1048907974728486953/1365089054269374636/black_and_white.gif?ex=6a0ce140&is=6a0b8fc0&hm=c6d2abbcc54c0f5ea4ad21d5d67479d9e0bc260b104f7c40572fb228b0a61086&" class="avatar">
+
+  <div class="name">Moj</div>
+
+  <!-- أيقونات نفس الشكل -->
+  <div class="icons">
+    <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png">
+    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png">
+    <img src="https://cdn-icons-png.flaticon.com/512/727/727245.png">
+    <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png">
   </div>
 
-  
+  <div class="bio">
+    あの世で会えるといいな
+  </div>
 
-  <a href="#" id="edit-btn" aria-label="Edit your space">&#x270F; Edit</a>
+  <!-- Discord أيقونة -->
+  <div class="discord">
+    <a href="https://discord.com/users/z65_" target="_blank">
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png">
+    </a>
+  </div>
 
-  <footer>
-    <span>&#169; 2026 reachflow.site &middot; TR4IS</span>
-    <a href="/terms.html">.terms()</a>
-  </footer>
+</div>
 
-  <script>
-  (function(){
-    const D    = JSON.parse(document.getElementById('rf-data').textContent);
-    const CID  = 'Ov23likbVZBfG5a3rnEu';
-    const CBCK = 'https://reachflow.site/auth/callback';
+<!-- 👁️ المشاهدات -->
+<div class="views">
+  <img class="eye" src="https://cdn-icons-png.flaticon.com/512/159/159604.png">
+  1k
+</div>
 
-    /* cursor */
-    const cur   = document.getElementById('cursor');
-    const touch = window.matchMedia('(hover:none)').matches;
-    if (!touch) {
-      document.addEventListener('mousemove', e => {
-        cur.style.left = e.clientX + 'px';
-        cur.style.top  = e.clientY + 'px';
-      });
-      document.querySelectorAll('a,button').forEach(el => {
-        el.addEventListener('mouseenter', () => cur.classList.add('big'));
-        el.addEventListener('mouseleave', () => cur.classList.remove('big'));
-      });
-    }
+<script>
+function startSite(){
+  document.querySelector(".overlay").style.display="none";
 
-    /* edit button — owner only */
-    const editBtn     = document.getElementById('edit-btn');
-    const storedUser  = sessionStorage.getItem('rf_user');
-    const storedToken = sessionStorage.getItem('rf_token');
-    const isOwner     = storedUser && storedUser.toLowerCase() === D.login.toLowerCase() && storedToken;
-    if (isOwner) {
-      editBtn.style.display = 'inline-flex';
-      editBtn.addEventListener('click', e => {
-        e.preventDefault();
-        sessionStorage.setItem('rf_editData', JSON.stringify(D));
-        window.location.href = '/editor.html?user=' + encodeURIComponent(D.login);
-      });
-    }
+  const video = document.getElementById("bgVideo");
+  const music = document.getElementById("bgMusic");
 
-    /* audio controller */
-    const audioEl = document.getElementById('bg-audio');
-    if (audioEl) {
-      const playBtn  = document.getElementById('audio-play');
-      const volSlider= document.getElementById('audio-vol');
-      const muteBtn  = document.getElementById('audio-mute');
-      audioEl.volume = 0.5;
-      let muted = false;
+  video.play();
+  music.volume = 0.7;
+  music.play();
+}
+</script>
 
-      playBtn.addEventListener('click', () => {
-        if (audioEl.paused) {
-          audioEl.play().catch(() => {});
-          playBtn.innerHTML = '&#9646;&#9646;';
-        } else {
-          audioEl.pause();
-          playBtn.innerHTML = '&#9654;';
-        }
-      });
-      volSlider.addEventListener('input', () => {
-        audioEl.volume = volSlider.value;
-        if (muted && +volSlider.value > 0) { muted = false; audioEl.muted = false; muteBtn.innerHTML = '&#128266;'; }
-      });
-      muteBtn.addEventListener('click', () => {
-        muted = !muted;
-        audioEl.muted = muted;
-        muteBtn.innerHTML = muted ? '&#128263;' : '&#128266;';
-      });
-    }
-  })();
-  </script>
 </body>
 </html>
