@@ -1,14 +1,89 @@
-<!DOCTYPE html>
+// regen-spaces.js — regenerate all user space HTML files using the current buildTemplate
+// Run from repo root: node regen-spaces.js
+
+const fs   = require('fs');
+const path = require('path');
+
+/* ── Helpers matching worker/index.js ── */
+
+function esc(str) {
+  return String(str)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
+function sanitizeUrl(raw) {
+  const s = String(raw || '').trim().slice(0, 500);
+  if (!s) return '';
+  try {
+    const u = new URL(s);
+    return (u.protocol === 'http:' || u.protocol === 'https:') ? s : '';
+  } catch { return ''; }
+}
+
+function sanitizeData(raw) {
+  const color = /^#[0-9a-fA-F]{6}$/.test(String(raw.accentColor || '').trim())
+    ? String(raw.accentColor).trim() : '#8b5cf6';
+  return {
+    login:       String(raw.login    || '').trim().slice(0, 100),
+    name:        String(raw.name     || '').trim().slice(0, 60) || 'Developer',
+    text:        String(raw.text     || '').trim().slice(0, 500),
+    avatar:      sanitizeUrl(raw.avatar),
+    github:      sanitizeUrl(raw.github),
+    bgUrl:       sanitizeUrl(raw.bgUrl),
+    musicUrl:    sanitizeUrl(raw.musicUrl),
+    accentColor: color,
+  };
+}
+
+function buildTemplate(d) {
+  const login    = esc(d.login);
+  const name     = esc(d.name  || 'Developer');
+  const text     = esc(d.text  || '');
+  const avatar   = esc(d.avatar || '');
+  const github   = esc(d.github || `https://github.com/${d.login}`);
+  const bgUrl    = esc(d.bgUrl    || '');
+  const musicUrl = esc(d.musicUrl || '');
+  const accent   = /^#[0-9a-fA-F]{6}$/.test(d.accentColor) ? d.accentColor : '#8b5cf6';
+
+  const isVideo  = bgUrl && /\.(mp4|webm)(\?.*)?$/i.test(bgUrl);
+  const hasBg    = !!bgUrl;
+  const hasMusic = !!musicUrl;
+
+  const bgHtml = isVideo
+    ? `<video id="bg-vid" autoplay muted loop playsinline><source src="${bgUrl}"></video>`
+    : hasBg
+      ? `<div id="bg-img" style="background-image:url('${bgUrl}')"></div>`
+      : `<div id="bg-grid"></div>`;
+
+  const audioHtml = hasMusic ? `
+  <audio id="bg-audio" loop preload="none"><source src="${musicUrl}"></audio>
+  <div id="audio-ctrl" aria-label="Music player">
+    <button id="audio-play" title="Play / Pause">&#9654;</button>
+    <input id="audio-vol" type="range" min="0" max="1" step="0.05" value="0.5" aria-label="Volume">
+    <button id="audio-mute" title="Mute">&#128266;</button>
+    <span id="audio-lbl">&#9834; music</span>
+  </div>` : '';
+
+  const spaceJSON = JSON.stringify({
+    login: d.login, name: d.name || 'Developer', text: d.text || '',
+    avatar: d.avatar || '', github: d.github || '',
+    bgUrl: d.bgUrl || '', musicUrl: d.musicUrl || '',
+    accentColor: accent,
+  }).replace(/<\/script>/gi, '<\\/script>');
+
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3boxl — reachflow</title>
+  <title>${name} — reachflow</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
-    :root{--accent:#8b5cf6;--bg:#060606;--fg:#efefef;--dim:rgba(239,239,239,.28);--ease:cubic-bezier(.23,1,.32,1)}
+    :root{--accent:${accent};--bg:#060606;--fg:#efefef;--dim:rgba(239,239,239,.28);--ease:cubic-bezier(.23,1,.32,1)}
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     html,body{height:100%}
     body{background:var(--bg);color:var(--fg);font-family:'JetBrains Mono',monospace;
@@ -95,7 +170,7 @@
   </style>
 </head>
 <body>
-  <script id="rf-data" type="application/json">{"login":"3boxl","name":"3boxl","text":"","avatar":"https://avatars.githubusercontent.com/u/78750984?v=4","github":"https://github.com/3boxl","bgUrl":"","musicUrl":"","accentColor":"#8b5cf6"}</script>
+  <script id="rf-data" type="application/json">${spaceJSON}<\/script>
 
   <div id="cursor" aria-hidden="true"></div>
 
@@ -104,21 +179,21 @@
     <a href="/spaces" class="nav-back">&#8592; spaces</a>
   </nav>
 
-  <div id="bg-grid"></div>
+  ${bgHtml}
   <div class="bg-overlay"></div>
 
   <div class="stage">
     <div class="av-ring">
       <div class="av-inner">
-        <img class="av-img" src="https://avatars.githubusercontent.com/u/78750984?v=4" alt="3boxl">
+        <img class="av-img" src="${avatar}" alt="${name}">
       </div>
     </div>
-    <div class="sp-name">3boxl</div>
-    
-    <a href="https://github.com/3boxl" target="_blank" rel="noopener" class="sp-gh">GitHub &#8599;</a>
+    <div class="sp-name">${name}</div>
+    ${text ? `<p class="sp-text">${text}</p>` : ''}
+    <a href="${github}" target="_blank" rel="noopener" class="sp-gh">GitHub &#8599;</a>
   </div>
 
-  
+  ${audioHtml}
 
   <a href="#" id="edit-btn" aria-label="Edit your space">&#x270F; Edit</a>
 
@@ -190,6 +265,81 @@
       });
     }
   })();
-  </script>
+  <\/script>
 </body>
-</html>
+</html>`;
+}
+
+/* ── Extract data from old-style or new-style HTML ── */
+
+function extractData(html, login) {
+  // Try new format: <script id="rf-data" type="application/json">...</script>
+  const jsonMatch = html.match(/<script\s+id="rf-data"\s+type="application\/json">([\s\S]*?)<\/script>/);
+  if (jsonMatch) {
+    try {
+      const raw = JSON.parse(jsonMatch[1]);
+      // If accent is old green default, upgrade to violet
+      if (!raw.accentColor || raw.accentColor === '#00ff88') raw.accentColor = '#8b5cf6';
+      return sanitizeData(raw);
+    } catch (e) {
+      console.warn(`  [WARN] Failed to parse rf-data JSON for ${login}: ${e.message}`);
+    }
+  }
+
+  // Fall back to old-style extraction
+  const titleMatch = html.match(/<title>([^<]+?)\s*[—–-]\s*reachflow<\/title>/i)
+    || html.match(/<title>([^<]+?)\s*&#8212;\s*reachflow<\/title>/i);
+  const name = titleMatch ? titleMatch[1].trim() : login;
+
+  const avatarMatch = html.match(/src="(https:\/\/avatars\.githubusercontent\.com\/[^"]+)"/);
+  const avatar = avatarMatch ? avatarMatch[1] : `https://github.com/${login}.png`;
+
+  const ghMatch = html.match(/href="(https:\/\/github\.com\/[^"]+)"/);
+  const github = ghMatch ? ghMatch[1] : `https://github.com/${login}`;
+
+  return sanitizeData({
+    login,
+    name,
+    text:        '',
+    avatar,
+    github,
+    bgUrl:       '',
+    musicUrl:    '',
+    accentColor: '#8b5cf6',
+  });
+}
+
+/* ── Main ── */
+
+const spacesDir = path.join(__dirname, 'spaces');
+const dirs = fs.readdirSync(spacesDir).filter(d => {
+  const full = path.join(spacesDir, d);
+  return fs.statSync(full).isDirectory();
+});
+
+let updated = 0, skipped = 0, failed = 0;
+
+for (const login of dirs) {
+  const htmlPath = path.join(spacesDir, login, 'index.html');
+  if (!fs.existsSync(htmlPath)) {
+    console.log(`  [SKIP] ${login} — no index.html`);
+    skipped++;
+    continue;
+  }
+
+  try {
+    const html = fs.readFileSync(htmlPath, 'utf8');
+    const data = extractData(html, login);
+    // Make sure login matches directory name
+    data.login = login;
+    const newHtml = buildTemplate(data);
+    fs.writeFileSync(htmlPath, newHtml, 'utf8');
+    console.log(`  [OK]   ${login} (accent: ${data.accentColor})`);
+    updated++;
+  } catch (e) {
+    console.error(`  [FAIL] ${login}: ${e.message}`);
+    failed++;
+  }
+}
+
+console.log(`\nDone: ${updated} updated, ${skipped} skipped, ${failed} failed.`);

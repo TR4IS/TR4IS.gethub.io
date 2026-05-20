@@ -71,7 +71,7 @@ function sanitizeUrl(raw) {
 
 function sanitizeData(raw) {
   const color = /^#[0-9a-fA-F]{6}$/.test(String(raw.accentColor || '').trim())
-    ? String(raw.accentColor).trim() : '#00ff88';
+    ? String(raw.accentColor).trim() : '#8b5cf6';
   return {
     login:       String(raw.login    || '').trim().slice(0, 100),
     name:        String(raw.name     || '').trim().slice(0, 60) || 'Developer',
@@ -275,7 +275,7 @@ function buildTemplate(d) {
   const github   = esc(d.github || `https://github.com/${d.login}`);
   const bgUrl    = esc(d.bgUrl    || '');
   const musicUrl = esc(d.musicUrl || '');
-  const accent   = /^#[0-9a-fA-F]{6}$/.test(d.accentColor) ? d.accentColor : '#00ff88';
+  const accent   = /^#[0-9a-fA-F]{6}$/.test(d.accentColor) ? d.accentColor : '#8b5cf6';
 
   const isVideo  = bgUrl && /\.(mp4|webm)(\?.*)?$/i.test(bgUrl);
   const hasBg    = !!bgUrl;
