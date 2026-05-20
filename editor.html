@@ -2170,6 +2170,18 @@
     const avatarUrl = pfpImg && pfpImg.src && !pfpImg.src.startsWith('blob:')
       ? pfpImg.src : D.avatar || '';
 
+    const pfpEl  = document.getElementById('pfp-wrap');
+    const nameEl = document.getElementById('name-el');
+    const bioEl  = document.getElementById('bio-el');
+    const sbEl   = document.getElementById('social-bar');
+
+    const stickers = S.stickers.map(s => {
+      const el = document.getElementById(s.id);
+      if (!el || !s.url || s.url.startsWith('blob:')) return null;
+      return { url: s.url, size: s.size, ...elToFrac(el),
+               rotate: getT(s.id).rotate, scale: getT(s.id).scale };
+    }).filter(Boolean);
+
     const payload = {
       token,
       data: {
@@ -2181,6 +2193,22 @@
         bgUrl:       S.bgUrl    || '',
         musicUrl:    S.musicUrl || '',
         accentColor: S.accent,
+        // Extended editor state
+        font:        S.font        || 'Bebas Neue',
+        nameColor:   S.nameColor   || '#f0f0f0',
+        bioColor:    S.bioColor    || '#888888',
+        shadow:      S.shadow      || 'glow',
+        ring:        S.ring        || 'spin',
+        bg:          S.bg          || 'none',
+        bgTint:      S.bgTint      || '',
+        playerTpl:   S.playerTpl   || 'pill',
+        anim:        S.anim        || 'none',
+        pfpPos:  pfpEl  ? { ...elToFrac(pfpEl),  rotate: getT('pfp-wrap').rotate, scale: getT('pfp-wrap').scale  } : null,
+        namePos: nameEl ? { ...elToFrac(nameEl), rotate: getT('name-el').rotate,  scale: getT('name-el').scale   } : null,
+        bioPos:  bioEl  ? { ...elToFrac(bioEl),  rotate: getT('bio-el').rotate,   scale: getT('bio-el').scale    } : null,
+        socialPos: sbEl ? elToFrac(sbEl) : null,
+        socials:  S.socials  || [],
+        stickers,
       },
     };
 
@@ -2195,7 +2223,7 @@
         st.style.color = 'var(--accent)';
         st.textContent = '// saved ✓';
         // Update stored edit data with new values
-        Object.assign(D, { name: S.name, text: S.bio, bgUrl: S.bgUrl, musicUrl: S.musicUrl, accentColor: S.accent, avatar: avatarUrl });
+        Object.assign(D, payload.data);
         sessionStorage.setItem('rf_editData', JSON.stringify(D));
       } else {
         st.style.color = '#ff4466';
