@@ -198,7 +198,7 @@ async function handleCreateSpace(request, env) {
     github:      profile?.github || `https://github.com/${username}`,
     bgUrl:       '',
     musicUrl:    '',
-    accentColor: '#00ff88',
+    accentColor: '#8b5cf6',
   });
 
   const createRes = await fetch(
