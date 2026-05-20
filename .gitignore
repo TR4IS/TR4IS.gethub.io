@@ -1,0 +1,12 @@
+# Claude internal files
+.claude/
+
+# Wrangler cache (contains account metadata)
+worker/.wrangler/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/

@@ -4,13 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>reachflow — signing in</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%23060606'/><rect width='32' height='32' rx='5' fill='%238b5cf6' opacity='.15'/><text x='7' y='23' font-family='monospace' font-size='20' font-weight='900' fill='%238b5cf6'>r</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #060606; --fg: #efefef; --accent: #00ff88;
-      --dim: rgba(239,239,239,.28); --border: rgba(239,239,239,.08);
+      --bg: #060606; --fg: #efefef; --accent: #8b5cf6;
+      --dim: rgba(239,239,239,.28); --border: rgba(139,92,246,.18);
       --font-display: 'Bebas Neue', sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
@@ -55,7 +56,7 @@
     .terms-gate {
       width: 100%; text-align: left;
       border: 1px solid var(--border);
-      background: rgba(0,255,136,.03);
+      background: rgba(139,92,246,.04);
       padding: 20px 22px;
       display: flex; flex-direction: column; gap: 14px;
     }
@@ -99,7 +100,7 @@
 </head>
 <body>
   <div class="box" id="box">
-    <p class="status-label">// reachflow auth</p>
+    <p class="status-label"><svg width="14" height="14" viewBox="0 0 32 32" style="display:inline-block;vertical-align:middle;margin-right:6px" aria-hidden="true"><rect width="32" height="32" rx="5" fill="#8b5cf6"/><text x="10" y="22" font-family="monospace" font-size="17" font-weight="900" fill="white">r</text></svg>// reachflow auth</p>
     <p class="status-text" id="headline">Authenticating<span class="blink">_</span></p>
     <p class="sub" id="sub">Talking to GitHub, hang tight.</p>
   </div>

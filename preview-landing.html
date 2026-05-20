@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reachflow — your developer page</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%23070708'/><circle cx='16' cy='15' r='11' fill='%238b5cf6'/><text x='10' y='21' font-family='monospace' font-size='17' font-weight='900' fill='white'>r</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070708;
+      --fg: #f0f0f0;
+      --accent: #8b5cf6;
+      --dim: rgba(240,240,240,.32);
+      --border: rgba(240,240,240,.07);
+      --ease: cubic-bezier(.16,1,.3,1);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { height: 100%; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100vh;
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    /* subtle grain */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none;
+      opacity: .025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* cursor */
+    #cursor {
+      position: fixed; z-index: 9999; pointer-events: none;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--accent);
+      transform: translate(-50%, -50%);
+      mix-blend-mode: exclusion;
+      transition: width .22s var(--ease), height .22s var(--ease);
+    }
+    #cursor.big { width: 44px; height: 44px; opacity: .35; }
+
+    /* nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 28px 56px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .logo {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 1rem; letter-spacing: 6px; text-transform: uppercase;
+      color: var(--fg); text-decoration: none;
+    }
+    .logo em { color: var(--accent); font-style: normal; }
+
+    .nav-right { display: flex; align-items: center; gap: 32px; }
+    .nav-link {
+      font-size: .52rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--dim); text-decoration: none; transition: color .2s;
+    }
+    .nav-link:hover { color: var(--fg); }
+    .nav-signin {
+      font-size: .55rem; letter-spacing: 2px; text-transform: uppercase;
+      font-weight: 700; color: var(--bg); background: var(--accent);
+      padding: 9px 20px; text-decoration: none;
+      transition: opacity .2s; cursor: none;
+    }
+    .nav-signin:hover { opacity: .85; }
+
+    /* hero */
+    .hero {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 120px 56px 80px;
+    }
+
+    .hero-eyebrow {
+      font-size: .5rem; color: var(--accent);
+      letter-spacing: 5px; text-transform: uppercase;
+      margin-bottom: 32px;
+      opacity: 0; animation: rise .7s var(--ease) .05s forwards;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block; width: 28px; height: 1px;
+      background: var(--accent);
+    }
+
+    .hero-h1 {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(4.5rem, 11vw, 13rem);
+      line-height: .88; letter-spacing: -3px;
+      margin-bottom: 0;
+    }
+    .h1-line {
+      display: block; overflow: hidden;
+    }
+    .h1-line span {
+      display: block;
+      opacity: 0; transform: translateY(100%);
+    }
+    .h1-line:nth-child(1) span { animation: slideUp .75s var(--ease) .15s forwards; }
+    .h1-line:nth-child(2) span { animation: slideUp .75s var(--ease) .28s forwards; color: var(--accent); }
+    .h1-line:nth-child(3) span { animation: slideUp .75s var(--ease) .41s forwards; }
+
+    .hero-body {
+      margin-top: 48px;
+      display: flex; align-items: flex-end; justify-content: space-between;
+      flex-wrap: wrap; gap: 32px;
+      opacity: 0; animation: rise .7s var(--ease) .6s forwards;
+    }
+    .hero-sub {
+      font-size: clamp(.65rem, 1.1vw, .85rem);
+      color: var(--dim); line-height: 1.8; max-width: 400px;
+    }
+    .hero-sub strong { color: var(--fg); font-weight: 400; }
+
+    .hero-cta-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+    .hero-cta {
+      font-family: 'JetBrains Mono', monospace; font-weight: 700;
+      font-size: clamp(.75rem, 1.2vw, .95rem);
+      letter-spacing: 3px; text-transform: uppercase;
+      color: #080808; background: var(--accent);
+      padding: 18px 48px; text-decoration: none; cursor: none;
+      display: inline-flex; align-items: center; gap: 14px;
+      transition: box-shadow .3s var(--ease), transform .3s var(--ease);
+    }
+    .hero-cta:hover {
+      box-shadow: 0 0 0 6px rgba(139,92,246,.2), 0 24px 64px rgba(139,92,246,.25);
+      transform: translateY(-2px);
+    }
+    .cta-arrow { transition: transform .3s var(--ease); }
+    .hero-cta:hover .cta-arrow { transform: translateX(6px); }
+
+    .hero-count {
+      font-size: .46rem; color: rgba(240,240,240,.2);
+      letter-spacing: 2px; text-align: right;
+    }
+    .hero-count strong { color: rgba(240,240,240,.5); }
+
+    /* divider line */
+    .rule {
+      position: relative; z-index: 1;
+      border: none; border-top: 1px solid var(--border);
+      margin: 0 56px;
+    }
+
+    /* spaces showcase */
+    .showcase {
+      position: relative; z-index: 1;
+      padding: 56px 0 80px;
+    }
+    .showcase-hd {
+      padding: 0 56px 28px;
+      display: flex; align-items: baseline; gap: 20px;
+    }
+    .showcase-lbl {
+      font-size: .46rem; color: var(--dim); letter-spacing: 3px; text-transform: uppercase;
+    }
+    .showcase-track {
+      display: flex; gap: 14px; padding: 0 56px;
+      overflow-x: auto; scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .showcase-track::-webkit-scrollbar { display: none; }
+
+    .s-card {
+      flex-shrink: 0; width: 160px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.02);
+      padding: 20px 16px;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      text-decoration: none; cursor: none;
+      transition: border-color .25s, background .25s;
+    }
+    .s-card:hover { border-color: rgba(240,240,240,.18); background: rgba(255,255,255,.05); }
+    .s-card-av {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(255,255,255,.06);
+      background-size: cover; background-position: center;
+    }
+    .s-card-name {
+      font-size: .52rem; color: rgba(240,240,240,.5);
+      letter-spacing: 1px; text-align: center;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      width: 100%;
+    }
+    .s-card-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent); opacity: .5;
+    }
+
+    /* how it works */
+    .how {
+      position: relative; z-index: 1;
+      padding: 80px 56px;
+      border-top: 1px solid var(--border);
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 56px;
+    }
+    .how-item { display: flex; flex-direction: column; gap: 16px; }
+    .how-num {
+      font-size: .44rem; color: var(--accent); letter-spacing: 3px;
+    }
+    .how-title {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 1.4rem; letter-spacing: -0.5px;
+    }
+    .how-body {
+      font-size: .62rem; color: var(--dim); line-height: 1.75;
+    }
+
+    /* footer */
+    footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 24px 56px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: .44rem; color: rgba(240,240,240,.15); letter-spacing: 2px;
+    }
+    footer a { color: rgba(240,240,240,.15); text-decoration: none; transition: color .2s; }
+    footer a:hover { color: rgba(240,240,240,.45); }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(100%); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    @media (max-width: 900px) {
+      body { cursor: auto; }
+      #cursor { display: none; }
+      nav, .hero, .rule, .showcase-hd, .showcase-track, .how, footer { padding-left: 24px; padding-right: 24px; }
+      .rule { margin: 0 24px; }
+      .hero-h1 { letter-spacing: -1px; }
+      .hero-body { align-items: flex-start; }
+      .hero-cta-wrap { align-items: flex-start; }
+      .hero-count { text-align: left; }
+      .how { grid-template-columns: 1fr; gap: 36px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="cursor"></div>
+
+  <nav>
+    <a href="/" class="logo"><svg width="20" height="20" viewBox="0 0 32 32" style="display:inline-block;vertical-align:middle;margin-right:8px;flex-shrink:0" aria-hidden="true"><rect width="32" height="32" rx="5" fill="#8b5cf6"/><text x="10" y="22" font-family="monospace" font-size="17" font-weight="900" fill="white">r</text></svg>reach<em>.</em>flow</a>
+    <div class="nav-right">
+      <a href="/spaces" class="nav-link">spaces</a>
+      <a href="#" class="nav-signin" id="nav-signin">Sign in</a>
+    </div>
+  </nav>
+
+  <main class="hero">
+    <p class="hero-eyebrow">your developer page</p>
+    <h1 class="hero-h1">
+      <span class="h1-line"><span>Your page.</span></span>
+      <span class="h1-line"><span>Your rules.</span></span>
+      <span class="h1-line"><span>Free.</span></span>
+    </h1>
+    <div class="hero-body">
+      <p class="hero-sub">
+        Get a <strong>personal developer page</strong> in seconds.<br>
+        Customize fonts, colors, layout — everything.<br>
+        Share it anywhere. No setup, no hosting fees.
+      </p>
+      <div class="hero-cta-wrap">
+        <a href="#" class="hero-cta" id="cta-main">
+          Get my free page <span class="cta-arrow">→</span>
+        </a>
+        <p class="hero-count"><strong id="count">—</strong> developers already live</p>
+      </div>
+    </div>
+  </main>
+
+  <hr class="rule">
+
+  <section class="showcase">
+    <div class="showcase-hd">
+      <p class="showcase-lbl">// live right now</p>
+    </div>
+    <div class="showcase-track" id="track"></div>
+  </section>
+
+  <hr class="rule">
+
+  <section class="how">
+    <div class="how-item">
+      <p class="how-num">01 /</p>
+      <h3 class="how-title">Sign in with GitHub</h3>
+      <p class="how-body">One click. We read your public profile — name, avatar, bio. Nothing else.</p>
+    </div>
+    <div class="how-item">
+      <p class="how-num">02 /</p>
+      <h3 class="how-title">Your page is created</h3>
+      <p class="how-body">A live page at <span style="color:var(--accent)">reachflow.site/spaces/you</span> goes live in under a minute.</p>
+    </div>
+    <div class="how-item">
+      <p class="how-num">03 /</p>
+      <h3 class="how-title">Make it yours</h3>
+      <p class="how-body">Pick your font, colors, background, and layout. Full control, no code needed.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 reachflow · TR4IS</span>
+    <a href="/terms.html">.terms()</a>
+  </footer>
+
+  <script>
+  (function () {
+    /* cursor */
+    const cur = document.getElementById('cursor');
+    if (!window.matchMedia('(hover:none)').matches) {
+      document.addEventListener('mousemove', e => {
+        cur.style.left = e.clientX + 'px';
+        cur.style.top  = e.clientY + 'px';
+      });
+      document.querySelectorAll('a').forEach(el => {
+        el.addEventListener('mouseenter', () => cur.classList.add('big'));
+        el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+      });
+    }
+
+    /* auth */
+    const CID  = 'Ov23likbVZBfG5a3rnEu';
+    const CBCK = 'https://reachflow.site/auth/callback';
+    function startAuth(e) {
+      e.preventDefault();
+      const nonce = crypto.randomUUID();
+      sessionStorage.setItem('oauth_state', nonce);
+      window.location.href =
+        'https://github.com/login/oauth/authorize?client_id=' + CID +
+        '&redirect_uri=' + encodeURIComponent(CBCK) +
+        '&scope=read:user&state=' + encodeURIComponent(nonce);
+    }
+    document.getElementById('nav-signin').addEventListener('click', startAuth);
+    document.getElementById('cta-main').addEventListener('click', startAuth);
+
+    /* spaces */
+    fetch('https://api.github.com/repos/TR4IS/TR4IS.gethub.io/contents/spaces')
+      .then(r => r.json())
+      .then(data => {
+        const dirs = data.filter(d => d.type === 'dir');
+        document.getElementById('count').textContent = dirs.length;
+        const track = document.getElementById('track');
+        dirs.slice(0, 16).forEach(d => {
+          const card = document.createElement('a');
+          card.href = '/spaces/' + d.name + '/';
+          card.className = 's-card';
+          card.innerHTML =
+            '<div class="s-card-av" id="av-' + d.name + '"></div>' +
+            '<p class="s-card-name">' + d.name + '</p>' +
+            '<div class="s-card-dot"></div>';
+          track.appendChild(card);
+          fetch('https://api.github.com/users/' + d.name)
+            .then(r => r.json())
+            .then(u => {
+              if (u.avatar_url) {
+                const av = document.getElementById('av-' + d.name);
+                if (av) av.style.backgroundImage = 'url(' + u.avatar_url + ')';
+              }
+            }).catch(() => {});
+        });
+      })
+      .catch(() => { document.getElementById('count').textContent = '100+'; });
+  })();
+  </script>
+</body>
+</html>
