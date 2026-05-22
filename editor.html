@@ -2090,10 +2090,28 @@
   };
 
   /* ═══════════════════════════════════════
-     INIT FROM SESSION
+     INIT FROM STORAGE (localStorage, not sessionStorage)
   ═══════════════════════════════════════ */
-  (function initFromSession() {
-    const raw = sessionStorage.getItem('rf_editData');
+  (async function initFromStorage() {
+    // Prefer data passed from space page (stored on click-edit)
+    let raw = localStorage.getItem('rf_editData');
+
+    // If missing, try fetching live space HTML and extracting rf-data
+    if (!raw) {
+      const user = localStorage.getItem('rf_user')
+        || new URLSearchParams(window.location.search).get('user');
+      if (user) {
+        try {
+          const res = await fetch('/spaces/' + encodeURIComponent(user) + '/', { cache: 'no-store' });
+          if (res.ok) {
+            const html = await res.text();
+            const m = html.match(/<script\s+id="rf-data"\s+type="application\/json">([\s\S]*?)<\/script>/);
+            if (m) { raw = m[1]; localStorage.setItem('rf_editData', raw); }
+          }
+        } catch { /* offline or space not created yet */ }
+      }
+    }
+
     if (!raw) return; // demo mode — keep defaults
     let D;
     try { D = JSON.parse(raw); } catch { return; }
@@ -2146,20 +2164,26 @@
   ═══════════════════════════════════════ */
   window.saveSpace = async function () {
     const st = document.getElementById('ed-status');
-    const token = sessionStorage.getItem('rf_token');
-    const raw   = sessionStorage.getItem('rf_editData');
+    const token = localStorage.getItem('rf_token');
+    const raw   = localStorage.getItem('rf_editData');
 
-    if (!token || !raw) {
+    if (!token) {
       st.style.color = '#ff4466';
-      st.textContent = '// not signed in';
-      setTimeout(() => { st.textContent = ''; }, 3000);
+      st.textContent = '// not signed in — please sign in first';
+      setTimeout(() => { st.textContent = ''; }, 4000);
+      return;
+    }
+    if (!raw) {
+      st.style.color = '#ff4466';
+      st.textContent = '// no space data — open from your space page';
+      setTimeout(() => { st.textContent = ''; }, 4000);
       return;
     }
 
     let D;
     try { D = JSON.parse(raw); } catch {
       st.style.color = '#ff4466';
-      st.textContent = '// session error';
+      st.textContent = '// corrupt data — try signing in again';
       return;
     }
 
@@ -2218,22 +2242,43 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
+      if (!res.ok) {
+        let errMsg = 'server error ' + res.status;
+        try { const j = await res.json(); errMsg = j.error || errMsg; } catch {}
+        if (res.status === 401) {
+          // Token expired — clear and prompt re-login
+          localStorage.removeItem('rf_token');
+          errMsg = 'session expired — please sign in again';
+        }
+        st.style.color = '#ff4466';
+        st.textContent = '// ' + errMsg;
+        setTimeout(() => { st.textContent = ''; }, 5000);
+        return;
+      }
       const json = await res.json();
-      if (res.ok && json.ok) {
+      if (json.ok) {
         st.style.color = 'var(--accent)';
-        st.textContent = '// saved ✓';
-        // Update stored edit data with new values
+        st.textContent = '// saved ✓ — updating page…';
+        // Update stored edit data so next editor open has fresh state
         Object.assign(D, payload.data);
-        sessionStorage.setItem('rf_editData', JSON.stringify(D));
+        localStorage.setItem('rf_editData', JSON.stringify(D));
+        // Redirect to live space with cache-bust after short delay
+        setTimeout(() => {
+          window.location.href = '/spaces/' + encodeURIComponent(D.login) + '/?v=' + Date.now();
+        }, 1200);
       } else {
         st.style.color = '#ff4466';
-        st.textContent = '// error: ' + (json.error || res.status);
+        st.textContent = '// ' + (json.error || 'unknown error');
+        setTimeout(() => { st.textContent = ''; }, 4000);
       }
     } catch (err) {
       st.style.color = '#ff4466';
-      st.textContent = '// network error';
+      // Distinguish CORS/network from other JS errors
+      st.textContent = err.name === 'TypeError'
+        ? '// cannot reach save server — check your connection'
+        : '// ' + err.message;
+      setTimeout(() => { st.textContent = ''; }, 5000);
     }
-    setTimeout(() => { st.textContent = ''; }, 3000);
   };
 
 })();

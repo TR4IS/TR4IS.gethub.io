@@ -258,8 +258,8 @@
 
       /* ── Refresh / no code: check existing session ── */
       if (!code) {
-        const existingToken = sessionStorage.getItem('rf_token');
-        const existingUser  = sessionStorage.getItem('rf_user');
+        const existingToken = localStorage.getItem('rf_token');
+        const existingUser  = localStorage.getItem('rf_user');
         if (existingToken && existingUser) {
           headline.textContent = 'Checking';
           headline.className = 'status-text';
@@ -303,8 +303,8 @@
       }
 
       if (data.sessionToken) {
-        sessionStorage.setItem('rf_token', data.sessionToken);
-        sessionStorage.setItem('rf_user',  data.username);
+        localStorage.setItem('rf_token', data.sessionToken);
+        localStorage.setItem('rf_user',  data.username);
       }
 
       /* ── Edit flow ── */

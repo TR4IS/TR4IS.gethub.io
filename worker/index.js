@@ -630,13 +630,13 @@ function buildTemplate(d) {
 
     /* edit button — owner only */
     const editBtn = document.getElementById('edit-btn');
-    const storedUser  = sessionStorage.getItem('rf_user');
-    const storedToken = sessionStorage.getItem('rf_token');
+    const storedUser  = localStorage.getItem('rf_user');
+    const storedToken = localStorage.getItem('rf_token');
     if (storedUser && storedUser.toLowerCase() === D.login.toLowerCase() && storedToken) {
       editBtn.style.display = 'inline-flex';
       editBtn.addEventListener('click', e => {
         e.preventDefault();
-        sessionStorage.setItem('rf_editData', JSON.stringify(D));
+        localStorage.setItem('rf_editData', JSON.stringify(D));
         window.location.href = '/editor.html?user=' + encodeURIComponent(D.login);
       });
     }
