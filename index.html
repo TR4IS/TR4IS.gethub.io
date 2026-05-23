@@ -247,6 +247,32 @@
       .how-grid { grid-template-columns: 1fr; }
       footer { padding: 14px 20px; }
     }
+
+    /* ── Readability: scale up all small text ── */
+    .nav-link, .nav-signin { font-size: .84rem; }
+    .lang-toggle { font-size: .74rem; padding: 7px 13px; gap: 7px; border-color: rgba(139,92,246,.22); }
+    .lang-sep { font-size: .7rem; }
+    .hero-tag { font-size: .8rem; }
+    .hero-sub { font-size: .95rem; line-height: 2; }
+    .hero-cta { font-size: .88rem; padding: 15px 32px; }
+    .hero-count { font-size: .76rem; }
+    .section-lbl { font-size: .8rem; }
+    .s-card-name { font-size: .74rem; letter-spacing: .5px; }
+    .how-num { font-size: .74rem; }
+    .how-body { font-size: .88rem; line-height: 1.9; }
+    footer { font-size: .76rem; }
+
+    /* ── Arabic: kill letter-spacing (broken connected script) ── */
+    [dir="rtl"] * { letter-spacing: 0 !important; }
+    [dir="rtl"] .hero-sub { line-height: 2.1; }
+    [dir="rtl"] .how-body { line-height: 2; }
+
+    /* ── Language hint pulse (first visit) ── */
+    @keyframes langHint {
+      0%,100% { border-color: rgba(139,92,246,.22); box-shadow: none; }
+      50%      { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(139,92,246,.18); }
+    }
+    .lang-toggle.hinting { animation: langHint 1.5s ease .8s 3; }
   </style>
 </head>
 <body>
@@ -256,7 +282,10 @@
   <div class="nav-right">
     <a href="/spaces" class="nav-link" data-i18n="navSpaces">spaces</a>
     <a href="/downloads.html" class="nav-link" data-i18n="navDownloads">downloads</a>
-    <button class="lang-toggle" id="lang-toggle" aria-label="Switch language">
+    <button class="lang-toggle" id="lang-toggle"
+            title="Switch language · تبديل اللغة"
+            aria-label="Switch language">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:.55;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
       <span class="lang-opt on" data-lang="en">EN</span>
       <span class="lang-sep">|</span>
       <span class="lang-opt" data-lang="ar">AR</span>
@@ -449,6 +478,14 @@
       var c = document.getElementById('count');
       if (c) c.textContent = '100+';
     });
+
+  /* ── Language hint (pulse on first visit) ── */
+  if (!localStorage.getItem('rf_lang_seen')) {
+    var btn = document.getElementById('lang-toggle');
+    btn.classList.add('hinting');
+    btn.addEventListener('animationend', function () { btn.classList.remove('hinting'); }, { once: true });
+    localStorage.setItem('rf_lang_seen', '1');
+  }
 
   /* ── Init ── */
   var savedLang = localStorage.getItem('rf_lang') || 'en';
