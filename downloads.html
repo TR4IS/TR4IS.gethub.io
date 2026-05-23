@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Downloads — reachflow</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%23060606'/><rect width='32' height='32' rx='5' fill='%238b5cf6' opacity='.15'/><text x='7' y='23' font-family='monospace' font-size='20' font-weight='900' fill='%238b5cf6'>r</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:      #060606;
+      --fg:      #efefef;
+      --accent:  #8b5cf6;
+      --warn:    #f59e0b;
+      --border:  rgba(139,92,246,.14);
+      --dim:     rgba(239,239,239,.35);
+      --mono:    'JetBrains Mono', monospace;
+      --display: 'Bebas Neue', sans-serif;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      background-image:
+        linear-gradient(rgba(255,255,255,.016) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.016) 1px, transparent 1px);
+      background-size: 72px 72px;
+      color: var(--fg);
+      font-family: var(--mono);
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px;
+      background: rgba(6,6,6,.9);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+    .nav-brand {
+      font-family: var(--display); font-size: 1.1rem;
+      letter-spacing: 5px; color: var(--fg);
+    }
+    .nav-brand span { color: var(--accent); }
+    .nav-back {
+      font-size: .58rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--dim); transition: color .2s;
+    }
+    .nav-back:hover { color: var(--fg); }
+
+    /* ── Page layout ── */
+    main {
+      max-width: 880px; margin: 0 auto;
+      padding: 60px 28px 100px;
+      display: flex; flex-direction: column; gap: 44px;
+    }
+
+    /* ── Hero ── */
+    .hero { display: flex; flex-direction: column; gap: 12px; }
+    .hero-tag {
+      font-size: .48rem; color: var(--accent);
+      letter-spacing: 3px; text-transform: uppercase;
+    }
+    .hero h1 {
+      font-family: var(--display);
+      font-size: clamp(3.5rem, 8vw, 6rem);
+      letter-spacing: 4px; line-height: 1;
+      text-shadow: 0 0 80px rgba(139,92,246,.4);
+    }
+    .hero-sub {
+      font-size: .65rem; color: rgba(239,239,239,.4);
+      letter-spacing: 1px; line-height: 1.8; max-width: 480px;
+    }
+    .hero-sub a { color: var(--accent); border-bottom: 1px solid rgba(139,92,246,.3); }
+    .hero-sub a:hover { border-color: var(--accent); }
+
+    /* ── AV Notice ── */
+    .av-box {
+      border: 1px solid rgba(245,158,11,.3);
+      background: rgba(245,158,11,.04);
+      padding: 24px 28px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .av-head {
+      display: flex; align-items: center; gap: 12px;
+      font-size: .5rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--warn); font-weight: 700;
+    }
+    .av-icon {
+      width: 22px; height: 22px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      border: 1.5px solid var(--warn); color: var(--warn);
+      font-size: .65rem; font-weight: 900;
+    }
+    .av-body {
+      font-size: .62rem; color: rgba(239,239,239,.55);
+      line-height: 1.85; letter-spacing: .3px;
+    }
+    .av-body strong { color: rgba(239,239,239,.9); font-weight: 700; }
+    .av-list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .av-list li {
+      font-size: .56rem; color: rgba(245,158,11,.7);
+      letter-spacing: .5px;
+      padding-left: 14px; position: relative;
+    }
+    .av-list li::before { content: '↳'; position: absolute; left: 0; }
+
+    /* ── Section label ── */
+    .section-lbl {
+      font-size: .48rem; color: var(--accent);
+      letter-spacing: 3px; text-transform: uppercase;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Cards grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: rgba(6,6,6,.6);
+      padding: 26px 24px 22px;
+      display: flex; flex-direction: column; gap: 14px;
+      transition: border-color .2s, background .2s;
+      position: relative;
+    }
+    .card:hover {
+      background: rgba(139,92,246,.05);
+    }
+    /* Per-card accent border on hover via CSS variable */
+    .card:hover { border-color: var(--card-accent, var(--accent)); }
+    /* Subtle top accent line */
+    .card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 1px;
+      background: var(--card-accent, var(--accent));
+      opacity: 0; transition: opacity .2s;
+    }
+    .card:hover::before { opacity: .6; }
+
+    /* Card header */
+    .card-head {
+      display: flex; align-items: flex-start; gap: 14px;
+    }
+    .card-mono-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(var(--icon-rgb), .1);
+      border: 1px solid rgba(var(--icon-rgb), .25);
+      font-family: var(--display); font-size: 1rem;
+      letter-spacing: 2px;
+      color: rgb(var(--icon-rgb));
+    }
+    .card-titles { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+    .card-name {
+      font-size: .85rem; font-weight: 700; letter-spacing: 1px;
+      color: var(--fg);
+    }
+    .card-badges { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .badge {
+      font-size: .42rem; letter-spacing: 2px; text-transform: uppercase;
+      padding: 2px 7px;
+    }
+    .badge-ver {
+      color: rgba(239,239,239,.5); background: rgba(239,239,239,.06);
+      border: 1px solid rgba(239,239,239,.1);
+    }
+    .badge-warn {
+      color: var(--warn); background: rgba(245,158,11,.08);
+      border: 1px solid rgba(245,158,11,.3);
+    }
+    .badge-platform {
+      color: rgba(139,92,246,.8); background: rgba(139,92,246,.08);
+      border: 1px solid rgba(139,92,246,.2);
+    }
+
+    /* Description */
+    .card-desc {
+      font-size: .6rem; color: rgba(239,239,239,.45);
+      line-height: 1.85; letter-spacing: .3px; flex: 1;
+    }
+
+    /* Meta row */
+    .card-meta {
+      display: flex; align-items: center; gap: 8px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(239,239,239,.06);
+    }
+    .meta-size {
+      font-size: .48rem; color: rgba(239,239,239,.25);
+      letter-spacing: 1px; margin-left: auto;
+    }
+
+    /* Actions */
+    .card-actions {
+      display: flex; align-items: center; gap: 10px;
+      margin-top: 2px;
+    }
+    .source-link {
+      font-size: .52rem; letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(239,239,239,.28); transition: color .2s;
+      border-bottom: 1px solid rgba(239,239,239,.1);
+      padding-bottom: 1px;
+    }
+    .source-link:hover { color: rgba(239,239,239,.7); }
+
+    .dl-btn {
+      margin-left: auto;
+      font-family: var(--mono); font-weight: 700;
+      font-size: .58rem; letter-spacing: 3px; text-transform: uppercase;
+      color: #060606;
+      background: var(--card-accent, var(--accent));
+      border: 1.5px solid var(--card-accent, var(--accent));
+      padding: 9px 18px;
+      transition: background .2s, color .2s;
+      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 7px;
+    }
+    .dl-btn:hover {
+      background: transparent;
+      color: var(--card-accent, var(--accent));
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 14px 40px;
+      display: flex; justify-content: space-between;
+      font-size: .5rem; color: rgba(239,239,239,.12);
+      letter-spacing: 2px;
+    }
+    footer a { color: rgba(239,239,239,.12); transition: color .2s; }
+    footer a:hover { color: rgba(239,239,239,.4); }
+
+    /* ── Mobile ── */
+    @media (max-width: 640px) {
+      nav { padding: 14px 20px; }
+      main { padding: 40px 18px 80px; gap: 32px; }
+      .grid { grid-template-columns: 1fr; }
+      footer { padding: 14px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">REACH<span>_</span>FLOW</a>
+  <a href="/spaces" class="nav-back">&#8592; spaces</a>
+</nav>
+
+<main>
+
+  <!-- ── Hero ── -->
+  <div class="hero">
+    <p class="hero-tag">// free &amp; open source &middot; windows</p>
+    <h1>Downloads</h1>
+    <p class="hero-sub">
+      Tools built by <a href="https://github.com/TR4IS" target="_blank" rel="noopener">TR4IS</a>.
+      Free forever. Source code available on GitHub for every release.
+    </p>
+  </div>
+
+  <!-- ── Antivirus Notice ── -->
+  <div class="av-box">
+    <div class="av-head">
+      <div class="av-icon">!</div>
+      <span>Antivirus &amp; Windows Defender Notice</span>
+    </div>
+    <p class="av-body">
+      Some programs on this page apply <strong>system-level tweaks</strong>, write to
+      <strong>Windows Registry</strong> entries, monitor file system activity, or use
+      techniques that security software may not recognise. Windows Defender, SmartScreen,
+      and third-party antivirus tools may flag these as threats or
+      <strong>Potentially Unwanted Programs (PUP)</strong> &mdash; these are
+      <strong>false positives</strong>. The programs do exactly what is described, nothing more.
+    </p>
+    <ul class="av-list">
+      <li>All source code is publicly auditable on GitHub before you download</li>
+      <li>If flagged, add the file to your antivirus exclusions list and run again</li>
+      <li>Windows SmartScreen: click &ldquo;More info&rdquo; &rarr; &ldquo;Run anyway&rdquo;</li>
+      <li>When in doubt &mdash; scan with VirusTotal before running</li>
+    </ul>
+  </div>
+
+  <!-- ── Cards ── -->
+  <div>
+    <p class="section-lbl">// available programs &mdash; 4 tools</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- ── WindowsOptimizer ── -->
+    <div class="card" style="--card-accent:#f59e0b; --icon-rgb:245,158,11">
+      <div class="card-head">
+        <div class="card-mono-icon">WO</div>
+        <div class="card-titles">
+          <div class="card-name">WindowsOptimizer</div>
+          <div class="card-badges">
+            <span class="badge badge-ver">v1.3.4</span>
+            <span class="badge badge-warn">&#9888; AV Alert</span>
+            <span class="badge badge-platform">Windows</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="card-desc">
+        Applies system-level tweaks to reduce background process bloat, lower input
+        latency, and improve frame rates for gaming and heavy workloads. Modifies
+        Windows Registry entries and system configuration — your antivirus will
+        likely flag this. Add to exclusions before running.
+      </p>
+
+      <div class="card-meta">
+        <span class="badge badge-platform">EXE &middot; Installer</span>
+        <span class="meta-size">19 MB</span>
+      </div>
+      <div class="card-actions">
+        <a href="https://github.com/TR4IS/WindowsOptimizer" class="source-link" target="_blank" rel="noopener">Source &#8599;</a>
+        <a class="dl-btn"
+           href="https://github.com/TR4IS/WindowsOptimizer/releases/download/v1.3.4/WindowsOptimizerSetup.exe">
+          &#8595; Download
+        </a>
+      </div>
+    </div>
+
+    <!-- ── FileOrganizer ── -->
+    <div class="card" style="--card-accent:#8b5cf6; --icon-rgb:139,92,246">
+      <div class="card-head">
+        <div class="card-mono-icon">FO</div>
+        <div class="card-titles">
+          <div class="card-name">FileOrganizer</div>
+          <div class="card-badges">
+            <span class="badge badge-ver">v1.2.1</span>
+            <span class="badge badge-platform">Windows</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="card-desc">
+        Automatically organizes your Windows Downloads folder into categorized
+        subfolders &mdash; images, videos, PDFs, audio, archives, fonts, GIFs, and
+        more. Runs silently in the background and monitors new files as they arrive.
+      </p>
+
+      <div class="card-meta">
+        <span class="badge badge-platform">EXE &middot; Installer</span>
+        <span class="meta-size">17.8 MB</span>
+      </div>
+      <div class="card-actions">
+        <a href="https://github.com/TR4IS/FileOrganizer" class="source-link" target="_blank" rel="noopener">Source &#8599;</a>
+        <a class="dl-btn"
+           href="https://github.com/TR4IS/FileOrganizer/releases/download/v1.2.1/FileOrganizerSetup.exe">
+          &#8595; Download
+        </a>
+      </div>
+    </div>
+
+    <!-- ── J2P ── -->
+    <div class="card" style="--card-accent:#10b981; --icon-rgb:16,185,129">
+      <div class="card-head">
+        <div class="card-mono-icon">J2P</div>
+        <div class="card-titles">
+          <div class="card-name">J2P &mdash; Image to PDF</div>
+          <div class="card-badges">
+            <span class="badge badge-ver">v1.0.1</span>
+            <span class="badge badge-platform">Windows</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="card-desc">
+        Converts images (JPG, PNG, and more) to PDF in seconds. Select your images,
+        set an optional filename, click Convert &mdash; the PDF is saved directly to
+        your Downloads folder. Simple, fast, no account needed.
+      </p>
+
+      <div class="card-meta">
+        <span class="badge badge-platform">EXE &middot; Portable</span>
+        <span class="meta-size">25 MB</span>
+      </div>
+      <div class="card-actions">
+        <a href="https://github.com/TR4IS/J2P" class="source-link" target="_blank" rel="noopener">Source &#8599;</a>
+        <a class="dl-btn"
+           href="https://github.com/TR4IS/J2P/releases/download/v1.0.1/J2P-v1.0.1.exe">
+          &#8595; Download
+        </a>
+      </div>
+    </div>
+
+    <!-- ── SoundDeck ── -->
+    <div class="card" style="--card-accent:#06b6d4; --icon-rgb:6,182,212">
+      <div class="card-head">
+        <div class="card-mono-icon">SD</div>
+        <div class="card-titles">
+          <div class="card-name">SoundDeck</div>
+          <div class="card-badges">
+            <span class="badge badge-ver">v1.0.0</span>
+            <span class="badge badge-platform">Windows</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="card-desc">
+        A sound deck application for managing and triggering audio clips. First stable
+        release. Large install size due to the Electron runtime bundled with the app.
+      </p>
+
+      <div class="card-meta">
+        <span class="badge badge-platform">EXE &middot; Installer</span>
+        <span class="meta-size">73.6 MB</span>
+      </div>
+      <div class="card-actions">
+        <a href="https://github.com/TR4IS/SoundDeck" class="source-link" target="_blank" rel="noopener">Source &#8599;</a>
+        <a class="dl-btn"
+           href="https://github.com/TR4IS/SoundDeck/releases/download/v1.0.0/sounddeck.Setup.1.0.0.exe">
+          &#8595; Download
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+
+</main>
+
+<footer>
+  <span>&#169; 2026 reachflow.site &middot; TR4IS</span>
+  <a href="/terms.html">.terms()</a>
+</footer>
+
+</body>
+</html>
