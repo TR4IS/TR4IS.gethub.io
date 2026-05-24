@@ -235,7 +235,7 @@ function buildTemplate(d) {
   ></iframe>
   <footer>
     <span>&#169; 2026 reachflow.site &middot; TR4IS</span>
-    <a href="/terms.html">.terms()</a>
+    <a href="/terms">terms</a>
   </footer>
   <script id="user-html" type="text/x-user-html">${userHtml}<\/script>
   <script>
