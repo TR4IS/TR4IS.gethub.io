@@ -7,7 +7,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%23060606'/><rect width='32' height='32' rx='5' fill='%238b5cf6' opacity='.15'/><text x='7' y='23' font-family='monospace' font-size='20' font-weight='900' fill='%238b5cf6'>r</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -19,8 +19,6 @@
       --mono:    'JetBrains Mono', monospace;
       --display: 'Bebas Neue', sans-serif;
       --nav-h:   56px;
-      --foot-h:  36px;
-      --pane-h:  34px;
     }
 
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,9 +26,7 @@
     body { background: var(--bg); color: var(--fg); font-family: var(--mono); }
     a { color: inherit; text-decoration: none; }
 
-    /* ════════════════════════════════
-       NAV
-    ════════════════════════════════ */
+    /* ═══════════════ NAV ═══════════════ */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       height: var(--nav-h);
@@ -40,33 +36,13 @@
       border-bottom: 1px solid var(--border);
       backdrop-filter: blur(14px);
     }
-    .nav-brand {
-      font-family: var(--display); font-size: 1rem;
-      letter-spacing: 5px; flex-shrink: 0;
-    }
+    .nav-brand { font-family: var(--display); font-size: 1rem; letter-spacing: 5px; }
     .nav-brand span { color: var(--accent); }
-
-    .nav-center {
-      display: flex; align-items: center; gap: 10px;
-      font-size: .74rem; color: var(--dim);
+    .nav-right { display: flex; align-items: center; gap: 18px; }
+    .nav-login {
+      font-size: .72rem; letter-spacing: 1.5px;
+      color: rgba(139,92,246,.5);
     }
-    .nav-chip {
-      font-size: .58rem; letter-spacing: 2.5px; text-transform: uppercase;
-      color: var(--accent); background: rgba(139,92,246,.1);
-      border: 1px solid rgba(139,92,246,.28);
-      padding: 3px 9px;
-    }
-    .nav-slash { color: rgba(139,92,246,.3); }
-    .nav-login { font-weight: 700; color: var(--fg); letter-spacing: .5px; font-size: .82rem; }
-
-    .nav-right { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
-    .view-btn {
-      font-size: .7rem; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--dim); transition: color .2s;
-      padding-bottom: 1px; border-bottom: 1px solid transparent;
-    }
-    .view-btn:hover { color: var(--fg); border-color: rgba(239,239,239,.2); }
-
     #save-btn {
       font-family: var(--mono); font-weight: 700;
       font-size: .74rem; letter-spacing: 3px; text-transform: uppercase;
@@ -79,114 +55,55 @@
     #save-btn:hover:not(:disabled) { background: transparent; color: var(--accent); }
     #save-btn:disabled { opacity: .38; cursor: not-allowed; }
 
-    /* ════════════════════════════════
-       WORKSPACE (fixed, fills gap between nav and footer)
-    ════════════════════════════════ */
-    #workspace {
+    /* ═══════════════ TEXTAREA ═══════════════ */
+    #editor-wrap {
       position: fixed;
-      top: var(--nav-h);
-      bottom: var(--foot-h);
-      left: 0; right: 0;
-      display: flex;
+      top: var(--nav-h); bottom: 0; left: 0; right: 0;
     }
-
-    /* ── Editor pane ── */
-    #editor-pane {
-      width: 50%; height: 100%;
-      display: flex; flex-direction: column;
-      border-right: 1px solid var(--border);
-    }
-    .pane-bar {
-      height: var(--pane-h); flex-shrink: 0;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 16px;
-      background: rgba(0,0,0,.35);
-      border-bottom: 1px solid var(--border);
-    }
-    .pane-label {
-      font-size: .68rem; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--accent);
-    }
-    .pane-meta {
-      font-size: .62rem; color: rgba(239,239,239,.22);
-      letter-spacing: .5px;
-    }
-    .pane-meta.warn { color: #ef4444; }
-
-    /* Editor body: line numbers + textarea */
-    #editor-body {
-      flex: 1; min-height: 0;
-      display: flex; overflow: hidden;
-      background: var(--bg);
-    }
-
-    #line-nums {
-      width: 50px; flex-shrink: 0;
-      padding: 14px 10px 14px 0;
-      overflow: hidden;
-      user-select: none; pointer-events: none;
-      font: 13px/1.625 var(--mono);
-      color: rgba(139,92,246,.28);
-      text-align: right;
-      border-right: 1px solid rgba(139,92,246,.08);
-      background: rgba(0,0,0,.18);
-    }
-
     #code-area {
-      flex: 1; min-width: 0;
-      padding: 14px 20px;
-      background: transparent;
-      border: none; outline: none;
+      width: 100%; height: 100%;
+      padding: 28px 36px;
+      background: var(--bg);
       color: #d4d4f0;
-      font: 13px/1.625 var(--mono);
-      resize: none;
+      font-family: var(--mono);
+      font-size: 13.5px;
+      line-height: 1.75;
+      border: none; outline: none; resize: none;
       tab-size: 2;
       white-space: pre;
       overflow: auto;
       caret-color: var(--accent);
     }
-    #code-area::selection { background: rgba(139,92,246,.22); }
+    #code-area::placeholder { color: rgba(139,92,246,.22); font-style: italic; }
+    #code-area::selection   { background: rgba(139,92,246,.22); }
 
-    /* ── Preview pane ── */
-    #preview-pane {
-      flex: 1; height: 100%;
-      display: flex; flex-direction: column;
-      background: #0a0a0b;
+    /* ═══════════════ AUTH WALL ═══════════════ */
+    #auth-wall {
+      position: fixed; inset: 0; z-index: 600;
+      background: var(--bg);
+      background-image:
+        linear-gradient(rgba(255,255,255,.016) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.016) 1px, transparent 1px);
+      background-size: 72px 72px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 18px;
     }
-    #preview-frame {
-      flex: 1; min-height: 0;
-      width: 100%; border: none;
+    #auth-wall.gone { display: none; }
+    .aw-tag   { font-size: .76rem; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; }
+    .aw-title { font-family: var(--display); font-size: 3rem; letter-spacing: 4px; text-align: center; }
+    .aw-sub   { font-size: .9rem; color: var(--dim); text-align: center; line-height: 1.8; max-width: 360px; }
+    .aw-btn {
+      font-family: var(--mono); font-weight: 700;
+      font-size: .78rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--bg); background: var(--accent);
+      border: 1.5px solid var(--accent);
+      padding: 13px 30px; cursor: pointer;
+      transition: background .2s, color .2s;
+      margin-top: 10px;
     }
+    .aw-btn:hover { background: transparent; color: var(--accent); }
 
-    /* Status dot */
-    .status-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: rgba(139,92,246,.5); display: inline-block;
-    }
-    .status-dot.live   { background: #10b981; }
-    .status-dot.typing { background: var(--accent); animation: blink .5s ease infinite alternate; }
-    @keyframes blink { to { opacity: .2; } }
-
-    /* ════════════════════════════════
-       FOOTER
-    ════════════════════════════════ */
-    footer {
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
-      height: var(--foot-h);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 28px;
-      background: rgba(6,6,6,.96);
-      border-top: 1px solid var(--border);
-      font-size: .64rem; color: rgba(239,239,239,.18);
-      letter-spacing: 1.5px;
-    }
-    footer a { color: rgba(239,239,239,.18); transition: color .2s; }
-    footer a:hover { color: rgba(239,239,239,.5); }
-    .foot-hint { font-size: .58rem; color: rgba(139,92,246,.35); }
-
-    /* ════════════════════════════════
-       WAIT OVERLAY
-    ════════════════════════════════ */
+    /* ═══════════════ WAIT OVERLAY ═══════════════ */
     #wait-overlay {
       position: fixed; inset: 0; z-index: 500;
       background: rgba(6,6,6,.88);
@@ -205,82 +122,33 @@
       display: flex; flex-direction: column; align-items: center; gap: 22px;
       position: relative;
     }
-    /* Top accent line */
     .wait-card::before {
       content: ''; position: absolute; top: 0; left: 0; right: 0;
       height: 2px; background: var(--accent);
     }
-
-    /* Icon circle */
     .w-icon {
       width: 60px; height: 60px; border-radius: 50%;
       border: 2px solid var(--accent);
       display: flex; align-items: center; justify-content: center;
       font-size: 1.5rem; color: var(--accent);
-      flex-shrink: 0;
     }
-    .w-icon.spin {
-      border-top-color: transparent;
-      animation: wspin .75s linear infinite;
-    }
+    .w-icon.spin { border-top-color: transparent; animation: wspin .75s linear infinite; }
     .w-icon.ok   { background: rgba(16,185,129,.08); border-color: #10b981; color: #10b981; animation: none; }
     .w-icon.fail { background: rgba(239,68,68,.08);  border-color: #ef4444; color: #ef4444; animation: none; }
     @keyframes wspin { to { transform: rotate(360deg); } }
-
-    /* Title */
-    .w-title {
-      font-family: var(--display); font-size: 1.55rem;
-      letter-spacing: 4px; text-align: center; line-height: 1.15;
-    }
-    /* Sub */
-    .w-sub {
-      font-size: .82rem; color: rgba(239,239,239,.5);
-      letter-spacing: .3px; text-align: center; line-height: 1.75;
-    }
-
-    /* Progress bar */
-    .w-prog-wrap {
-      width: 100%; height: 3px;
-      background: rgba(139,92,246,.1);
-      overflow: hidden;
-    }
-    .w-prog-fill {
-      height: 100%; width: 0%;
-      background: var(--accent);
-      box-shadow: 0 0 10px rgba(139,92,246,.7);
-      transition: width .5s ease;
-    }
-
-    /* Steps */
+    .w-title { font-family: var(--display); font-size: 1.55rem; letter-spacing: 4px; text-align: center; line-height: 1.15; }
+    .w-sub   { font-size: .82rem; color: rgba(239,239,239,.5); letter-spacing: .3px; text-align: center; line-height: 1.75; }
+    .w-prog-wrap { width: 100%; height: 3px; background: rgba(139,92,246,.1); overflow: hidden; }
+    .w-prog-fill { height: 100%; width: 0%; background: var(--accent); box-shadow: 0 0 10px rgba(139,92,246,.7); transition: width .5s ease; }
     .w-steps { width: 100%; display: flex; flex-direction: column; gap: 12px; }
-    .w-step {
-      display: flex; align-items: center; gap: 12px;
-      font-size: .74rem; color: rgba(239,239,239,.25);
-      transition: color .3s;
-    }
+    .w-step  { display: flex; align-items: center; gap: 12px; font-size: .74rem; color: rgba(239,239,239,.25); transition: color .3s; }
     .w-step.done   { color: rgba(239,239,239,.65); }
     .w-step.active { color: var(--fg); }
-
-    .step-dot {
-      width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
-      border: 1px solid rgba(139,92,246,.2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: .5rem; color: rgba(139,92,246,.3);
-    }
+    .step-dot { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; border: 1px solid rgba(139,92,246,.2); display: flex; align-items: center; justify-content: center; font-size: .5rem; color: rgba(139,92,246,.3); }
     .w-step.done   .step-dot { border-color: #10b981; color: #10b981; background: rgba(16,185,129,.08); }
-    .w-step.active .step-dot {
-      border-color: var(--accent); border-top-color: transparent;
-      animation: wspin .7s linear infinite;
-    }
-
-    /* Meta */
-    .w-meta {
-      font-size: .66rem; color: rgba(239,239,239,.2);
-      letter-spacing: 1px; text-align: center;
-    }
+    .w-step.active .step-dot { border-color: var(--accent); border-top-color: transparent; animation: wspin .7s linear infinite; }
+    .w-meta { font-size: .66rem; color: rgba(239,239,239,.2); letter-spacing: 1px; text-align: center; }
     .w-meta strong { color: rgba(239,239,239,.5); }
-
-    /* Action button */
     .w-action {
       font-family: var(--mono); font-weight: 700;
       font-size: .74rem; letter-spacing: 3px; text-transform: uppercase;
@@ -293,133 +161,58 @@
     }
     .w-action:hover { background: transparent; color: var(--accent); }
 
-    /* ════════════════════════════════
-       AUTH OVERLAY (not owner)
-    ════════════════════════════════ */
-    #auth-wall {
-      position: fixed; inset: 0; z-index: 600;
-      background: var(--bg);
-      background-image:
-        linear-gradient(rgba(255,255,255,.016) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.016) 1px, transparent 1px);
-      background-size: 72px 72px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 18px;
-    }
-    #auth-wall.gone { display: none; }
-    .aw-tag { font-size: .76rem; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; }
-    .aw-title {
-      font-family: var(--display); font-size: 3rem;
-      letter-spacing: 4px; text-align: center;
-    }
-    .aw-sub { font-size: .9rem; color: var(--dim); text-align: center; line-height: 1.8; max-width: 360px; }
-    .aw-btn {
-      font-family: var(--mono); font-weight: 700;
-      font-size: .78rem; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--bg); background: var(--accent);
-      border: 1.5px solid var(--accent);
-      padding: 13px 30px; cursor: pointer;
-      transition: background .2s, color .2s;
-      margin-top: 10px;
-    }
-    .aw-btn:hover { background: transparent; color: var(--accent); }
-
-    /* ── Mobile ── */
-    @media (max-width: 680px) {
+    @media (max-width: 600px) {
       nav { padding: 0 16px; }
-      .nav-center { display: none; }
-      #workspace { flex-direction: column; }
-      #editor-pane { width: 100%; height: 55%; border-right: none; border-bottom: 1px solid var(--border); }
-      #preview-pane { height: 45%; }
-      footer { padding: 0 16px; }
-      .foot-hint { display: none; }
+      #code-area { padding: 18px; font-size: 12.5px; }
     }
   </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════
+<!-- ════════════════════════════════
      AUTH WALL — shown only when auth fails
-══════════════════════════════════════ -->
+════════════════════════════════ -->
 <div id="auth-wall" class="gone">
   <p class="aw-tag" id="aw-tag">// access denied</p>
   <h1 class="aw-title" id="aw-title">NOT YOUR SPACE</h1>
-  <p class="aw-sub" id="aw-msg">You can only edit your own space. Sign in to continue.</p>
+  <p class="aw-sub" id="aw-msg">You can only edit your own space.</p>
   <a href="#" id="aw-signin" class="aw-btn" style="display:none">&#x2192; Sign in with GitHub</a>
-  <a href="/" class="aw-btn" id="aw-home">&#8592; Go home</a>
+  <a href="/" class="aw-btn">&#8592; Go home</a>
 </div>
 
-<!-- ══════════════════════════════════════
+<!-- ════════════════════════════════
      NAV
-══════════════════════════════════════ -->
+════════════════════════════════ -->
 <nav>
   <a href="/" class="nav-brand">REACH<span>_</span>FLOW</a>
-  <div class="nav-center">
-    <span class="nav-chip">editing</span>
-    <span class="nav-slash">/</span>
-    <span class="nav-login" id="nav-login">...</span>
-  </div>
   <div class="nav-right">
-    <a href="#" class="view-btn" id="view-btn" target="_blank" rel="noopener">View live &#8599;</a>
-    <button id="save-btn" disabled>&#x2191;&nbsp;Save</button>
+    <span class="nav-login" id="nav-login"></span>
+    <button id="save-btn" disabled>&#x2191;&nbsp;Send</button>
   </div>
 </nav>
 
-<!-- ══════════════════════════════════════
-     WORKSPACE
-══════════════════════════════════════ -->
-<div id="workspace">
-
-  <!-- Left: editor -->
-  <div id="editor-pane">
-    <div class="pane-bar">
-      <span class="pane-label">// index.html</span>
-      <span class="pane-meta" id="char-count">0 / 500,000</span>
-    </div>
-    <div id="editor-body">
-      <div id="line-nums" aria-hidden="true">1</div>
-      <textarea
-        id="code-area"
-        spellcheck="false"
-        autocorrect="off"
-        autocapitalize="off"
-        autocomplete="off"
-        placeholder="Loading your space..."
-      ></textarea>
-    </div>
-  </div>
-
-  <!-- Right: preview -->
-  <div id="preview-pane">
-    <div class="pane-bar">
-      <span class="pane-label">// preview</span>
-      <span class="status-dot" id="status-dot"></span>
-    </div>
-    <iframe
-      id="preview-frame"
-      sandbox="allow-scripts allow-forms allow-popups allow-pointer-lock allow-modals"
-      title="Live preview"
-    ></iframe>
-  </div>
-
+<!-- ════════════════════════════════
+     EDITOR
+════════════════════════════════ -->
+<div id="editor-wrap">
+  <textarea
+    id="code-area"
+    spellcheck="false"
+    autocorrect="off"
+    autocapitalize="off"
+    autocomplete="off"
+    placeholder="Write your page HTML here…"
+  ></textarea>
 </div>
 
-<!-- ══════════════════════════════════════
-     FOOTER
-══════════════════════════════════════ -->
-<footer>
-  <span class="foot-hint">Ctrl+S to save &nbsp;&middot;&nbsp; Tab inserts 2 spaces</span>
-  <span>&#169; 2026 reachflow &middot; TR4IS &nbsp;&middot;&nbsp; <a href="/terms.html">.terms()</a></span>
-</footer>
-
-<!-- ══════════════════════════════════════
+<!-- ════════════════════════════════
      WAIT OVERLAY
-══════════════════════════════════════ -->
+════════════════════════════════ -->
 <div id="wait-overlay">
   <div class="wait-card">
     <div class="w-icon spin" id="w-icon"></div>
     <p class="w-title" id="w-title">SAVING CHANGES</p>
-    <p class="w-sub"  id="w-sub">Uploading your code...</p>
+    <p class="w-sub"   id="w-sub">Uploading your code...</p>
 
     <div class="w-prog-wrap">
       <div class="w-prog-fill" id="w-bar"></div>
@@ -427,44 +220,33 @@
 
     <div class="w-steps">
       <div class="w-step active" id="ws-save">
-        <div class="step-dot"></div>
-        <span>Saving to server</span>
+        <div class="step-dot"></div><span>Saving to server</span>
       </div>
       <div class="w-step" id="ws-commit">
-        <div class="step-dot"></div>
-        <span>Committing to GitHub</span>
+        <div class="step-dot"></div><span>Committing to GitHub</span>
       </div>
       <div class="w-step" id="ws-build">
-        <div class="step-dot"></div>
-        <span>GitHub Pages building</span>
+        <div class="step-dot"></div><span>GitHub Pages building</span>
       </div>
       <div class="w-step" id="ws-live">
-        <div class="step-dot"></div>
-        <span>Live on the internet</span>
+        <div class="step-dot"></div><span>Live on the internet</span>
       </div>
     </div>
 
-    <p class="w-meta">Elapsed: <strong id="w-elapsed">0s</strong>
-      &nbsp;&middot;&nbsp; usually 30–90 seconds</p>
-
-    <a href="#" class="w-action" id="w-action" style="display:none">
-      View my space &#8599;
-    </a>
+    <p class="w-meta">Elapsed: <strong id="w-elapsed">0s</strong> &nbsp;&middot;&nbsp; usually 30–90 seconds</p>
+    <a href="#" class="w-action" id="w-action" style="display:none">View my space &#8599;</a>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SCRIPT
-══════════════════════════════════════ -->
 <script>
 (function () {
   'use strict';
 
   var WORKER = 'https://reachflow-auth.cr4cker.workers.dev';
 
-  /* ── Auth ── */
-  var params  = new URLSearchParams(location.search);
-  var qLogin  = params.get('user') || '';
+  /* ════════════ AUTH ════════════ */
+  var params      = new URLSearchParams(location.search);
+  var qLogin      = params.get('user') || '';
   var storedUser  = localStorage.getItem('rf_user')  || '';
   var storedToken = localStorage.getItem('rf_token') || '';
   var authWall    = document.getElementById('auth-wall');
@@ -477,15 +259,13 @@
       document.getElementById('aw-title').textContent = 'NOT SIGNED IN';
       var signinBtn = document.getElementById('aw-signin');
       signinBtn.style.display = 'inline-flex';
-      signinBtn.addEventListener('click', function(e) {
+      signinBtn.addEventListener('click', function (e) {
         e.preventDefault();
         var nonce = crypto.randomUUID();
         sessionStorage.setItem('oauth_state', nonce);
-        var CID  = 'Ov23likbVZBfG5a3rnEu';
-        var CBCK = 'https://reachflow.site/auth/callback';
         window.location.href =
-          'https://github.com/login/oauth/authorize?client_id=' + CID +
-          '&redirect_uri=' + encodeURIComponent(CBCK) +
+          'https://github.com/login/oauth/authorize?client_id=Ov23likbVZBfG5a3rnEu' +
+          '&redirect_uri=' + encodeURIComponent('https://reachflow.site/auth/callback') +
           '&scope=read:user&state=' + encodeURIComponent(nonce);
       });
     }
@@ -501,75 +281,20 @@
     return;
   }
 
-  var login = storedUser; // trust stored login (correct case)
-  authWall.classList.add('gone');
+  var login = storedUser;
+  document.getElementById('nav-login').textContent = '// ' + login;
 
-  /* ── Wire up nav ── */
-  document.getElementById('nav-login').textContent = login;
-  document.getElementById('view-btn').href = '/spaces/' + login + '/';
+  /* ════════════ ELEMENTS ════════════ */
+  var area    = document.getElementById('code-area');
+  var saveBtn = document.getElementById('save-btn');
 
-  /* ── Editor elements ── */
-  var area      = document.getElementById('code-area');
-  var lineNums  = document.getElementById('line-nums');
-  var charCount = document.getElementById('char-count');
-  var saveBtn   = document.getElementById('save-btn');
-  var previewFrame = document.getElementById('preview-frame');
-  var statusDot    = document.getElementById('status-dot');
-
-  /* ════════════════════
-     LINE NUMBERS
-  ════════════════════ */
-  function buildLineNums(text) {
-    var n = (text.match(/\n/g) || []).length + 1;
-    var buf = [];
-    for (var i = 1; i <= n; i++) buf.push(i);
-    lineNums.textContent = buf.join('\n');
-  }
-
-  area.addEventListener('scroll', function () {
-    lineNums.scrollTop = area.scrollTop;
-  });
-
-  /* ════════════════════
-     CHAR COUNT
-  ════════════════════ */
-  function refreshMeta() {
-    var len = area.value.length;
-    charCount.textContent = len.toLocaleString() + ' / 500,000';
-    charCount.className = 'pane-meta' + (len > 490000 ? ' warn' : '');
-  }
-
-  /* ════════════════════
-     PREVIEW
-  ════════════════════ */
-  var previewTimer = null;
-  function schedulePreview() {
-    statusDot.className = 'status-dot typing';
-    clearTimeout(previewTimer);
-    previewTimer = setTimeout(function () {
-      previewFrame.srcdoc = area.value;
-      statusDot.className = 'status-dot live';
-    }, 700);
-  }
-
-  /* ════════════════════
-     INPUT HANDLING
-  ════════════════════ */
-  area.addEventListener('input', function () {
-    buildLineNums(area.value);
-    refreshMeta();
-    schedulePreview();
-  });
-
-  /* Tab = 2 spaces, Ctrl+S = save */
+  /* ════════════ KEYBOARD ════════════ */
   area.addEventListener('keydown', function (e) {
     if (e.key === 'Tab') {
       e.preventDefault();
       var s = area.selectionStart, end = area.selectionEnd;
       area.value = area.value.slice(0, s) + '  ' + area.value.slice(end);
       area.selectionStart = area.selectionEnd = s + 2;
-      buildLineNums(area.value);
-      schedulePreview();
     }
     if ((e.ctrlKey || e.metaKey) && e.key === 's') {
       e.preventDefault();
@@ -577,9 +302,7 @@
     }
   });
 
-  /* ════════════════════
-     LOAD SPACE
-  ════════════════════ */
+  /* ════════════ STARTER TEMPLATE ════════════ */
   var starter = [
     '<!DOCTYPE html>',
     '<html lang="en">',
@@ -609,29 +332,25 @@
     '</html>'
   ].join('\n');
 
-  function setCode(code) {
-    area.value = code;
-    area.disabled = false;
-    saveBtn.disabled = false;
-    buildLineNums(code);
-    refreshMeta();
-    schedulePreview();
-  }
-
-  area.value = '// Loading your space...';
+  /* ════════════ LOAD EXISTING SPACE ════════════ */
   area.disabled = true;
+  saveBtn.disabled = true;
 
   fetch('/spaces/' + login + '/?_nc=' + Date.now())
     .then(function (r) { if (!r.ok) throw 0; return r.text(); })
     .then(function (html) {
       var m = html.match(/<script\s+id="user-html"\s+type="text\/x-user-html">([\s\S]*?)<\/script>/i);
-      setCode(m ? m[1].replace(/<\\\/script>/gi, '</script>').trim() : starter);
+      area.value    = m ? m[1].replace(/<\\\/script>/gi, '<\/script>').trim() : starter;
+      area.disabled = false;
+      saveBtn.disabled = false;
     })
-    .catch(function () { setCode(starter); });
+    .catch(function () {
+      area.value    = starter;
+      area.disabled = false;
+      saveBtn.disabled = false;
+    });
 
-  /* ════════════════════
-     WAIT OVERLAY SYSTEM
-  ════════════════════ */
+  /* ════════════ WAIT OVERLAY ════════════ */
   var wIcon    = document.getElementById('w-icon');
   var wTitle   = document.getElementById('w-title');
   var wSub     = document.getElementById('w-sub');
@@ -639,24 +358,21 @@
   var wElapsed = document.getElementById('w-elapsed');
   var wAction  = document.getElementById('w-action');
   var overlay  = document.getElementById('wait-overlay');
-
   var wsSave   = document.getElementById('ws-save');
   var wsCommit = document.getElementById('ws-commit');
   var wsBuild  = document.getElementById('ws-build');
   var wsLive   = document.getElementById('ws-live');
   var allSteps = [wsSave, wsCommit, wsBuild, wsLive];
 
-  function stepState(active) { // 0-3
+  function stepState(active) {
     allSteps.forEach(function (s, i) {
       s.classList.remove('active', 'done');
       if (i < active)  s.classList.add('done');
       if (i === active) s.classList.add('active');
     });
   }
-
   function setBar(pct) { wBar.style.width = Math.min(100, pct) + '%'; }
 
-  /* Elapsed timer */
   var elapsedInt = null, saveStart = 0;
   function startElapsed() {
     saveStart = Date.now();
@@ -667,7 +383,6 @@
   }
   function stopElapsed() { clearInterval(elapsedInt); }
 
-  /* Progress tween */
   var tweenInt = null;
   function tweenBar(from, to, ms) {
     clearInterval(tweenInt);
@@ -679,7 +394,6 @@
     }, 80);
   }
 
-  /* Phase transitions */
   var phaseTimer = null;
   function phase(name, opts) {
     clearTimeout(phaseTimer);
@@ -688,21 +402,16 @@
     wTitle.textContent = opts.title;
     wSub.textContent   = opts.sub;
     stepState(opts.step);
-    if (opts.bar) setBar(opts.bar);
+    if (opts.bar)   setBar(opts.bar);
     if (opts.tween) tweenBar(opts.tween[0], opts.tween[1], opts.tween[2]);
-    if (opts.next) phaseTimer = setTimeout(function () { phase(opts.next[0], opts.next[1]); }, opts.next[2]);
+    if (opts.next)  phaseTimer = setTimeout(function () { phase(opts.next[0], opts.next[1]); }, opts.next[2]);
   }
 
-  /* Poll GitHub Pages until live */
   var pollInt = null;
   function pollUntilLive(deadline) {
     clearInterval(pollInt);
     pollInt = setInterval(function () {
-      if (Date.now() > deadline) {
-        clearInterval(pollInt);
-        showDone();
-        return;
-      }
+      if (Date.now() > deadline) { clearInterval(pollInt); showDone(); return; }
       fetch('/spaces/' + login + '/?_nc=' + Date.now(), { method: 'HEAD' })
         .then(function (r) { if (r.ok) { clearInterval(pollInt); showDone(); } })
         .catch(function () {});
@@ -710,14 +419,12 @@
   }
 
   function showDone() {
-    clearInterval(tweenInt);
-    stopElapsed();
+    clearInterval(tweenInt); stopElapsed();
     wIcon.className = 'w-icon ok';
     wIcon.textContent = '✓';
     wTitle.textContent = 'YOUR SPACE IS LIVE';
     wSub.textContent   = 'All changes are visible to everyone.';
-    stepState(4); // all done
-    setBar(100);
+    stepState(4); setBar(100);
     wAction.href = '/spaces/' + login + '/';
     wAction.textContent = 'View my space ↗';
     wAction.style.display = 'inline-flex';
@@ -741,26 +448,21 @@
     saveBtn.disabled = false;
   }
 
-  /* ════════════════════
-     SAVE
-  ════════════════════ */
+  /* ════════════ SAVE ════════════ */
   saveBtn.addEventListener('click', doSave);
 
   function doSave() {
     var html = area.value;
     if (!html.trim()) return;
     if (html.length > 500000) { alert('Too large — keep under 500 KB.'); return; }
-
     saveBtn.disabled = true;
     overlay.classList.add('show');
     startElapsed();
 
-    /* Phase 1: saving */
     phase('saving', {
       spin: true, title: 'SAVING CHANGES', sub: 'Uploading your code...', step: 0, tween: [0, 18, 3500]
     });
 
-    /* POST to worker */
     fetch(WORKER + '/save', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -771,24 +473,19 @@
       return r.json();
     })
     .then(function () {
-      /* Phase 2: committing */
       phase('commit', {
         spin: true, title: 'WRITING TO GITHUB', sub: 'Creating your commit...', step: 1, tween: [20, 42, 8000]
       });
-
       setTimeout(function () {
-        /* Phase 3: building */
         phase('building', {
           spin: true, title: 'GITHUB IS BUILDING',
           sub: 'Your page is compiling.\nTypically 30–90 seconds.', step: 2
         });
-        tweenBar(44, 88, 80000); // 80 second slow crawl
-        pollUntilLive(Date.now() + 120000); // Poll up to 2 min
+        tweenBar(44, 88, 80000);
+        pollUntilLive(Date.now() + 120000);
       }, 8500);
     })
-    .catch(function (err) {
-      showError(err.message);
-    });
+    .catch(function (err) { showError(err.message); });
   }
 
 })();

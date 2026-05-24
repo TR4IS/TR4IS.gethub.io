@@ -10,30 +10,33 @@
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     html,body{height:100%;overflow:hidden;background:#060606}
     #space-frame{position:fixed;inset:0;width:100%;height:100%;border:none;display:block}
-    nav{position:fixed;top:0;left:0;right:0;z-index:9998;padding:16px 32px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(6,6,6,.8),transparent);pointer-events:none}
-    .nav-brand{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:5px;color:#efefef;text-decoration:none;pointer-events:auto}
+    nav{position:fixed;top:0;left:0;right:0;z-index:9998;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(6,6,6,.96);border-bottom:1px solid rgba(139,92,246,.15);backdrop-filter:blur(14px)}
+    .nav-brand{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:5px;color:#efefef;text-decoration:none}
     .nav-brand span{color:#8b5cf6}
-    .nav-back{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:rgba(239,239,239,.35);text-decoration:none;transition:color .2s;pointer-events:auto}
+    .nav-right{display:flex;align-items:center;gap:16px}
+    .nav-back{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:rgba(239,239,239,.28);text-decoration:none;transition:color .2s}
     .nav-back:hover{color:#efefef}
-    #edit-btn{position:fixed;bottom:28px;right:28px;z-index:9999;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:#060606;background:#8b5cf6;padding:11px 20px;border:1.5px solid #8b5cf6;text-decoration:none;display:none;align-items:center;gap:8px;transition:background .25s,color .25s}
+    #edit-btn{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:#060606;background:#8b5cf6;padding:8px 16px;border:1.5px solid #8b5cf6;text-decoration:none;display:none;align-items:center;gap:6px;transition:background .25s,color .25s}
     #edit-btn:hover{background:transparent;color:#8b5cf6}
-    footer{position:fixed;bottom:0;left:0;right:0;z-index:9997;padding:6px 32px;display:flex;justify-content:space-between;font-size:.42rem;color:rgba(239,239,239,.1);letter-spacing:2px;pointer-events:none;font-family:'JetBrains Mono',monospace}
+    footer{position:fixed;bottom:0;left:0;right:0;z-index:9997;padding:5px 28px;display:flex;justify-content:space-between;font-size:.5rem;color:rgba(239,239,239,.1);letter-spacing:2px;pointer-events:none;font-family:'JetBrains Mono',monospace;background:rgba(6,6,6,.7);backdrop-filter:blur(8px)}
     footer a{pointer-events:auto;color:rgba(239,239,239,.1);text-decoration:none;transition:color .2s}
     footer a:hover{color:rgba(239,239,239,.3)}
-    @media(max-width:600px){nav{padding:12px 18px}#edit-btn{bottom:18px;right:18px;font-size:.6rem;padding:9px 14px}}
+    @media(max-width:600px){nav{padding:0 16px}#edit-btn{font-size:.56rem;padding:7px 13px}}
   </style>
 </head>
 <body>
   <nav>
     <a href="/" class="nav-brand">REACH<span>_</span>FLOW</a>
-    <a href="/spaces" class="nav-back">&#8592; spaces</a>
+    <div class="nav-right">
+      <a href="/spaces" class="nav-back">&#8592; spaces</a>
+      <a href="#" id="edit-btn">&#x270F;&nbsp;Edit</a>
+    </div>
   </nav>
   <iframe id="space-frame"
     sandbox="allow-scripts allow-forms allow-popups allow-pointer-lock allow-modals"
     title="Bo3bood's space"
     loading="eager"
   ></iframe>
-  <a href="#" id="edit-btn">&#x270F; Edit</a>
   <footer>
     <span>&#169; 2026 reachflow.site &middot; TR4IS</span>
     <a href="/terms.html">.terms()</a>
