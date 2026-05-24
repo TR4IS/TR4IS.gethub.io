@@ -222,6 +222,40 @@
     .dl-btn:hover { background: transparent; color: var(--card-accent, var(--accent)); }
     [dir="rtl"] .dl-btn { margin-left: 0; margin-right: auto; }
 
+    /* ── Download variant rows (multi-option cards) ── */
+    .dl-variants {
+      display: flex; flex-direction: column; gap: 6px;
+      border-top: 1px solid rgba(239,239,239,.06);
+      padding-top: 14px; margin-top: 4px;
+    }
+    .dl-lbl {
+      font-size: .66rem; color: rgba(239,239,239,.2);
+      letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px;
+    }
+    [dir="rtl"] .dl-lbl { text-transform: none; }
+    .dl-opt {
+      display: flex; align-items: center; gap: 14px;
+      padding: 10px 14px;
+      border: 1px solid rgba(var(--icon-rgb), .14);
+      background: rgba(var(--icon-rgb), .04);
+      transition: border-color .2s, background .2s;
+      text-decoration: none;
+    }
+    .dl-opt:hover {
+      border-color: rgba(var(--icon-rgb), .35);
+      background: rgba(var(--icon-rgb), .09);
+    }
+    .dl-opt-type {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: .9rem; letter-spacing: 2px;
+      color: rgb(var(--icon-rgb));
+      min-width: 38px; flex-shrink: 0;
+    }
+    .dl-opt-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+    .dl-opt-name { font-size: .78rem; font-weight: 700; color: var(--fg); }
+    .dl-opt-sub  { font-size: .66rem; color: rgba(239,239,239,.32); }
+    .dl-opt-arrow { font-size: .9rem; color: rgba(var(--icon-rgb), .6); flex-shrink: 0; }
+
     /* ── Footer ── */
     footer {
       border-top: 1px solid var(--border);
@@ -260,6 +294,11 @@
     .meta-size { font-size: .74rem; }
     .source-link { font-size: .78rem; }
     .dl-btn { font-size: .82rem; padding: 11px 22px; }
+    .dl-lbl { font-size: .72rem; }
+    .dl-opt-type { font-size: 1rem; }
+    .dl-opt-name { font-size: .88rem; }
+    .dl-opt-sub  { font-size: .76rem; }
+    .dl-opt-arrow { font-size: 1rem; }
     footer { font-size: .76rem; }
 
     /* ── Arabic: kill letter-spacing (broken connected script) ── */
@@ -353,14 +392,26 @@
         Windows Registry entries and system configuration — your antivirus will
         likely flag this. Add to exclusions before running.
       </p>
-      <div class="card-meta">
-        <span class="badge badge-platform" data-i18n="metaExeInstaller">EXE &middot; Installer</span>
-        <span class="meta-size">19 MB</span>
-      </div>
-      <div class="card-actions">
+      <div class="card-actions" style="margin-top:2px">
         <a href="https://github.com/TR4IS/WindowsOptimizer" class="source-link" target="_blank" rel="noopener" data-i18n="srcLink">Source &#8599;</a>
-        <a class="dl-btn" href="https://github.com/TR4IS/WindowsOptimizer/releases/download/v1.3.4/WindowsOptimizerSetup.exe">
-          &#8595; <span data-i18n="dlBtn">Download</span>
+      </div>
+      <div class="dl-variants">
+        <p class="dl-lbl" data-i18n="dlChoose">Choose download</p>
+        <a class="dl-opt" href="https://github.com/TR4IS/WindowsOptimizer/releases/download/v1.3.4/WindowsOptimizerSetup.exe">
+          <span class="dl-opt-type">EXE</span>
+          <div class="dl-opt-info">
+            <span class="dl-opt-name" data-i18n="dlOptExeName">Installer</span>
+            <span class="dl-opt-sub" data-i18n="dlOptExeSub">Full app with GUI &middot; 19 MB</span>
+          </div>
+          <span class="dl-opt-arrow">&#8595;</span>
+        </a>
+        <a class="dl-opt" href="https://github.com/TR4IS/WindowsOptimizer/raw/main/WindowsOptimizer.bat">
+          <span class="dl-opt-type">BAT</span>
+          <div class="dl-opt-info">
+            <span class="dl-opt-name" data-i18n="dlOptBatName">Script</span>
+            <span class="dl-opt-sub" data-i18n="dlOptBatSub">Lightweight &middot; no install needed</span>
+          </div>
+          <span class="dl-opt-arrow">&#8595;</span>
         </a>
       </div>
     </div>
@@ -372,23 +423,24 @@
         <div class="card-titles">
           <div class="card-name">FileOrganizer</div>
           <div class="card-badges">
-            <span class="badge badge-ver">v1.2.1</span>
+            <span class="badge badge-ver">v2.0.3</span>
             <span class="badge badge-platform">Windows</span>
           </div>
         </div>
       </div>
       <p class="card-desc" data-i18n="descFO">
-        Automatically organizes your Windows Downloads folder into categorized
-        subfolders &mdash; images, videos, PDFs, audio, archives, fonts, GIFs, and
-        more. Runs silently in the background and monitors new files as they arrive.
+        Automatically sorts your Downloads folder into categorized subfolders &mdash;
+        images, videos, PDFs, audio, archives, fonts, GIFs, and more. Includes a live
+        dashboard, tray controls, auto-updates, midnight stats reset, and full Arabic
+        translation.
       </p>
       <div class="card-meta">
         <span class="badge badge-platform" data-i18n="metaExeInstaller">EXE &middot; Installer</span>
-        <span class="meta-size">17.8 MB</span>
+        <span class="meta-size">74.3 MB</span>
       </div>
       <div class="card-actions">
         <a href="https://github.com/TR4IS/FileOrganizer" class="source-link" target="_blank" rel="noopener" data-i18n="srcLink">Source &#8599;</a>
-        <a class="dl-btn" href="https://github.com/TR4IS/FileOrganizer/releases/download/v1.2.1/FileOrganizerSetup.exe">
+        <a class="dl-btn" href="https://github.com/TR4IS/FileOrganizer/releases/download/v2.0.3/FileOrganizerSetup.exe">
           &#8595; <span data-i18n="dlBtn">Download</span>
         </a>
       </div>
@@ -457,7 +509,7 @@
 
 <footer>
   <span>&#169; 2026 reachflow.site &middot; TR4IS</span>
-  <a href="/terms.html">.terms()</a>
+  <a href="/terms.html">terms</a>
 </footer>
 
 <script>
@@ -483,7 +535,12 @@
       srcLink:         'Source ↗',
       dlBtn:           'Download',
       descWO:          'Applies system-level tweaks to reduce background process bloat, lower input latency, and improve frame rates for gaming and heavy workloads. Modifies Windows Registry entries and system configuration — your antivirus will likely flag this. Add to exclusions before running.',
-      descFO:          'Automatically organizes your Windows Downloads folder into categorized subfolders — images, videos, PDFs, audio, archives, fonts, GIFs, and more. Runs silently in the background and monitors new files as they arrive.',
+      descFO:          'Automatically sorts your Downloads folder into categorized subfolders — images, videos, PDFs, audio, archives, fonts, GIFs, and more. Includes a live dashboard, tray controls, auto-updates, midnight stats reset, and full Arabic translation.',
+      dlChoose:        'Choose download',
+      dlOptExeName:    'Installer',
+      dlOptExeSub:     'Full app with GUI · 19 MB',
+      dlOptBatName:    'Script',
+      dlOptBatSub:     'Lightweight · no install needed',
       descJ2P:         'Converts images (JPG, PNG, and more) to PDF in seconds. Select your images, set an optional filename, click Convert — the PDF is saved directly to your Downloads folder. Simple, fast, no account needed.',
       descSD:          'A sound deck application for managing and triggering audio clips. First stable release. Large install size due to the Electron runtime bundled with the app.',
     },
@@ -505,7 +562,12 @@
       srcLink:         'المصدر ↗',
       dlBtn:           'تنزيل',
       descWO:          'يُطبّق تعديلات على مستوى النظام لتقليل استهلاك العمليات في الخلفية وخفض تأخر الإدخال وتحسين معدلات الإطارات للألعاب والأعمال الثقيلة. يُعدّل إدخالات سجل ويندوز وإعدادات النظام — ومن المرجح أن يُنبّه مكافح الفيروسات. أضفه إلى الاستثناءات قبل التشغيل.',
-      descFO:          'يُنظّم مجلد التنزيلات تلقائياً إلى مجلدات فرعية حسب الفئة — صور، فيديوهات، PDF، صوت، أرشيفات، خطوط، GIF، والمزيد. يعمل في الخلفية بصمت ويراقب الملفات الجديدة فور وصولها.',
+      descFO:          'يُنظّم مجلد التنزيلات تلقائياً في مجلدات فرعية حسب الفئة — صور، فيديوهات، PDF، صوت، أرشيفات، خطوط، GIF، والمزيد. يتضمّن لوحة تحكّم مباشرة، تحكّم من علبة النظام، تحديثات تلقائية، إعادة ضبط الإحصاءات منتصف الليل، وترجمة عربية كاملة.',
+      dlChoose:        'اختر التنزيل',
+      dlOptExeName:    'مثبّت',
+      dlOptExeSub:     'تطبيق كامل بواجهة رسومية · 19 MB',
+      dlOptBatName:    'سكريبت',
+      dlOptBatSub:     'خفيف الوزن · لا يحتاج تثبيت',
       descJ2P:         'يحوّل الصور (JPG وPNG والمزيد) إلى PDF في ثوانٍ. اختر صورك، أدخل اسم الملف اختيارياً، انقر تحويل — يُحفظ الـ PDF مباشرةً في مجلد التنزيلات. بسيط وسريع، بدون حساب.',
       descSD:          'تطبيق للتحكم في الصوت وتشغيل المقاطع الصوتية. الإصدار الأول المستقر. حجم التثبيت كبير بسبب بيئة تشغيل Electron المُضمَّنة مع التطبيق.',
     }
