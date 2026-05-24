@@ -129,6 +129,10 @@ function defaultUserHtml(profile) {
     html, body { height: 100%; }
     body {
       background: #060606;
+      background-image:
+        linear-gradient(rgba(255,255,255,.016) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.016) 1px, transparent 1px);
+      background-size: 72px 72px;
       color: #efefef;
       font-family: 'JetBrains Mono', monospace;
       min-height: 100vh;
@@ -136,43 +140,35 @@ function defaultUserHtml(profile) {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 22px;
       padding: 80px 24px 60px;
     }
     .avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid #8b5cf6;
+      width: 120px; height: 120px;
+      border-radius: 50%; object-fit: cover;
+      border: 2px solid #8b5cf6;
       box-shadow: 0 0 40px rgba(139,92,246,.4);
       display: block;
     }
     h1 {
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(2.5rem, 8vw, 5rem);
-      letter-spacing: 4px;
-      line-height: 1;
-      text-shadow: 0 0 60px rgba(139,92,246,.8);
+      letter-spacing: 4px; line-height: 1;
+      text-shadow: 0 0 80px rgba(139,92,246,.4);
     }
     .bio {
-      font-size: .78rem;
+      font-size: .88rem;
       color: rgba(239,239,239,.5);
-      line-height: 1.8;
-      max-width: 400px;
-      text-align: center;
+      line-height: 1.9; max-width: 420px; text-align: center;
     }
     .gh-link {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: .6rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: #060606;
-      background: #8b5cf6;
+      font-family: 'JetBrains Mono', monospace; font-weight: 700;
+      font-size: .88rem; letter-spacing: 3px; text-transform: uppercase;
+      color: #060606; background: #8b5cf6;
       border: 1.5px solid #8b5cf6;
-      padding: 10px 24px;
+      padding: 13px 28px;
       text-decoration: none;
+      display: inline-flex; align-items: center; gap: 10px;
       transition: background .25s, color .25s;
     }
     .gh-link:hover { background: transparent; color: #8b5cf6; }
