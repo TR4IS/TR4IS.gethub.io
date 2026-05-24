@@ -273,6 +273,119 @@
       50%      { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(139,92,246,.18); }
     }
     .lang-toggle.hinting { animation: langHint 1.5s ease .8s 3; }
+  /* ── Creator card (hero + section) ── */
+  .hero-eyebrow {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+  }
+  .built-by {
+    display: flex; align-items: center; gap: 8px;
+    font-size: .74rem; color: rgba(239,239,239,.3); letter-spacing: .5px;
+  }
+  .built-av {
+    width: 24px; height: 24px; border-radius: 50%;
+    border: 1px solid rgba(139,92,246,.35);
+    object-fit: cover;
+  }
+  .built-by strong { color: var(--accent); font-weight: 700; }
+
+  .hero-main { display: flex; align-items: flex-start; gap: 48px; }
+  .hero-left  { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+
+  /* ── Creator badge card ── */
+  .creator-badge {
+    width: 248px; flex-shrink: 0;
+    border: 1px solid var(--border);
+    background: rgba(6,6,6,.6);
+    padding: 22px 20px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    position: relative; align-self: flex-start;
+  }
+  .creator-badge::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 1px; background: var(--accent); opacity: .65;
+  }
+  .cb-label {
+    font-size: .6rem; color: var(--accent);
+    letter-spacing: 3px; text-transform: uppercase;
+    align-self: flex-start; margin-bottom: 2px;
+  }
+  .cb-av {
+    width: 76px; height: 76px; border-radius: 50%;
+    border: 2px solid rgba(139,92,246,.45);
+    box-shadow: 0 0 40px rgba(139,92,246,.25);
+    object-fit: cover; margin: 4px 0;
+  }
+  .cb-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.7rem; letter-spacing: 4px; line-height: 1;
+  }
+  .cb-role {
+    font-size: .66rem; color: rgba(239,239,239,.32);
+    letter-spacing: .8px;
+  }
+  .cb-quote {
+    font-size: .68rem; color: rgba(239,239,239,.38);
+    line-height: 1.75; text-align: center;
+    border-top: 1px solid var(--border);
+    padding-top: 12px; margin-top: 2px; width: 100%;
+  }
+  .cb-links { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+  .cb-link {
+    font-size: .66rem; color: var(--dim); letter-spacing: 1px;
+    padding: 7px 10px; border: 1px solid var(--border);
+    text-align: center; transition: border-color .2s, color .2s;
+  }
+  .cb-link:hover { border-color: rgba(139,92,246,.4); color: var(--fg); }
+
+  /* ── Creator section ── */
+  .creator-section { display: flex; flex-direction: column; gap: 20px; }
+  .creator-wide {
+    display: flex; align-items: center; gap: 40px;
+    border: 1px solid var(--border); background: rgba(6,6,6,.6);
+    padding: 32px 36px; position: relative;
+  }
+  .creator-wide::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 1px; background: var(--accent); opacity: .5;
+  }
+  .cw-av {
+    width: 96px; height: 96px; border-radius: 50%; flex-shrink: 0;
+    border: 2px solid rgba(139,92,246,.5);
+    box-shadow: 0 0 60px rgba(139,92,246,.2);
+    object-fit: cover;
+  }
+  .cw-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+  .cw-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem; letter-spacing: 5px; line-height: 1;
+    text-shadow: 0 0 60px rgba(139,92,246,.4);
+  }
+  .cw-bio { font-size: .88rem; color: rgba(239,239,239,.45); line-height: 1.8; max-width: 480px; }
+  .cw-stats {
+    font-size: .72rem; color: rgba(239,239,239,.28); letter-spacing: 1px;
+    display: flex; gap: 20px; flex-wrap: wrap;
+  }
+  .cw-stats strong { color: var(--accent); }
+  .cw-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+  .cw-btn {
+    font-family: var(--mono); font-size: .72rem; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 9px 20px; border: 1.5px solid var(--border);
+    color: var(--dim); transition: border-color .2s, color .2s;
+  }
+  .cw-btn:hover { border-color: rgba(139,92,246,.5); color: var(--fg); }
+  .cw-btn.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .cw-btn.primary:hover { background: transparent; color: var(--accent); }
+
+  @media (max-width: 720px) {
+    .hero-main { flex-direction: column-reverse; }
+    .creator-badge { width: 100%; }
+    .built-by { display: none; }
+    .creator-wide { flex-direction: column; align-items: flex-start; gap: 20px; padding: 24px 20px; }
+    .cw-av { width: 72px; height: 72px; }
+    .cw-name { font-size: 1.8rem; }
+  }
   </style>
 </head>
 <body>
@@ -298,21 +411,47 @@
 
   <!-- ── Hero ── -->
   <div class="hero">
-    <p class="hero-tag" data-i18n="heroTag">// your developer page</p>
-    <h1 data-i18n-html="heroH1">YOUR PAGE.<br>YOUR RULES.<br>FREE.</h1>
-    <div class="hero-body">
-      <p class="hero-sub" data-i18n-html="heroSub">
-        Get a <strong>personal developer page</strong> in seconds.<br>
-        Customize fonts, colors, layout &mdash; everything.<br>
-        Share it anywhere. No setup, no hosting fees.
-      </p>
-      <div class="hero-cta-wrap">
-        <a href="#" class="hero-cta" id="cta-main">
-          <span data-i18n="heroCta">Get my free page</span> &#8594;
-        </a>
-        <p class="hero-count">
-          <strong id="count">&mdash;</strong>&nbsp;<span data-i18n="heroCountSuffix">developers already live</span>
-        </p>
+    <div class="hero-eyebrow">
+      <p class="hero-tag" data-i18n="heroTag">// your developer page</p>
+      <div class="built-by">
+        <img src="https://github.com/TR4IS.png" class="built-av" alt="TR4IS" loading="lazy">
+        built by <strong>TR4IS</strong>
+      </div>
+    </div>
+
+    <div class="hero-main">
+      <!-- Left: pitch -->
+      <div class="hero-left">
+        <h1 data-i18n-html="heroH1">YOUR PAGE.<br>YOUR RULES.<br>FREE.</h1>
+        <div class="hero-body">
+          <p class="hero-sub" data-i18n-html="heroSub">
+            Get a <strong>personal developer page</strong> in seconds.<br>
+            Customize fonts, colors, layout &mdash; everything.<br>
+            Share it anywhere. No setup, no hosting fees.
+          </p>
+          <div class="hero-cta-wrap">
+            <a href="#" class="hero-cta" id="cta-main">
+              <span data-i18n="heroCta">Get my free page</span> &#8594;
+            </a>
+            <p class="hero-count">
+              <strong id="count">&mdash;</strong>&nbsp;<span data-i18n="heroCountSuffix">developers already live</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: TR4IS creator card -->
+      <div class="creator-badge">
+        <span class="cb-label">// the developer</span>
+        <img src="https://github.com/TR4IS.png" class="cb-av" alt="TR4IS" loading="lazy">
+        <strong class="cb-name">TR4IS</strong>
+        <p class="cb-role">Developer &middot; Builder &middot; Open Source</p>
+        <p class="cb-quote">"Built so every developer gets their own corner of the internet."</p>
+        <div class="cb-links">
+          <a href="/spaces/TR4IS/" class="cb-link">My space &#8599;</a>
+          <a href="/downloads.html" class="cb-link">Downloads &#8595;</a>
+          <a href="https://github.com/TR4IS" class="cb-link" target="_blank" rel="noopener">GitHub &#8599;</a>
+        </div>
       </div>
     </div>
   </div>
@@ -321,6 +460,32 @@
   <div class="spaces-section">
     <p class="section-lbl" data-i18n="showcaseLbl">// live right now</p>
     <div class="showcase-track" id="track"></div>
+  </div>
+
+  <!-- ── Creator spotlight ── -->
+  <div class="creator-section">
+    <p class="section-lbl" data-i18n="creatorLbl">// the developer behind reachflow</p>
+    <div class="creator-wide">
+      <img src="https://github.com/TR4IS.png" class="cw-av" alt="TR4IS" loading="lazy">
+      <div class="cw-info">
+        <div class="cw-name">TR4IS</div>
+        <p class="cw-bio" data-i18n="creatorBio">
+          Developer, builder, and open-source creator. I built reachflow so developers
+          everywhere can have their own personal page on the internet — free, forever,
+          with full HTML control. I also ship tools that solve real problems.
+        </p>
+        <div class="cw-stats">
+          <span><strong>4</strong> open-source tools</span>
+          <span><strong id="creator-count">100+</strong> developers on reachflow</span>
+          <span><strong>0</strong> dollars to use</span>
+        </div>
+        <div class="cw-actions">
+          <a href="/spaces/TR4IS/" class="cw-btn primary" data-i18n="creatorSpaceBtn">View my space &#8599;</a>
+          <a href="/downloads.html" class="cw-btn" data-i18n="creatorDlBtn">Downloads &#8595;</a>
+          <a href="https://github.com/TR4IS" class="cw-btn" target="_blank" rel="noopener">GitHub &#8599;</a>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ── How it works ── -->
@@ -380,6 +545,10 @@
       step3Num:      '03 /',
       step3Title:    'Make it yours',
       step3Body:     'Write your own HTML or paste any template. Full control, no limits.',
+      creatorLbl:    '// the developer behind reachflow',
+      creatorBio:    'Developer, builder, and open-source creator. I built reachflow so developers everywhere can have their own personal page on the internet — free, forever, with full HTML control. I also ship tools that solve real problems.',
+      creatorSpaceBtn: 'View my space ↗',
+      creatorDlBtn:  'Downloads ↓',
     },
     ar: {
       heroTag:       '// صفحتك كمطوّر',
@@ -401,6 +570,10 @@
       step3Num:      '03 /',
       step3Title:    'اجعلها لك',
       step3Body:     'اكتب HTML الخاص بك أو الصق أي قالب. تحكّم كامل، بدون قيود.',
+      creatorLbl:    '// المطوّر خلف reachflow',
+      creatorBio:    'مطوّر وصانع أدوات مفتوحة المصدر. بنيت reachflow لكي يحصل كل مطوّر على صفحته الشخصية على الإنترنت — مجاناً، للأبد، مع تحكّم كامل بـ HTML. كما أطوّر أدوات تحل مشكلات حقيقية.',
+      creatorSpaceBtn: 'صفحتي ↗',
+      creatorDlBtn:  'التنزيلات ↓',
     }
   };
 
@@ -453,7 +626,9 @@
     .then(function (data) {
       var dirs = data.filter(function (d) { return d.type === 'dir'; });
       var countEl = document.getElementById('count');
+      var creatorCountEl = document.getElementById('creator-count');
       if (countEl) countEl.textContent = dirs.length;
+      if (creatorCountEl) creatorCountEl.textContent = dirs.length;
       var track = document.getElementById('track');
       dirs.slice(0, 20).forEach(function (d) {
         var card = document.createElement('a');

@@ -3,21 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit your space — reachflow</title>
+  <title>Editor — reachflow</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%23060606'/><rect width='32' height='32' rx='5' fill='%238b5cf6' opacity='.15'/><text x='7' y='23' font-family='monospace' font-size='20' font-weight='900' fill='%238b5cf6'>r</text></svg>">
-
-  <!-- CodeMirror 5 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material-darker.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
@@ -25,497 +12,766 @@
   <style>
     :root {
       --bg:      #060606;
-      --surface: #0d0d0e;
       --fg:      #efefef;
       --accent:  #8b5cf6;
       --border:  rgba(139,92,246,.15);
       --dim:     rgba(239,239,239,.35);
       --mono:    'JetBrains Mono', monospace;
       --display: 'Bebas Neue', sans-serif;
-      --hdr:     50px;
+      --nav-h:   56px;
+      --foot-h:  36px;
+      --pane-h:  34px;
     }
 
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--fg); font-family: var(--mono); }
+    html, body { height: 100%; overflow: hidden; }
+    body { background: var(--bg); color: var(--fg); font-family: var(--mono); }
+    a { color: inherit; text-decoration: none; }
 
-    /* ── Header ── */
-    #hdr {
-      height: var(--hdr);
+    /* ════════════════════════════════
+       NAV
+    ════════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: var(--nav-h);
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 20px;
-      background: var(--bg); border-bottom: 1px solid var(--border);
-      position: relative; z-index: 100; flex-shrink: 0;
+      padding: 0 28px;
+      background: rgba(6,6,6,.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
     }
-    .brand {
+    .nav-brand {
       font-family: var(--display); font-size: 1rem;
-      letter-spacing: 5px; color: var(--fg); text-decoration: none;
+      letter-spacing: 5px; flex-shrink: 0;
     }
-    .brand span { color: var(--accent); }
+    .nav-brand span { color: var(--accent); }
 
-    #edit-label {
-      position: absolute; left: 50%; transform: translateX(-50%);
-      font-size: .5rem; letter-spacing: 2px; color: var(--dim);
-      text-transform: uppercase; white-space: nowrap;
+    .nav-center {
+      display: flex; align-items: center; gap: 10px;
+      font-size: .74rem; color: var(--dim);
     }
-    #edit-label strong { color: var(--accent); font-weight: 400; }
+    .nav-chip {
+      font-size: .58rem; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--accent); background: rgba(139,92,246,.1);
+      border: 1px solid rgba(139,92,246,.28);
+      padding: 3px 9px;
+    }
+    .nav-slash { color: rgba(139,92,246,.3); }
+    .nav-login { font-weight: 700; color: var(--fg); letter-spacing: .5px; font-size: .82rem; }
+
+    .nav-right { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+    .view-btn {
+      font-size: .7rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--dim); transition: color .2s;
+      padding-bottom: 1px; border-bottom: 1px solid transparent;
+    }
+    .view-btn:hover { color: var(--fg); border-color: rgba(239,239,239,.2); }
 
     #save-btn {
       font-family: var(--mono); font-weight: 700;
-      font-size: .58rem; letter-spacing: 3px; text-transform: uppercase;
+      font-size: .74rem; letter-spacing: 3px; text-transform: uppercase;
       color: var(--bg); background: var(--accent);
-      border: 1.5px solid var(--accent); padding: 8px 16px;
-      cursor: pointer; display: flex; align-items: center; gap: 8px;
+      border: 1.5px solid var(--accent);
+      padding: 9px 22px; cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
       transition: background .2s, color .2s;
     }
     #save-btn:hover:not(:disabled) { background: transparent; color: var(--accent); }
-    #save-btn:disabled { opacity: .35; cursor: default; }
+    #save-btn:disabled { opacity: .38; cursor: not-allowed; }
 
-    .kbd {
-      font-size: .44rem; letter-spacing: 1px; color: rgba(239,239,239,.35);
-      background: rgba(139,92,246,.1); border: 1px solid rgba(139,92,246,.2);
-      padding: 2px 5px; border-radius: 3px;
-    }
-
-    /* ── Mobile tab bar ── */
-    #tab-bar {
-      display: none; height: 38px; flex-shrink: 0;
-      background: var(--bg); border-bottom: 1px solid var(--border);
-    }
-    .tab-btn {
-      flex: 1; height: 100%; background: none; border: none;
-      border-bottom: 2px solid transparent; color: var(--dim);
-      font-family: var(--mono); font-size: .52rem; letter-spacing: 2px;
-      text-transform: uppercase; cursor: pointer;
-      transition: color .2s, border-color .2s;
-    }
-    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-    /* ── Workspace — fixed so CodeMirror always has a defined height ── */
+    /* ════════════════════════════════
+       WORKSPACE (fixed, fills gap between nav and footer)
+    ════════════════════════════════ */
     #workspace {
       position: fixed;
-      top: var(--hdr); left: 0; right: 0; bottom: 0;
+      top: var(--nav-h);
+      bottom: var(--foot-h);
+      left: 0; right: 0;
       display: flex;
     }
 
-    /* ── Code pane ── */
-    #code-pane {
+    /* ── Editor pane ── */
+    #editor-pane {
       width: 50%; height: 100%;
       display: flex; flex-direction: column;
-      border-right: 1px solid var(--border); overflow: hidden; flex-shrink: 0;
+      border-right: 1px solid var(--border);
     }
-    #cm-wrap { flex: 1; min-height: 0; overflow: hidden; }
+    .pane-bar {
+      height: var(--pane-h); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 16px;
+      background: rgba(0,0,0,.35);
+      border-bottom: 1px solid var(--border);
+    }
+    .pane-label {
+      font-size: .68rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--accent);
+    }
+    .pane-meta {
+      font-size: .62rem; color: rgba(239,239,239,.22);
+      letter-spacing: .5px;
+    }
+    .pane-meta.warn { color: #ef4444; }
 
-    /* CodeMirror overrides */
-    .CodeMirror {
-      height: 100% !important;
-      font-family: var(--mono) !important;
-      font-size: 13px !important; line-height: 1.75 !important;
-      background: #0c1014 !important;
+    /* Editor body: line numbers + textarea */
+    #editor-body {
+      flex: 1; min-height: 0;
+      display: flex; overflow: hidden;
+      background: var(--bg);
     }
-    .CodeMirror-scroll { height: 100%; min-height: unset !important; }
-    .CodeMirror-sizer  { min-height: unset !important; }
-    .CodeMirror-gutters { background: #0c1014 !important; border-right: 1px solid rgba(139,92,246,.1) !important; }
-    .CodeMirror-linenumber { color: rgba(139,92,246,.35) !important; }
 
-    /* ── Status bar ── */
-    #status-bar {
-      height: 28px; flex-shrink: 0;
-      display: flex; align-items: center; gap: 14px;
-      padding: 0 14px; background: var(--surface);
-      border-top: 1px solid var(--border);
-      font-size: .45rem; letter-spacing: 1px; color: rgba(239,239,239,.2);
+    #line-nums {
+      width: 50px; flex-shrink: 0;
+      padding: 14px 10px 14px 0;
+      overflow: hidden;
+      user-select: none; pointer-events: none;
+      font: 13px/1.625 var(--mono);
+      color: rgba(139,92,246,.28);
+      text-align: right;
+      border-right: 1px solid rgba(139,92,246,.08);
+      background: rgba(0,0,0,.18);
     }
-    #status-msg { color: var(--accent); }
-    #char-count { margin-left: auto; }
+
+    #code-area {
+      flex: 1; min-width: 0;
+      padding: 14px 20px;
+      background: transparent;
+      border: none; outline: none;
+      color: #d4d4f0;
+      font: 13px/1.625 var(--mono);
+      resize: none;
+      tab-size: 2;
+      white-space: pre;
+      overflow: auto;
+      caret-color: var(--accent);
+    }
+    #code-area::selection { background: rgba(139,92,246,.22); }
 
     /* ── Preview pane ── */
     #preview-pane {
-      flex: 1; height: 100%; background: #111; position: relative;
+      flex: 1; height: 100%;
+      display: flex; flex-direction: column;
+      background: #0a0a0b;
     }
-    #preview-frame { width: 100%; height: 100%; border: none; display: block; }
-    #preview-spinner {
-      position: absolute; inset: 0;
+    #preview-frame {
+      flex: 1; min-height: 0;
+      width: 100%; border: none;
+    }
+
+    /* Status dot */
+    .status-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(139,92,246,.5); display: inline-block;
+    }
+    .status-dot.live   { background: #10b981; }
+    .status-dot.typing { background: var(--accent); animation: blink .5s ease infinite alternate; }
+    @keyframes blink { to { opacity: .2; } }
+
+    /* ════════════════════════════════
+       FOOTER
+    ════════════════════════════════ */
+    footer {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      height: var(--foot-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 28px;
+      background: rgba(6,6,6,.96);
+      border-top: 1px solid var(--border);
+      font-size: .64rem; color: rgba(239,239,239,.18);
+      letter-spacing: 1.5px;
+    }
+    footer a { color: rgba(239,239,239,.18); transition: color .2s; }
+    footer a:hover { color: rgba(239,239,239,.5); }
+    .foot-hint { font-size: .58rem; color: rgba(139,92,246,.35); }
+
+    /* ════════════════════════════════
+       WAIT OVERLAY
+    ════════════════════════════════ */
+    #wait-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(6,6,6,.88);
+      backdrop-filter: blur(20px);
       display: flex; align-items: center; justify-content: center;
-      background: var(--bg); pointer-events: none;
-      font-size: .48rem; letter-spacing: 3px; color: var(--accent);
-      opacity: 0; transition: opacity .2s;
+      opacity: 0; pointer-events: none;
+      transition: opacity .35s;
     }
-    #preview-spinner.show { opacity: 1; }
+    #wait-overlay.show { opacity: 1; pointer-events: auto; }
 
-    /* ── Save overlay ── */
-    #save-overlay {
-      position: fixed; inset: 0; z-index: 9000;
-      background: rgba(6,6,6,.97);
+    .wait-card {
+      width: 440px; max-width: calc(100vw - 40px);
+      border: 1px solid var(--border);
+      background: rgba(6,6,6,.7);
+      padding: 48px 44px 40px;
+      display: flex; flex-direction: column; align-items: center; gap: 22px;
+      position: relative;
+    }
+    /* Top accent line */
+    .wait-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2px; background: var(--accent);
+    }
+
+    /* Icon circle */
+    .w-icon {
+      width: 60px; height: 60px; border-radius: 50%;
+      border: 2px solid var(--accent);
       display: flex; align-items: center; justify-content: center;
-      flex-direction: column; gap: 28px;
-      opacity: 0; pointer-events: none; transition: opacity .35s;
+      font-size: 1.5rem; color: var(--accent);
+      flex-shrink: 0;
     }
-    #save-overlay.active { opacity: 1; pointer-events: auto; }
-
-    .sov-label { font-size: .52rem; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; }
-    .sov-headline {
-      font-family: var(--display);
-      font-size: clamp(3rem, 8vw, 6rem);
-      letter-spacing: 3px; line-height: 1; color: var(--fg); transition: color .4s;
+    .w-icon.spin {
+      border-top-color: transparent;
+      animation: wspin .75s linear infinite;
     }
-    .sov-headline.done { color: var(--accent); }
-    .sov-headline.err  { color: #ff4466; }
-    .sov-sub {
-      font-size: .65rem; color: rgba(239,239,239,.45);
-      letter-spacing: 1px; line-height: 1.9; text-align: center; max-width: 360px;
+    .w-icon.ok   { background: rgba(16,185,129,.08); border-color: #10b981; color: #10b981; animation: none; }
+    .w-icon.fail { background: rgba(239,68,68,.08);  border-color: #ef4444; color: #ef4444; animation: none; }
+    @keyframes wspin { to { transform: rotate(360deg); } }
+
+    /* Title */
+    .w-title {
+      font-family: var(--display); font-size: 1.55rem;
+      letter-spacing: 4px; text-align: center; line-height: 1.15;
     }
-    .sov-blink { animation: sov-blink 1.1s step-end infinite; }
-    @keyframes sov-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    /* Sub */
+    .w-sub {
+      font-size: .82rem; color: rgba(239,239,239,.5);
+      letter-spacing: .3px; text-align: center; line-height: 1.75;
+    }
 
-    .sov-bar-wrap { width: min(320px, 80vw); height: 2px; background: rgba(139,92,246,.15); position: relative; overflow: hidden; }
-    .sov-bar { position: absolute; left: 0; top: 0; height: 100%; background: var(--accent); transition: width .6s; }
-    .sov-bar.slide { width: 40% !important; animation: sov-slide 1.4s ease-in-out infinite; }
-    @keyframes sov-slide { 0%{left:-40%} 100%{left:100%} }
+    /* Progress bar */
+    .w-prog-wrap {
+      width: 100%; height: 3px;
+      background: rgba(139,92,246,.1);
+      overflow: hidden;
+    }
+    .w-prog-fill {
+      height: 100%; width: 0%;
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(139,92,246,.7);
+      transition: width .5s ease;
+    }
 
-    .sov-btn {
+    /* Steps */
+    .w-steps { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+    .w-step {
+      display: flex; align-items: center; gap: 12px;
+      font-size: .74rem; color: rgba(239,239,239,.25);
+      transition: color .3s;
+    }
+    .w-step.done   { color: rgba(239,239,239,.65); }
+    .w-step.active { color: var(--fg); }
+
+    .step-dot {
+      width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+      border: 1px solid rgba(139,92,246,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .5rem; color: rgba(139,92,246,.3);
+    }
+    .w-step.done   .step-dot { border-color: #10b981; color: #10b981; background: rgba(16,185,129,.08); }
+    .w-step.active .step-dot {
+      border-color: var(--accent); border-top-color: transparent;
+      animation: wspin .7s linear infinite;
+    }
+
+    /* Meta */
+    .w-meta {
+      font-size: .66rem; color: rgba(239,239,239,.2);
+      letter-spacing: 1px; text-align: center;
+    }
+    .w-meta strong { color: rgba(239,239,239,.5); }
+
+    /* Action button */
+    .w-action {
       font-family: var(--mono); font-weight: 700;
-      font-size: .7rem; letter-spacing: 3px; text-transform: uppercase;
+      font-size: .74rem; letter-spacing: 3px; text-transform: uppercase;
       color: var(--bg); background: var(--accent);
-      border: 1.5px solid var(--accent); padding: 13px 32px;
-      cursor: pointer; text-decoration: none;
-      transition: background .25s, color .25s; display: none;
+      border: 1.5px solid var(--accent);
+      padding: 12px 28px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: background .2s, color .2s;
+      margin-top: 4px;
     }
-    .sov-btn:hover { background: transparent; color: var(--accent); }
-    .sov-btn.show { display: inline-block; }
+    .w-action:hover { background: transparent; color: var(--accent); }
+
+    /* ════════════════════════════════
+       AUTH OVERLAY (not owner)
+    ════════════════════════════════ */
+    #auth-wall {
+      position: fixed; inset: 0; z-index: 600;
+      background: var(--bg);
+      background-image:
+        linear-gradient(rgba(255,255,255,.016) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.016) 1px, transparent 1px);
+      background-size: 72px 72px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 18px;
+    }
+    #auth-wall.gone { display: none; }
+    .aw-tag { font-size: .76rem; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; }
+    .aw-title {
+      font-family: var(--display); font-size: 3rem;
+      letter-spacing: 4px; text-align: center;
+    }
+    .aw-sub { font-size: .9rem; color: var(--dim); text-align: center; line-height: 1.8; max-width: 360px; }
+    .aw-btn {
+      font-family: var(--mono); font-weight: 700;
+      font-size: .78rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--bg); background: var(--accent);
+      border: 1.5px solid var(--accent);
+      padding: 13px 30px; cursor: pointer;
+      transition: background .2s, color .2s;
+      margin-top: 10px;
+    }
+    .aw-btn:hover { background: transparent; color: var(--accent); }
 
     /* ── Mobile ── */
-    @media (max-width: 768px) {
-      #tab-bar   { display: flex; }
-      #workspace { top: calc(var(--hdr) + 38px); }
-      #code-pane { width: 100%; border-right: none; }
-      #preview-pane { display: none; width: 100%; }
-      .kbd { display: none; }
-      #edit-label { display: none; }
-      #workspace.show-preview #code-pane    { display: none; }
-      #workspace.show-preview #preview-pane { display: block; }
+    @media (max-width: 680px) {
+      nav { padding: 0 16px; }
+      .nav-center { display: none; }
+      #workspace { flex-direction: column; }
+      #editor-pane { width: 100%; height: 55%; border-right: none; border-bottom: 1px solid var(--border); }
+      #preview-pane { height: 45%; }
+      footer { padding: 0 16px; }
+      .foot-hint { display: none; }
     }
   </style>
 </head>
 <body>
 
-<header id="hdr">
-  <a href="/" class="brand">REACH<span>_</span>FLOW</a>
-  <span id="edit-label">// editing <strong id="lbl-user">@&hellip;</strong></span>
-  <button id="save-btn" disabled>
-    Save &amp; Publish
-    <span class="kbd">Ctrl+S</span>
-  </button>
-</header>
-
-<div id="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('code')">&#9000; Code</button>
-  <button class="tab-btn" onclick="switchTab('preview')">&#9658; Preview</button>
+<!-- ══════════════════════════════════════
+     AUTH WALL — hidden once verified
+══════════════════════════════════════ -->
+<div id="auth-wall">
+  <p class="aw-tag">// access denied</p>
+  <h1 class="aw-title">NOT YOUR SPACE</h1>
+  <p class="aw-sub" id="aw-msg">You can only edit your own space. Sign in to continue.</p>
+  <a href="/" class="aw-btn">&#8592; Go home</a>
 </div>
 
+<!-- ══════════════════════════════════════
+     NAV
+══════════════════════════════════════ -->
+<nav>
+  <a href="/" class="nav-brand">REACH<span>_</span>FLOW</a>
+  <div class="nav-center">
+    <span class="nav-chip">editing</span>
+    <span class="nav-slash">/</span>
+    <span class="nav-login" id="nav-login">...</span>
+  </div>
+  <div class="nav-right">
+    <a href="#" class="view-btn" id="view-btn" target="_blank" rel="noopener">View live &#8599;</a>
+    <button id="save-btn" disabled>&#x2191;&nbsp;Save</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     WORKSPACE
+══════════════════════════════════════ -->
 <div id="workspace">
-  <div id="code-pane">
-    <div id="cm-wrap">
-      <textarea id="cm-textarea"></textarea>
+
+  <!-- Left: editor -->
+  <div id="editor-pane">
+    <div class="pane-bar">
+      <span class="pane-label">// index.html</span>
+      <span class="pane-meta" id="char-count">0 / 500,000</span>
     </div>
-    <div id="status-bar">
-      <span>HTML</span>
-      <span id="status-msg"></span>
-      <span id="char-count"></span>
+    <div id="editor-body">
+      <div id="line-nums" aria-hidden="true">1</div>
+      <textarea
+        id="code-area"
+        spellcheck="false"
+        autocorrect="off"
+        autocapitalize="off"
+        autocomplete="off"
+        placeholder="Loading your space..."
+      ></textarea>
     </div>
   </div>
+
+  <!-- Right: preview -->
   <div id="preview-pane">
-    <iframe id="preview-frame"
+    <div class="pane-bar">
+      <span class="pane-label">// preview</span>
+      <span class="status-dot" id="status-dot"></span>
+    </div>
+    <iframe
+      id="preview-frame"
       sandbox="allow-scripts allow-forms allow-popups allow-pointer-lock allow-modals"
-      title="Space preview"></iframe>
-    <div id="preview-spinner">UPDATING_</div>
+      title="Live preview"
+    ></iframe>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer>
+  <span class="foot-hint">Ctrl+S to save &nbsp;&middot;&nbsp; Tab inserts 2 spaces</span>
+  <span>&#169; 2026 reachflow &middot; TR4IS &nbsp;&middot;&nbsp; <a href="/terms.html">.terms()</a></span>
+</footer>
+
+<!-- ══════════════════════════════════════
+     WAIT OVERLAY
+══════════════════════════════════════ -->
+<div id="wait-overlay">
+  <div class="wait-card">
+    <div class="w-icon spin" id="w-icon"></div>
+    <p class="w-title" id="w-title">SAVING CHANGES</p>
+    <p class="w-sub"  id="w-sub">Uploading your code...</p>
+
+    <div class="w-prog-wrap">
+      <div class="w-prog-fill" id="w-bar"></div>
+    </div>
+
+    <div class="w-steps">
+      <div class="w-step active" id="ws-save">
+        <div class="step-dot"></div>
+        <span>Saving to server</span>
+      </div>
+      <div class="w-step" id="ws-commit">
+        <div class="step-dot"></div>
+        <span>Committing to GitHub</span>
+      </div>
+      <div class="w-step" id="ws-build">
+        <div class="step-dot"></div>
+        <span>GitHub Pages building</span>
+      </div>
+      <div class="w-step" id="ws-live">
+        <div class="step-dot"></div>
+        <span>Live on the internet</span>
+      </div>
+    </div>
+
+    <p class="w-meta">Elapsed: <strong id="w-elapsed">0s</strong>
+      &nbsp;&middot;&nbsp; usually 30–90 seconds</p>
+
+    <a href="#" class="w-action" id="w-action" style="display:none">
+      View my space &#8599;
+    </a>
   </div>
 </div>
 
-<div id="save-overlay">
-  <p class="sov-label">
-    <svg width="13" height="13" viewBox="0 0 32 32" style="display:inline-block;vertical-align:middle;margin-right:6px">
-      <rect width="32" height="32" rx="5" fill="#8b5cf6"/>
-      <text x="10" y="22" font-family="monospace" font-size="17" font-weight="900" fill="white">r</text>
-    </svg>// reachflow
-  </p>
-  <p class="sov-headline" id="sov-hl">Saving<span class="sov-blink">_</span></p>
-  <div class="sov-bar-wrap"><div class="sov-bar slide" id="sov-bar"></div></div>
-  <p class="sov-sub" id="sov-sub">Pushing your changes to GitHub&hellip;</p>
-  <a class="sov-btn" id="sov-btn" href="#">View my space &#8599;</a>
-</div>
-
+<!-- ══════════════════════════════════════
+     SCRIPT
+══════════════════════════════════════ -->
 <script>
 (function () {
-  var WORKER    = 'https://reachflow-auth.cr4cker.workers.dev';
-  var MAX_BYTES = 500000;
+  'use strict';
 
-  /* ── Auth guard ── */
-  var token = localStorage.getItem('rf_token');
-  var user  = localStorage.getItem('rf_user');
-  if (!token || !user) { window.location.href = '/'; return; }
+  var WORKER = 'https://reachflow-auth.cr4cker.workers.dev';
 
-  /* ── Resolve login from URL param or stored user (preserve case for file paths) ── */
-  var params = new URLSearchParams(window.location.search);
-  var login  = params.get('user') || user;
-  document.getElementById('lbl-user').textContent = '@' + login;
-  document.title = 'Edit @' + login + ' — reachflow';
+  /* ── Auth ── */
+  var params  = new URLSearchParams(location.search);
+  var qLogin  = params.get('user') || '';
+  var storedUser  = localStorage.getItem('rf_user')  || '';
+  var storedToken = localStorage.getItem('rf_token') || '';
+  var authWall    = document.getElementById('auth-wall');
+  var awMsg       = document.getElementById('aw-msg');
 
-  /* ── Refs ── */
-  var saveBtn  = document.getElementById('save-btn');
-  var statusEl = document.getElementById('status-msg');
-  var charEl   = document.getElementById('char-count');
-  var frame    = document.getElementById('preview-frame');
-  var spinner  = document.getElementById('preview-spinner');
-  var workspace = document.getElementById('workspace');
-  var overlay  = document.getElementById('save-overlay');
-  var sovHL    = document.getElementById('sov-hl');
-  var sovBar   = document.getElementById('sov-bar');
-  var sovSub   = document.getElementById('sov-sub');
-  var sovBtn   = document.getElementById('sov-btn');
-
-  /* ── Starter template shown when space has no user HTML yet ── */
-  function starterHtml(u) {
-    return [
-      '<!DOCTYPE html>',
-      '<html lang="en">',
-      '<head>',
-      '  <meta charset="UTF-8">',
-      '  <meta name="viewport" content="width=device-width, initial-scale=1.0">',
-      '  <title>' + u + '</title>',
-      '  <link rel="preconnect" href="https://fonts.googleapis.com">',
-      '  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">',
-      '  <style>',
-      '    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }',
-      '    body {',
-      '      background: #060606;',
-      '      color: #efefef;',
-      '      font-family: \'JetBrains Mono\', monospace;',
-      '      min-height: 100vh;',
-      '      display: flex;',
-      '      flex-direction: column;',
-      '      align-items: center;',
-      '      justify-content: center;',
-      '      gap: 24px;',
-      '      padding: 60px 24px;',
-      '    }',
-      '    h1 {',
-      '      font-family: \'Bebas Neue\', sans-serif;',
-      '      font-size: clamp(3rem, 10vw, 6rem);',
-      '      letter-spacing: 4px;',
-      '      text-shadow: 0 0 60px rgba(139,92,246,.8);',
-      '    }',
-      '    p { font-size: .8rem; color: rgba(239,239,239,.5); text-align: center; line-height: 1.8; }',
-      '    a {',
-      '      font-size: .6rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 700;',
-      '      color: #060606; background: #8b5cf6; padding: 10px 24px; text-decoration: none;',
-      '      border: 1.5px solid #8b5cf6; transition: background .25s, color .25s;',
-      '    }',
-      '    a:hover { background: transparent; color: #8b5cf6; }',
-      '  </style>',
-      '</head>',
-      '<body>',
-      '  <h1>' + u + '</h1>',
-      '  <p>This is your space. Edit the HTML here and it goes live instantly.</p>',
-      '  <a href="https://github.com/' + u + '" target="_blank" rel="noopener">GitHub &#8599;</a>',
-      '</body>',
-      '</html>',
-    ].join('\n');
+  function showWall(msg) {
+    awMsg.textContent = msg;
+    authWall.classList.remove('gone');
   }
 
-  /* ── CodeMirror ── */
-  var cm = CodeMirror.fromTextArea(document.getElementById('cm-textarea'), {
-    mode:           'htmlmixed',
-    theme:          'material-darker',
-    lineNumbers:    true,
-    lineWrapping:   true,
-    autoCloseTags:  true,
-    matchBrackets:  true,
-    tabSize:        2,
-    indentWithTabs: false,
-    extraKeys: {
-      'Ctrl-S': function() { doSave(); return false; },
-      'Cmd-S':  function() { doSave(); return false; },
-    },
+  if (!storedUser || !storedToken) {
+    showWall('Sign in first to edit your space.');
+    return;
+  }
+  if (qLogin && qLogin.toLowerCase() !== storedUser.toLowerCase()) {
+    showWall('You can only edit your own space (' + storedUser + ').');
+    return;
+  }
+
+  var login = storedUser; // trust stored login (correct case)
+  authWall.classList.add('gone');
+
+  /* ── Wire up nav ── */
+  document.getElementById('nav-login').textContent = login;
+  document.getElementById('view-btn').href = '/spaces/' + login + '/';
+
+  /* ── Editor elements ── */
+  var area      = document.getElementById('code-area');
+  var lineNums  = document.getElementById('line-nums');
+  var charCount = document.getElementById('char-count');
+  var saveBtn   = document.getElementById('save-btn');
+  var previewFrame = document.getElementById('preview-frame');
+  var statusDot    = document.getElementById('status-dot');
+
+  /* ════════════════════
+     LINE NUMBERS
+  ════════════════════ */
+  function buildLineNums(text) {
+    var n = (text.match(/\n/g) || []).length + 1;
+    var buf = [];
+    for (var i = 1; i <= n; i++) buf.push(i);
+    lineNums.textContent = buf.join('\n');
+  }
+
+  area.addEventListener('scroll', function () {
+    lineNums.scrollTop = area.scrollTop;
   });
 
-  /* ── Preview ── */
-  var previewTimer;
-  function schedulePreview(immediate) {
+  /* ════════════════════
+     CHAR COUNT
+  ════════════════════ */
+  function refreshMeta() {
+    var len = area.value.length;
+    charCount.textContent = len.toLocaleString() + ' / 500,000';
+    charCount.className = 'pane-meta' + (len > 490000 ? ' warn' : '');
+  }
+
+  /* ════════════════════
+     PREVIEW
+  ════════════════════ */
+  var previewTimer = null;
+  function schedulePreview() {
+    statusDot.className = 'status-dot typing';
     clearTimeout(previewTimer);
-    if (!immediate) spinner.classList.add('show');
-    previewTimer = setTimeout(function() {
-      frame.srcdoc = cm.getValue();
-      spinner.classList.remove('show');
-    }, immediate ? 0 : 700);
+    previewTimer = setTimeout(function () {
+      previewFrame.srcdoc = area.value;
+      statusDot.className = 'status-dot live';
+    }, 700);
   }
 
-  /* ── Char count ── */
-  function updateCharCount() {
-    var html  = cm.getValue();
-    var bytes = new TextEncoder().encode(html).length;
-    var kb    = (bytes / 1024).toFixed(1);
-    var pct   = Math.min(100, Math.round(bytes / MAX_BYTES * 100));
-    charEl.textContent = kb + ' KB / 500 KB (' + pct + '%)';
-    charEl.style.color =
-      bytes > MAX_BYTES * 0.9 ? '#ff4466' :
-      bytes > MAX_BYTES * 0.7 ? '#ffbb00' :
-      'rgba(239,239,239,.2)';
-  }
-
-  cm.on('change', function() {
-    schedulePreview(false);
-    updateCharCount();
-    saveBtn.disabled = false;
-    statusEl.textContent = '';
+  /* ════════════════════
+     INPUT HANDLING
+  ════════════════════ */
+  area.addEventListener('input', function () {
+    buildLineNums(area.value);
+    refreshMeta();
+    schedulePreview();
   });
 
-  /* ── Status helper ── */
-  function setStatus(msg, clearMs) {
-    statusEl.textContent = msg;
-    if (clearMs) setTimeout(function() { statusEl.textContent = ''; }, clearMs);
-  }
-
-  /* ── Load existing space HTML ── */
-  function loadSpace() {
-    setStatus('loading…');
-    fetch('/spaces/' + login + '/', { cache: 'no-store' })
-      .then(function(res) {
-        if (!res.ok) throw new Error('not found');
-        return res.text();
-      })
-      .then(function(html) {
-        /* New iframe-shell format: extract <script id="user-html" type="text/x-user-html"> */
-        var m = html.match(/<script\s+id="user-html"\s+type="text\/x-user-html">([\s\S]*?)<\/script>/i);
-        if (m) {
-          /* Unescape <\/script> back to </script> so editor shows clean HTML */
-          var userHtml = m[1].replace(/<\\\/script>/gi, '<\/script>');
-          cm.setValue(userHtml);
-          setStatus('loaded', 2000);
-        } else {
-          /* Unrecognized format — fall back to starter */
-          cm.setValue(starterHtml(login));
-          setStatus('starter template loaded', 3000);
-        }
-        finish();
-      })
-      .catch(function() {
-        cm.setValue(starterHtml(login));
-        setStatus('using starter template', 3000);
-        finish();
-      });
-
-    function finish() {
-      updateCharCount();
-      schedulePreview(true);
-      saveBtn.disabled = false;
-      cm.refresh();
+  /* Tab = 2 spaces, Ctrl+S = save */
+  area.addEventListener('keydown', function (e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var s = area.selectionStart, end = area.selectionEnd;
+      area.value = area.value.slice(0, s) + '  ' + area.value.slice(end);
+      area.selectionStart = area.selectionEnd = s + 2;
+      buildLineNums(area.value);
+      schedulePreview();
     }
-  }
-
-  loadSpace();
-
-  /* ── Save overlay phases ── */
-  function sovPhase(phase, errMsg) {
-    overlay.classList.add('active');
-    sovBtn.classList.remove('show');
-    sovBar.classList.add('slide');
-    sovBar.style.width = '';
-
-    if (phase === 'saving') {
-      sovHL.innerHTML = 'Saving<span class="sov-blink">_</span>';
-      sovHL.className = 'sov-headline';
-      sovSub.textContent = 'Pushing your changes to GitHub…';
-    } else if (phase === 'building') {
-      sovHL.innerHTML = 'Building<span class="sov-blink">_</span>';
-      sovHL.className = 'sov-headline';
-      sovSub.textContent = 'GitHub is publishing your page…';
-    } else if (phase === 'done') {
-      sovHL.textContent = 'Space Ready';
-      sovHL.className = 'sov-headline done';
-      sovSub.textContent = 'Your space is live. Click below to view it.';
-      sovBar.classList.remove('slide');
-      sovBar.style.width = '100%';
-      sovBtn.href = '/spaces/' + login + '/?v=' + Date.now();
-      sovBtn.classList.add('show');
-    } else if (phase === 'error') {
-      sovHL.textContent = 'Error';
-      sovHL.className = 'sov-headline err';
-      sovBar.classList.remove('slide');
-      sovBar.style.width = '0';
-      if (errMsg) setStatus('// ' + errMsg);
-      setTimeout(function() { overlay.classList.remove('active'); }, 500);
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      e.preventDefault();
+      doSave();
     }
+  });
+
+  /* ════════════════════
+     LOAD SPACE
+  ════════════════════ */
+  var starter = [
+    '<!DOCTYPE html>',
+    '<html lang="en">',
+    '<head>',
+    '  <meta charset="UTF-8">',
+    '  <meta name="viewport" content="width=device-width, initial-scale=1.0">',
+    '  <title>' + login + '</title>',
+    '  <style>',
+    '    body {',
+    '      background: #060606;',
+    '      color: #efefef;',
+    '      font-family: monospace;',
+    '      display: flex;',
+    '      flex-direction: column;',
+    '      align-items: center;',
+    '      justify-content: center;',
+    '      min-height: 100vh;',
+    '      gap: 16px;',
+    '    }',
+    '    h1 { font-size: 2rem; }',
+    '  </style>',
+    '</head>',
+    '<body>',
+    '  <h1>' + login + '</h1>',
+    '  <p>My developer page on reachflow.</p>',
+    '</body>',
+    '</html>'
+  ].join('\n');
+
+  function setCode(code) {
+    area.value = code;
+    area.disabled = false;
+    saveBtn.disabled = false;
+    buildLineNums(code);
+    refreshMeta();
+    schedulePreview();
   }
 
-  /* ── Poll until GitHub Pages is live ── */
-  function pollUntilLive() {
-    return new Promise(function(resolve) {
-      var secs = 0;
-      sovSub.textContent = 'GitHub is building — 0s…';
-      var t = setInterval(function() {
-        secs += 5;
-        sovSub.textContent = 'GitHub is building — ' + secs + 's…';
-        fetch('/spaces/' + login + '/', { method: 'HEAD', cache: 'no-store' })
-          .then(function(r) { if (r.ok) { clearInterval(t); resolve(); } })
-          .catch(function() { /* keep polling */ });
-      }, 5000);
+  area.value = '// Loading your space...';
+  area.disabled = true;
+
+  fetch('/spaces/' + login + '/?_nc=' + Date.now())
+    .then(function (r) { if (!r.ok) throw 0; return r.text(); })
+    .then(function (html) {
+      var m = html.match(/<script\s+id="user-html"\s+type="text\/x-user-html">([\s\S]*?)<\/script>/i);
+      setCode(m ? m[1].replace(/<\\\/script>/gi, '</script>').trim() : starter);
+    })
+    .catch(function () { setCode(starter); });
+
+  /* ════════════════════
+     WAIT OVERLAY SYSTEM
+  ════════════════════ */
+  var wIcon    = document.getElementById('w-icon');
+  var wTitle   = document.getElementById('w-title');
+  var wSub     = document.getElementById('w-sub');
+  var wBar     = document.getElementById('w-bar');
+  var wElapsed = document.getElementById('w-elapsed');
+  var wAction  = document.getElementById('w-action');
+  var overlay  = document.getElementById('wait-overlay');
+
+  var wsSave   = document.getElementById('ws-save');
+  var wsCommit = document.getElementById('ws-commit');
+  var wsBuild  = document.getElementById('ws-build');
+  var wsLive   = document.getElementById('ws-live');
+  var allSteps = [wsSave, wsCommit, wsBuild, wsLive];
+
+  function stepState(active) { // 0-3
+    allSteps.forEach(function (s, i) {
+      s.classList.remove('active', 'done');
+      if (i < active)  s.classList.add('done');
+      if (i === active) s.classList.add('active');
     });
   }
 
-  /* ── Save ── */
-  function doSave() {
-    var html  = cm.getValue();
-    var bytes = new TextEncoder().encode(html).length;
+  function setBar(pct) { wBar.style.width = Math.min(100, pct) + '%'; }
 
-    if (!html.trim()) { setStatus('// cannot save empty HTML'); return; }
-    if (bytes > MAX_BYTES) {
-      setStatus('// file too large (' + Math.round(bytes / 1024) + ' KB, max 500 KB)');
-      return;
-    }
+  /* Elapsed timer */
+  var elapsedInt = null, saveStart = 0;
+  function startElapsed() {
+    saveStart = Date.now();
+    clearInterval(elapsedInt);
+    elapsedInt = setInterval(function () {
+      wElapsed.textContent = Math.floor((Date.now() - saveStart) / 1000) + 's';
+    }, 1000);
+  }
+  function stopElapsed() { clearInterval(elapsedInt); }
 
-    saveBtn.disabled = true;
-    sovPhase('saving');
-
-    fetch(WORKER + '/save', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ token: token, data: { login: login, userHtml: html } }),
-    })
-    .then(function(res) {
-      return res.json().then(function(result) {
-        if (!res.ok) throw new Error(result.error || 'Save failed (' + res.status + ')');
-        return result;
-      });
-    })
-    .then(function() {
-      sovPhase('building');
-      return pollUntilLive();
-    })
-    .then(function() {
-      sovPhase('done');
-    })
-    .catch(function(err) {
-      sovPhase('error', err.message);
-      saveBtn.disabled = false;
-    });
+  /* Progress tween */
+  var tweenInt = null;
+  function tweenBar(from, to, ms) {
+    clearInterval(tweenInt);
+    var start = Date.now();
+    tweenInt = setInterval(function () {
+      var t = Math.min((Date.now() - start) / ms, 1);
+      setBar(from + (to - from) * t);
+      if (t >= 1) clearInterval(tweenInt);
+    }, 80);
   }
 
+  /* Phase transitions */
+  var phaseTimer = null;
+  function phase(name, opts) {
+    clearTimeout(phaseTimer);
+    wIcon.className = 'w-icon' + (opts.spin ? ' spin' : opts.ok ? ' ok' : ' fail');
+    wIcon.textContent = opts.icon || '';
+    wTitle.textContent = opts.title;
+    wSub.textContent   = opts.sub;
+    stepState(opts.step);
+    if (opts.bar) setBar(opts.bar);
+    if (opts.tween) tweenBar(opts.tween[0], opts.tween[1], opts.tween[2]);
+    if (opts.next) phaseTimer = setTimeout(function () { phase(opts.next[0], opts.next[1]); }, opts.next[2]);
+  }
+
+  /* Poll GitHub Pages until live */
+  var pollInt = null;
+  function pollUntilLive(deadline) {
+    clearInterval(pollInt);
+    pollInt = setInterval(function () {
+      if (Date.now() > deadline) {
+        clearInterval(pollInt);
+        showDone();
+        return;
+      }
+      fetch('/spaces/' + login + '/?_nc=' + Date.now(), { method: 'HEAD' })
+        .then(function (r) { if (r.ok) { clearInterval(pollInt); showDone(); } })
+        .catch(function () {});
+    }, 5000);
+  }
+
+  function showDone() {
+    clearInterval(tweenInt);
+    stopElapsed();
+    wIcon.className = 'w-icon ok';
+    wIcon.textContent = '✓';
+    wTitle.textContent = 'YOUR SPACE IS LIVE';
+    wSub.textContent   = 'All changes are visible to everyone.';
+    stepState(4); // all done
+    setBar(100);
+    wAction.href = '/spaces/' + login + '/';
+    wAction.textContent = 'View my space ↗';
+    wAction.style.display = 'inline-flex';
+    wAction.onclick = null;
+    saveBtn.disabled = false;
+  }
+
+  function showError(msg) {
+    clearInterval(tweenInt); clearInterval(pollInt); stopElapsed();
+    wIcon.className = 'w-icon fail';
+    wIcon.textContent = '✕';
+    wTitle.textContent = 'SOMETHING WENT WRONG';
+    wSub.textContent   = msg || 'Could not save. Check your connection.';
+    wAction.href = '#';
+    wAction.textContent = '← Back to editor';
+    wAction.style.display = 'inline-flex';
+    wAction.onclick = function (e) {
+      e.preventDefault();
+      overlay.classList.remove('show');
+    };
+    saveBtn.disabled = false;
+  }
+
+  /* ════════════════════
+     SAVE
+  ════════════════════ */
   saveBtn.addEventListener('click', doSave);
 
-  /* Global Ctrl/Cmd+S */
-  window.addEventListener('keydown', function(e) {
-    if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); doSave(); }
-  });
+  function doSave() {
+    var html = area.value;
+    if (!html.trim()) return;
+    if (html.length > 500000) { alert('Too large — keep under 500 KB.'); return; }
 
-  /* ── Mobile tab switching ── */
-  window.switchTab = function(tab) {
-    var isPreview = tab === 'preview';
-    document.querySelectorAll('.tab-btn').forEach(function(b, i) {
-      b.classList.toggle('active', i === (isPreview ? 1 : 0));
+    saveBtn.disabled = true;
+    overlay.classList.add('show');
+    startElapsed();
+
+    /* Phase 1: saving */
+    phase('saving', {
+      spin: true, title: 'SAVING CHANGES', sub: 'Uploading your code...', step: 0, tween: [0, 18, 3500]
     });
-    workspace.classList.toggle('show-preview', isPreview);
-    if (!isPreview) cm.refresh();
-  };
+
+    /* POST to worker */
+    fetch(WORKER + '/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: storedToken, data: { login: login, userHtml: html } })
+    })
+    .then(function (r) {
+      if (!r.ok) return r.text().then(function (t) { throw new Error(t || ('HTTP ' + r.status)); });
+      return r.json();
+    })
+    .then(function () {
+      /* Phase 2: committing */
+      phase('commit', {
+        spin: true, title: 'WRITING TO GITHUB', sub: 'Creating your commit...', step: 1, tween: [20, 42, 8000]
+      });
+
+      setTimeout(function () {
+        /* Phase 3: building */
+        phase('building', {
+          spin: true, title: 'GITHUB IS BUILDING',
+          sub: 'Your page is compiling.\nTypically 30–90 seconds.', step: 2
+        });
+        tweenBar(44, 88, 80000); // 80 second slow crawl
+        pollUntilLive(Date.now() + 120000); // Poll up to 2 min
+      }, 8500);
+    })
+    .catch(function (err) {
+      showError(err.message);
+    });
+  }
 
 })();
 </script>
