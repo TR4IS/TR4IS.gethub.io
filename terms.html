@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%23060606'/><rect width='32' height='32' rx='5' fill='%238b5cf6' opacity='.15'/><text x='7' y='23' font-family='monospace' font-size='20' font-weight='900' fill='%238b5cf6'>r</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -33,11 +33,14 @@
       background-size: 72px 72px;
       color: var(--fg);
       font-family: var(--mono);
-      overflow-x: hidden;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
     }
+
+    [dir="rtl"]         { font-family: 'Cairo', sans-serif; }
+    [dir="rtl"] *       { letter-spacing: 0 !important; }
 
     a { color: inherit; text-decoration: none; }
 
@@ -51,15 +54,35 @@
       backdrop-filter: blur(12px);
     }
     .nav-brand {
-      font-family: var(--display);
+      font-family: 'Bebas Neue', sans-serif;
       font-size: 1.1rem; letter-spacing: 5px; color: var(--fg);
     }
     .nav-brand span { color: var(--accent); }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
     .nav-back {
       font-size: .82rem; letter-spacing: 2px; text-transform: uppercase;
       color: var(--dim); transition: color .2s;
     }
+    [dir="rtl"] .nav-back { text-transform: none; }
     .nav-back:hover { color: var(--fg); }
+
+    /* Language toggle */
+    .lang-toggle {
+      display: flex; align-items: center; gap: 7px;
+      background: none; border: 1px solid rgba(139,92,246,.22);
+      padding: 7px 13px; cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .74rem; letter-spacing: 2px; color: var(--dim);
+      transition: border-color .2s;
+    }
+    .lang-toggle:hover { border-color: rgba(139,92,246,.4); }
+    .lang-sep { color: rgba(239,239,239,.15); }
+    .lang-opt.on { color: var(--accent); }
+    @keyframes langHint {
+      0%,100% { border-color: rgba(139,92,246,.22); box-shadow: none; }
+      50%      { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(139,92,246,.18); }
+    }
+    .lang-toggle.hinting { animation: langHint 1.5s ease .8s 3; }
 
     /* ── Hero ── */
     .hero {
@@ -70,26 +93,34 @@
     .hero-bg {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
-      font-family: var(--display);
+      font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(8rem, 26vw, 28rem);
       color: rgba(139,92,246,.028);
       letter-spacing: -12px;
       user-select: none; pointer-events: none;
       line-height: 1;
     }
+    [dir="rtl"] .hero-bg { font-family: 'Cairo', sans-serif; letter-spacing: 0; font-weight: 900; }
     .hero-content { position: relative; z-index: 2; max-width: 920px; margin: 0 auto; }
     .hero-tag {
       font-size: .80rem; color: var(--accent);
       letter-spacing: 3px; text-transform: uppercase;
       margin-bottom: 20px;
     }
+    [dir="rtl"] .hero-tag { text-transform: none; }
     .hero-headline {
-      font-family: var(--display);
+      font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(4rem, 14vw, 12rem);
       line-height: .88; letter-spacing: 4px;
       color: var(--fg);
       text-shadow: 0 0 80px rgba(139,92,246,.35);
       animation: fadeUp .7s ease both;
+    }
+    [dir="rtl"] .hero-headline {
+      font-family: 'Cairo', sans-serif;
+      font-weight: 900;
+      font-size: clamp(3rem, 10vw, 8rem);
+      line-height: 1.1;
     }
     .hero-meta {
       margin-top: 24px;
@@ -117,7 +148,7 @@
       padding: 64px 0;
       border-bottom: 1px solid var(--border);
       display: grid;
-      grid-template-columns: 150px 1fr;
+      grid-template-columns: 160px 1fr;
       gap: 48px;
       opacity: 0;
       transform: translateY(16px);
@@ -132,18 +163,25 @@
     }
     .ts-num  { font-size: .72rem; color: var(--accent); letter-spacing: 2px; }
     .ts-name { font-size: .68rem; color: var(--dim); letter-spacing: 3px; text-transform: uppercase; }
+    [dir="rtl"] .ts-name { text-transform: none; }
 
     .ts-title {
-      font-family: var(--display);
+      font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(2rem, 4.5vw, 4rem);
       letter-spacing: 3px; line-height: .92;
       color: var(--fg);
       margin-bottom: 20px;
     }
+    [dir="rtl"] .ts-title {
+      font-family: 'Cairo', sans-serif;
+      font-weight: 900;
+      line-height: 1.15;
+    }
     .ts-text {
       font-size: .88rem;
       color: var(--dim); line-height: 1.9; font-weight: 300;
     }
+    [dir="rtl"] .ts-text { font-weight: 400; line-height: 2.1; }
     .ts-text + .ts-text { margin-top: 12px; }
     .hi  { color: var(--fg); }
     .red { color: var(--red); }
@@ -156,17 +194,23 @@
     }
     .rule-list li {
       font-size: .84rem;
-      color: var(--dim); line-height: 1.7;
-      padding-left: 24px;
+      color: var(--dim); line-height: 1.75;
+      padding-left: 26px;
       position: relative;
+    }
+    [dir="rtl"] .rule-list li {
+      padding-left: 0;
+      padding-right: 26px;
     }
     .rule-list li::before {
       position: absolute; left: 0;
       font-weight: 700; font-size: .76rem;
     }
+    [dir="rtl"] .rule-list li::before { left: auto; right: 0; }
     .rule-list li.deny::before { content: '×'; color: var(--red); }
     .rule-list li.warn::before { content: '!'; color: var(--warn); }
     .rule-list li.ok::before   { content: '→'; color: var(--accent); }
+    [dir="rtl"] .rule-list li.ok::before { content: '←'; }
 
     /* ── Footer ── */
     footer {
@@ -174,7 +218,7 @@
       padding: 14px 40px;
       display: flex; justify-content: space-between;
       font-size: .76rem; color: rgba(239,239,239,.12);
-      letter-spacing: 2px; font-family: var(--mono);
+      letter-spacing: 2px; font-family: 'JetBrains Mono', monospace;
     }
     footer a { color: rgba(239,239,239,.12); text-decoration: none; transition: color .2s; }
     footer a:hover { color: rgba(239,239,239,.4); }
@@ -194,145 +238,342 @@
 
   <nav>
     <a href="/" class="nav-brand">REACH<span>_</span>FLOW</a>
-    <a href="/" class="nav-back">&#8592; back to .site()</a>
+    <div class="nav-right">
+      <a href="/" class="nav-back" data-i18n="navBack">&#8592; back to .site()</a>
+      <button class="lang-toggle" id="lang-toggle"
+              title="Switch language · تبديل اللغة"
+              aria-label="Switch language">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             style="opacity:.55;flex-shrink:0">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="2" y1="12" x2="22" y2="12"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        <span class="lang-opt on" data-lang="en">EN</span>
+        <span class="lang-sep">|</span>
+        <span class="lang-opt" data-lang="ar">AR</span>
+      </button>
+    </div>
   </nav>
 
   <div class="hero">
-    <div class="hero-bg" aria-hidden="true">TOS</div>
+    <div class="hero-bg" aria-hidden="true" data-i18n="heroBg">TOS</div>
     <div class="hero-content">
-      <p class="hero-tag">// legal</p>
-      <h1 class="hero-headline">.terms()</h1>
-      <p class="hero-meta">// last compiled: May 2026 &nbsp;&middot;&nbsp; applies to all spaces and members</p>
+      <p class="hero-tag" data-i18n="heroTag">// legal</p>
+      <h1 class="hero-headline" data-i18n="heroHeadline">.terms()</h1>
+      <p class="hero-meta" data-i18n="heroMeta">// last compiled: May 2026 &nbsp;·&nbsp; applies to all spaces and members</p>
     </div>
   </div>
 
   <div class="terms-body">
 
+    <!-- 01 Overview -->
     <div class="ts">
       <div class="ts-label">
         <span class="ts-num">01</span>
-        <span class="ts-name">Overview</span>
+        <span class="ts-name" data-i18n="name01">Overview</span>
       </div>
       <div>
-        <h2 class="ts-title">What This Is</h2>
-        <p class="ts-text">
-          Reachflow is a <span class="hi">network of developers</span>.
-          Each member gets a public-facing space hosted under their GitHub identity.
-        </p>
-        <p class="ts-text">
-          By creating or editing your space, you agree to everything on this page.
-          If you disagree with any part — stop using your space.
-        </p>
+        <h2 class="ts-title" data-i18n="title01">What This Is</h2>
+        <p class="ts-text" data-i18n-html="body01a">Reachflow is a <span class="hi">network of developers</span>. Each member gets a public-facing space and access to free tools — all hosted under their GitHub identity.</p>
+        <p class="ts-text" data-i18n="body01b">By using any part of reachflow — spaces, downloads, or the editor — you agree to everything on this page. If you disagree with any part, stop using the service.</p>
       </div>
     </div>
 
+    <!-- 02 Downloads -->
     <div class="ts">
       <div class="ts-label">
         <span class="ts-num">02</span>
-        <span class="ts-name">Responsibility</span>
+        <span class="ts-name" data-i18n="name02">Downloads</span>
       </div>
       <div>
-        <h2 class="ts-title">Your Space, Your Problem</h2>
-        <p class="ts-text">
-          You own what you publish. We host it.
-          Your space is <span class="hi">publicly accessible on the internet</span>,
-          linked to your GitHub account, and entirely your responsibility.
-        </p>
-        <p class="ts-text">
-          If your content causes legal, ethical, or community problems —
-          you are accountable, not reachflow.
-        </p>
+        <h2 class="ts-title" data-i18n="title02">Software, As-Is</h2>
+        <p class="ts-text" data-i18n="body02a">The tools available on the downloads page are developed and distributed by TR4IS. They are provided free of charge, with no warranty — use them at your own risk.</p>
+        <p class="ts-text" data-i18n-html="body02b">Antivirus software may flag these tools as suspicious. This is a <span class="hi">false positive</span> — they contain no malware. The flags occur because of how the executables are packaged.</p>
+        <ul class="rule-list">
+          <li class="ok" data-i18n="dl01">You may use the tools for personal and commercial purposes free of charge.</li>
+          <li class="ok" data-i18n="dl02">You may share direct download links to this page.</li>
+          <li class="warn" data-i18n="dl03">We are not liable for data loss, system issues, or any damage caused by using the software.</li>
+          <li class="warn" data-i18n="dl04">Tool availability may change. Downloads can be removed or updated at any time without notice.</li>
+          <li class="deny" data-i18n="dl05">Do not redistribute, repackage, or re-host the binaries without written permission.</li>
+          <li class="deny" data-i18n="dl06">Do not reverse-engineer, decompile, or claim authorship of these tools.</li>
+          <li class="deny" data-i18n="dl07">Do not use the tools for illegal, harmful, or malicious purposes.</li>
+        </ul>
       </div>
     </div>
 
+    <!-- 03 Spaces -->
     <div class="ts">
       <div class="ts-label">
         <span class="ts-num">03</span>
-        <span class="ts-name">Rules</span>
+        <span class="ts-name" data-i18n="name03">Spaces</span>
       </div>
       <div>
-        <h2 class="ts-title">What's Not Allowed</h2>
-        <p class="ts-text">The following will get your space <span class="red">removed immediately</span>, no warning.</p>
+        <h2 class="ts-title" data-i18n="title03">Developer Spaces</h2>
+        <p class="ts-text" data-i18n-html="body03a">Each developer gets a public page at <span class="hi">reachflow.site/spaces/[username]</span>. Spaces are fully customizable with HTML, CSS, and JavaScript — what you build is yours.</p>
+        <p class="ts-text" data-i18n="body03b">Everything published in a space is committed to a public GitHub repository. Your content is open and visible to anyone on the internet.</p>
         <ul class="rule-list">
-          <li class="deny"><span class="red">Child sexual abuse material (CSAM)</span> — zero tolerance. Reported to authorities and GitHub.</li>
-          <li class="deny">Illegal content of any kind — piracy, fraud, hacking tools targeting others.</li>
-          <li class="deny">Hate speech, threats, or targeted harassment of any individual or group.</li>
-          <li class="deny">Spam, phishing, or malware distribution.</li>
-          <li class="deny">Content that infringes copyright, trademarks, or intellectual property.</li>
-          <li class="deny">Impersonation of any person or organization.</li>
-          <li class="deny">Anything designed to deceive, manipulate, or harm others.</li>
+          <li class="ok" data-i18n="sp01">Your space runs sandboxed in an iframe — isolated from the main site and other spaces.</li>
+          <li class="ok" data-i18n="sp02">You keep full ownership of your creative content.</li>
+          <li class="warn" data-i18n="sp03">Spaces are static HTML only — no server-side code, databases, or persistent backends.</li>
+          <li class="warn" data-i18n="sp04">Spaces are a free service. We may modify, limit, or discontinue hosting at any time.</li>
+          <li class="deny" data-i18n="sp05">Do not use your space to impersonate another person or claim a false identity.</li>
+          <li class="deny" data-i18n="sp06">Do not embed content that violates the rules in section 04.</li>
         </ul>
       </div>
     </div>
 
+    <!-- 04 Rules -->
     <div class="ts">
       <div class="ts-label">
         <span class="ts-num">04</span>
-        <span class="ts-name">Enforcement</span>
+        <span class="ts-name" data-i18n="name04">Rules</span>
       </div>
       <div>
-        <h2 class="ts-title">How We Handle It</h2>
-        <p class="ts-text">
-          The site owner reserves the right to remove any space, at any time,
-          with or without notice, for any violation of these terms.
-        </p>
+        <h2 class="ts-title" data-i18n="title04">What's Not Allowed</h2>
+        <p class="ts-text" data-i18n-html="body04a">The following content will get your space <span class="red">removed immediately</span> with no warning, across both spaces and any submitted content.</p>
         <ul class="rule-list">
-          <li class="ok">Reachflow is curated — membership is a privilege, not a right.</li>
-          <li class="ok">Serious violations may be reported to GitHub and relevant authorities.</li>
-          <li class="warn">There is no formal appeals process. Owner discretion is final.</li>
+          <li class="deny" data-i18n-html="rule01"><span class="red">Child sexual abuse material (CSAM)</span> — zero tolerance. Reported to authorities and GitHub.</li>
+          <li class="deny" data-i18n="rule02">Illegal content — piracy, fraud, hacking tools targeting others.</li>
+          <li class="deny" data-i18n="rule03">Hate speech, threats, or targeted harassment of any person or group.</li>
+          <li class="deny" data-i18n="rule04">Spam, phishing, or malware distribution.</li>
+          <li class="deny" data-i18n="rule05">Content that infringes copyright, trademarks, or intellectual property.</li>
+          <li class="deny" data-i18n="rule06">Impersonation of any person or organization.</li>
+          <li class="deny" data-i18n="rule07">Anything designed to deceive, manipulate, or cause harm.</li>
         </ul>
       </div>
     </div>
 
+    <!-- 05 Enforcement -->
     <div class="ts">
       <div class="ts-label">
         <span class="ts-num">05</span>
-        <span class="ts-name">Privacy</span>
+        <span class="ts-name" data-i18n="name05">Enforcement</span>
       </div>
       <div>
-        <h2 class="ts-title">What We Store</h2>
-        <p class="ts-text">
-          Reachflow stores only what GitHub provides at sign-in:
-          your <span class="hi">username</span>, <span class="hi">display name</span>,
-          <span class="hi">bio</span>, and <span class="hi">avatar</span>.
-        </p>
+        <h2 class="ts-title" data-i18n="title05">How We Handle It</h2>
+        <p class="ts-text" data-i18n="body05a">The site owner reserves the right to remove any space or content, at any time, with or without notice, for any violation of these terms.</p>
         <ul class="rule-list">
-          <li class="ok">No passwords. No emails. No tracking cookies.</li>
-          <li class="ok">Your space content lives in a public GitHub repository.</li>
-          <li class="ok">Anyone can view or fork that repository — it's open source.</li>
+          <li class="ok" data-i18n="enf01">Reachflow is curated — membership is a privilege, not a right.</li>
+          <li class="ok" data-i18n="enf02">Serious violations may be reported to GitHub and relevant authorities.</li>
+          <li class="warn" data-i18n="enf03">There is no formal appeals process. Owner discretion is final.</li>
         </ul>
       </div>
     </div>
 
+    <!-- 06 Privacy -->
     <div class="ts">
       <div class="ts-label">
         <span class="ts-num">06</span>
-        <span class="ts-name">Changes</span>
+        <span class="ts-name" data-i18n="name06">Privacy</span>
       </div>
       <div>
-        <h2 class="ts-title">Updates</h2>
-        <p class="ts-text">
-          These terms can change at any time.
-          Continued use of your space means you accept whatever they say at that point.
-        </p>
+        <h2 class="ts-title" data-i18n="title06">What We Store</h2>
+        <p class="ts-text" data-i18n-html="body06a">Reachflow stores only what GitHub provides at sign-in: your <span class="hi">username</span>, <span class="hi">display name</span>, <span class="hi">bio</span>, and <span class="hi">avatar</span>.</p>
+        <ul class="rule-list">
+          <li class="ok" data-i18n="prv01">No passwords. No emails. No tracking cookies.</li>
+          <li class="ok" data-i18n="prv02">Your space content lives in a public GitHub repository.</li>
+          <li class="ok" data-i18n="prv03">Anyone can view or fork that repository — it's open source.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 07 Changes -->
+    <div class="ts">
+      <div class="ts-label">
+        <span class="ts-num">07</span>
+        <span class="ts-name" data-i18n="name07">Changes</span>
+      </div>
+      <div>
+        <h2 class="ts-title" data-i18n="title07">Updates</h2>
+        <p class="ts-text" data-i18n="body07a">These terms can change at any time. Continued use of your space or the downloads means you accept whatever they say at that point.</p>
       </div>
     </div>
 
   </div>
 
   <footer>
-    <span>&#169; 2026 reachflow.site &middot; TR4IS &middot; All rights reserved</span>
-    <a href="/">&#8592; .site()</a>
+    <span data-i18n="footerLeft">&#169; 2026 reachflow.site &middot; TR4IS &middot; All rights reserved</span>
+    <a href="/" data-i18n="footerBack">&#8592; .site()</a>
   </footer>
 
   <script>
-    /* ── Scroll reveal ── */
+  (function () {
+
+    /* ════════ TRANSLATIONS ════════ */
+    var T = {
+      en: {
+        navBack:       '← back to .site()',
+        heroBg:        'TOS',
+        heroTag:       '// legal',
+        heroHeadline:  '.terms()',
+        heroMeta:      '// last compiled: May 2026 · applies to all spaces and members',
+
+        name01: 'Overview',
+        title01: 'What This Is',
+        body01a: 'Reachflow is a <span class="hi">network of developers</span>. Each member gets a public-facing space and access to free tools — all hosted under their GitHub identity.',
+        body01b: 'By using any part of reachflow — spaces, downloads, or the editor — you agree to everything on this page. If you disagree with any part, stop using the service.',
+
+        name02: 'Downloads',
+        title02: 'Software, As-Is',
+        body02a: 'The tools available on the downloads page are developed and distributed by TR4IS. They are provided free of charge, with no warranty — use them at your own risk.',
+        body02b: 'Antivirus software may flag these tools as suspicious. This is a <span class="hi">false positive</span> — they contain no malware. The flags occur because of how the executables are packaged.',
+        dl01: 'You may use the tools for personal and commercial purposes free of charge.',
+        dl02: 'You may share direct download links to this page.',
+        dl03: 'We are not liable for data loss, system issues, or any damage caused by using the software.',
+        dl04: 'Tool availability may change. Downloads can be removed or updated at any time without notice.',
+        dl05: 'Do not redistribute, repackage, or re-host the binaries without written permission.',
+        dl06: 'Do not reverse-engineer, decompile, or claim authorship of these tools.',
+        dl07: 'Do not use the tools for illegal, harmful, or malicious purposes.',
+
+        name03: 'Spaces',
+        title03: 'Developer Spaces',
+        body03a: 'Each developer gets a public page at <span class="hi">reachflow.site/spaces/[username]</span>. Spaces are fully customizable with HTML, CSS, and JavaScript — what you build is yours.',
+        body03b: 'Everything published in a space is committed to a public GitHub repository. Your content is open and visible to anyone on the internet.',
+        sp01: 'Your space runs sandboxed in an iframe — isolated from the main site and other spaces.',
+        sp02: 'You keep full ownership of your creative content.',
+        sp03: 'Spaces are static HTML only — no server-side code, databases, or persistent backends.',
+        sp04: 'Spaces are a free service. We may modify, limit, or discontinue hosting at any time.',
+        sp05: 'Do not use your space to impersonate another person or claim a false identity.',
+        sp06: 'Do not embed content that violates the rules in section 04.',
+
+        name04: 'Rules',
+        title04: "What's Not Allowed",
+        body04a: 'The following content will get your space <span class="red">removed immediately</span> with no warning, across both spaces and any submitted content.',
+        rule01: '<span class="red">Child sexual abuse material (CSAM)</span> — zero tolerance. Reported to authorities and GitHub.',
+        rule02: 'Illegal content — piracy, fraud, hacking tools targeting others.',
+        rule03: 'Hate speech, threats, or targeted harassment of any person or group.',
+        rule04: 'Spam, phishing, or malware distribution.',
+        rule05: 'Content that infringes copyright, trademarks, or intellectual property.',
+        rule06: 'Impersonation of any person or organization.',
+        rule07: 'Anything designed to deceive, manipulate, or cause harm.',
+
+        name05: 'Enforcement',
+        title05: 'How We Handle It',
+        body05a: 'The site owner reserves the right to remove any space or content, at any time, with or without notice, for any violation of these terms.',
+        enf01: 'Reachflow is curated — membership is a privilege, not a right.',
+        enf02: 'Serious violations may be reported to GitHub and relevant authorities.',
+        enf03: 'There is no formal appeals process. Owner discretion is final.',
+
+        name06: 'Privacy',
+        title06: 'What We Store',
+        body06a: 'Reachflow stores only what GitHub provides at sign-in: your <span class="hi">username</span>, <span class="hi">display name</span>, <span class="hi">bio</span>, and <span class="hi">avatar</span>.',
+        prv01: 'No passwords. No emails. No tracking cookies.',
+        prv02: 'Your space content lives in a public GitHub repository.',
+        prv03: "Anyone can view or fork that repository — it's open source.",
+
+        name07: 'Changes',
+        title07: 'Updates',
+        body07a: 'These terms can change at any time. Continued use of your space or the downloads means you accept whatever they say at that point.',
+
+        footerLeft: '© 2026 reachflow.site · TR4IS · All rights reserved',
+        footerBack: '← .site()',
+      },
+
+      ar: {
+        navBack:       'العودة إلى .site() →',
+        heroBg:        'شروط',
+        heroTag:       '// قانوني',
+        heroHeadline:  'الشروط',
+        heroMeta:      '// آخر تحديث: مايو 2026 · تسري على جميع المساحات والأعضاء',
+
+        name01: 'نظرة عامة',
+        title01: 'ما هذا؟',
+        body01a: 'Reachflow هو <span class="hi">شبكة مطوّرين</span>. يحصل كل عضو على صفحة عامة وصلاحية الوصول إلى أدوات مجانية — كل ذلك مرتبط بهويته على GitHub.',
+        body01b: 'باستخدام أي جزء من reachflow — المساحات أو التنزيلات أو المحرّر — فإنك توافق على كل ما هو مذكور في هذه الصفحة. إذا كنت لا توافق على أي جزء، توقّف عن استخدام الخدمة.',
+
+        name02: 'التنزيلات',
+        title02: 'البرامج كما هي',
+        body02a: 'الأدوات المتاحة في صفحة التنزيلات مطوَّرة وموزَّعة من قِبل TR4IS. تُقدَّم مجاناً بدون أي ضمان — استخدمها على مسؤوليتك الخاصة.',
+        body02b: 'قد تُشير بعض برامج مكافحة الفيروسات إلى هذه الأدوات. هذا <span class="hi">إنذار خاطئ</span> — لا تحتوي على أي برمجيات ضارة. يحدث ذلك بسبب طريقة تجميع الملفات التنفيذية.',
+        dl01: 'يمكنك استخدام الأدوات للأغراض الشخصية والتجارية مجاناً.',
+        dl02: 'يمكنك مشاركة روابط التنزيل المباشرة لهذه الصفحة.',
+        dl03: 'لا نتحمّل مسؤولية فقدان البيانات أو مشاكل النظام أو أي أضرار ناتجة عن استخدام البرامج.',
+        dl04: 'قد تتغيّر توفّر الأدوات. يمكن حذف التنزيلات أو تحديثها في أي وقت دون إشعار.',
+        dl05: 'لا تُعيد توزيع الملفات أو إعادة تغليفها أو استضافتها بدون إذن كتابي.',
+        dl06: 'لا تقم بالهندسة العكسية أو فكّ التشفير أو ادّعاء ملكية هذه الأدوات.',
+        dl07: 'لا تستخدم الأدوات لأغراض غير قانونية أو ضارة أو خبيثة.',
+
+        name03: 'المساحات',
+        title03: 'مساحات المطوّرين',
+        body03a: 'يحصل كل مطوّر على صفحة عامة على <span class="hi">reachflow.site/spaces/[username]</span>. المساحات قابلة للتخصيص الكامل بـ HTML وCSS وJavaScript — ما تبنيه هو ملكك.',
+        body03b: 'كل ما تنشره في مساحتك يُحفظ في مستودع GitHub عام. محتواك مفتوح ومرئي لأي شخص على الإنترنت.',
+        sp01: 'تعمل مساحتك في بيئة معزولة داخل iframe — منفصلة عن الموقع الرئيسي والمساحات الأخرى.',
+        sp02: 'تحتفظ بالملكية الكاملة لمحتواك الإبداعي.',
+        sp03: 'المساحات HTML ثابت فقط — لا كود من جانب الخادم، ولا قواعد بيانات، ولا خلفيات دائمة.',
+        sp04: 'المساحات خدمة مجانية. قد نعدّل الخدمة أو نحدّ منها أو نوقفها في أي وقت.',
+        sp05: 'لا تستخدم مساحتك لانتحال شخصية شخص آخر أو ادّعاء هوية زائفة.',
+        sp06: 'لا تضمّن محتوى يخالف القواعد الواردة في القسم 04.',
+
+        name04: 'القواعد',
+        title04: 'ما هو غير مسموح',
+        body04a: 'المحتوى التالي سيؤدي إلى <span class="red">حذف مساحتك فوراً</span> بدون تحذير، سواء في المساحات أو أي محتوى مُقدَّم.',
+        rule01: '<span class="red">مواد الاستغلال الجنسي للأطفال (CSAM)</span> — تسامح صفري. يُبلَّغ عنها للسلطات وGitHub.',
+        rule02: 'المحتوى غير القانوني — القرصنة والاحتيال وأدوات الاختراق التي تستهدف الآخرين.',
+        rule03: 'خطاب الكراهية أو التهديدات أو التحرش الموجّه بأي شخص أو مجموعة.',
+        rule04: 'البريد المزعج أو التصيّد الاحتيالي أو توزيع البرمجيات الضارة.',
+        rule05: 'المحتوى الذي ينتهك حقوق الطبع والنشر أو العلامات التجارية أو الملكية الفكرية.',
+        rule06: 'انتحال شخصية أي شخص أو مؤسسة.',
+        rule07: 'أي شيء مصمَّم للخداع أو التلاعب أو الإضرار بالآخرين.',
+
+        name05: 'التطبيق',
+        title05: 'كيف نتعامل معها',
+        body05a: 'يحتفظ مالك الموقع بالحق في إزالة أي مساحة أو محتوى في أي وقت، مع إشعار أو بدونه، لأي انتهاك لهذه الشروط.',
+        enf01: 'Reachflow منظَّم بعناية — العضوية امتياز وليست حقاً.',
+        enf02: 'قد يُبلَّغ عن الانتهاكات الخطيرة إلى GitHub والسلطات المختصة.',
+        enf03: 'لا توجد آلية استئناف رسمية. قرار المالك نهائي.',
+
+        name06: 'الخصوصية',
+        title06: 'ما الذي نخزّنه',
+        body06a: 'يخزّن Reachflow فقط ما يوفّره GitHub عند تسجيل الدخول: <span class="hi">اسم المستخدم</span> و<span class="hi">الاسم الظاهر</span> و<span class="hi">السيرة الذاتية</span> و<span class="hi">الصورة الشخصية</span>.',
+        prv01: 'لا كلمات مرور. لا بريد إلكتروني. لا ملفات تتبع.',
+        prv02: 'محتوى مساحتك موجود في مستودع GitHub عام.',
+        prv03: 'يمكن لأي شخص عرض ذلك المستودع أو نسخه — إنه مفتوح المصدر.',
+
+        name07: 'التغييرات',
+        title07: 'التحديثات',
+        body07a: 'يمكن تغيير هذه الشروط في أي وقت. الاستمرار في استخدام مساحتك أو التنزيلات يعني قبولك لما تنص عليه في ذلك الوقت.',
+
+        footerLeft: '© 2026 reachflow.site · TR4IS · جميع الحقوق محفوظة',
+        footerBack: '.site() ←',
+      }
+    };
+
+    /* ════════ APPLY LANGUAGE ════════ */
+    function setLang(lang) {
+      var html = document.documentElement;
+      html.lang = lang;
+      html.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+      var t = T[lang] || T.en;
+
+      document.title = lang === 'ar' ? 'reachflow — الشروط' : 'reachflow — .terms()';
+
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var key = el.dataset.i18n;
+        if (t[key] !== undefined) el.textContent = t[key];
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+        var key = el.dataset.i18nHtml;
+        if (t[key] !== undefined) el.innerHTML = t[key];
+      });
+
+      document.querySelectorAll('.lang-opt').forEach(function (o) {
+        o.classList.toggle('on', o.dataset.lang === lang);
+      });
+
+      localStorage.setItem('rf_lang', lang);
+    }
+
+    /* ════════ LANG TOGGLE ════════ */
+    document.getElementById('lang-toggle').addEventListener('click', function () {
+      setLang(document.documentElement.lang === 'ar' ? 'en' : 'ar');
+    });
+
+    /* ════════ SCROLL REVEAL ════════ */
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          observer.unobserve(e.target);
-        }
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
       });
     }, { threshold: 0.06 });
 
@@ -340,6 +581,20 @@
       el.style.transitionDelay = (i * 0.04) + 's';
       observer.observe(el);
     });
+
+    /* ════════ LANG HINT (first visit) ════════ */
+    if (!localStorage.getItem('rf_lang_seen_terms')) {
+      var btn = document.getElementById('lang-toggle');
+      btn.classList.add('hinting');
+      btn.addEventListener('animationend', function () { btn.classList.remove('hinting'); }, { once: true });
+      localStorage.setItem('rf_lang_seen_terms', '1');
+    }
+
+    /* ════════ INIT ════════ */
+    var saved = localStorage.getItem('rf_lang') || 'en';
+    setLang(saved);
+
+  })();
   </script>
 </body>
 </html>
