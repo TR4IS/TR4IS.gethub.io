@@ -407,15 +407,30 @@
     if (opts.next)  phaseTimer = setTimeout(function () { phase(opts.next[0], opts.next[1]); }, opts.next[2]);
   }
 
+  /* Signature of what we just saved — used to detect when GitHub Pages rebuilds */
+  var savedSig = '';
+
+  function contentSig(s) {
+    /* length + first 120 chars — good enough to detect a content change */
+    return s.length + '|' + s.substring(0, 120);
+  }
+
   var pollInt = null;
   function pollUntilLive(deadline) {
     clearInterval(pollInt);
     pollInt = setInterval(function () {
       if (Date.now() > deadline) { clearInterval(pollInt); showDone(); return; }
-      fetch('/spaces/' + login + '/?_nc=' + Date.now(), { method: 'HEAD' })
-        .then(function (r) { if (r.ok) { clearInterval(pollInt); showDone(); } })
+      fetch('/spaces/' + login + '/?_nc=' + Date.now())
+        .then(function (r) { return r.ok ? r.text() : Promise.reject(); })
+        .then(function (html) {
+          var m = html.match(/<script\s+id="user-html"\s+type="text\/x-user-html">([\s\S]*?)<\/script>/i);
+          if (m && contentSig(m[1].trim()) === savedSig) {
+            clearInterval(pollInt); showDone();
+          }
+          /* else: content not yet updated, keep polling */
+        })
         .catch(function () {});
-    }, 5000);
+    }, 8000);
   }
 
   function showDone() {
@@ -455,6 +470,9 @@
     var html = area.value;
     if (!html.trim()) return;
     if (html.length > 500000) { alert('Too large — keep under 500 KB.'); return; }
+    /* Capture the signature of what will appear in the page after GitHub Pages rebuilds.
+       The worker escapes </script> → <\/script>, so we mirror that here. */
+    savedSig = contentSig(html.replace(/<\/script>/gi, '<\\/script>'));
     saveBtn.disabled = true;
     overlay.classList.add('show');
     startElapsed();
