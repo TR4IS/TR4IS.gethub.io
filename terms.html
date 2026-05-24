@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>reachflow — .terms()</title>
+  <title>reachflow — Terms</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%23060606'/><rect width='32' height='32' rx='5' fill='%238b5cf6' opacity='.15'/><text x='7' y='23' font-family='monospace' font-size='20' font-weight='900' fill='%238b5cf6'>r</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -239,7 +239,7 @@
   <nav>
     <a href="/" class="nav-brand">REACH<span>_</span>FLOW</a>
     <div class="nav-right">
-      <a href="/" class="nav-back" data-i18n="navBack">&#8592; back to .site()</a>
+      <a href="/" class="nav-back" data-i18n="navBack">&#8592; back</a>
       <button class="lang-toggle" id="lang-toggle"
               title="Switch language · تبديل اللغة"
               aria-label="Switch language">
@@ -261,7 +261,7 @@
     <div class="hero-bg" aria-hidden="true" data-i18n="heroBg">TOS</div>
     <div class="hero-content">
       <p class="hero-tag" data-i18n="heroTag">// legal</p>
-      <h1 class="hero-headline" data-i18n="heroHeadline">.terms()</h1>
+      <h1 class="hero-headline" data-i18n="heroHeadline">TERMS</h1>
       <p class="hero-meta" data-i18n="heroMeta">// last compiled: May 2026 &nbsp;·&nbsp; applies to all spaces and members</p>
     </div>
   </div>
@@ -395,7 +395,7 @@
 
   <footer>
     <span data-i18n="footerLeft">&#169; 2026 reachflow.site &middot; TR4IS &middot; All rights reserved</span>
-    <a href="/" data-i18n="footerBack">&#8592; .site()</a>
+    <a href="/" data-i18n="footerBack">&#8592; home</a>
   </footer>
 
   <script>
@@ -404,10 +404,10 @@
     /* ════════ TRANSLATIONS ════════ */
     var T = {
       en: {
-        navBack:       '← back to .site()',
+        navBack:       '← back',
         heroBg:        'TOS',
         heroTag:       '// legal',
-        heroHeadline:  '.terms()',
+        heroHeadline:  'TERMS',
         heroMeta:      '// last compiled: May 2026 · applies to all spaces and members',
 
         name01: 'Overview',
@@ -468,11 +468,11 @@
         body07a: 'These terms can change at any time. Continued use of your space or the downloads means you accept whatever they say at that point.',
 
         footerLeft: '© 2026 reachflow.site · TR4IS · All rights reserved',
-        footerBack: '← .site()',
+        footerBack: '← home',
       },
 
       ar: {
-        navBack:       'العودة إلى .site() →',
+        navBack:       'العودة ←',
         heroBg:        'شروط',
         heroTag:       '// قانوني',
         heroHeadline:  'الشروط',
@@ -536,7 +536,7 @@
         body07a: 'يمكن تغيير هذه الشروط في أي وقت. الاستمرار في استخدام مساحتك أو التنزيلات يعني قبولك لما تنص عليه في ذلك الوقت.',
 
         footerLeft: '© 2026 reachflow.site · TR4IS · جميع الحقوق محفوظة',
-        footerBack: '.site() ←',
+        footerBack: 'الرئيسية ←',
       }
     };
 
@@ -547,7 +547,7 @@
       html.dir  = lang === 'ar' ? 'rtl' : 'ltr';
       var t = T[lang] || T.en;
 
-      document.title = lang === 'ar' ? 'reachflow — الشروط' : 'reachflow — .terms()';
+      document.title = lang === 'ar' ? 'reachflow — الشروط' : 'reachflow — Terms';
 
       document.querySelectorAll('[data-i18n]').forEach(function (el) {
         var key = el.dataset.i18n;
