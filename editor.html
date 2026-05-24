@@ -339,13 +339,14 @@
 <body>
 
 <!-- ══════════════════════════════════════
-     AUTH WALL — hidden once verified
+     AUTH WALL — shown only when auth fails
 ══════════════════════════════════════ -->
-<div id="auth-wall">
-  <p class="aw-tag">// access denied</p>
-  <h1 class="aw-title">NOT YOUR SPACE</h1>
+<div id="auth-wall" class="gone">
+  <p class="aw-tag" id="aw-tag">// access denied</p>
+  <h1 class="aw-title" id="aw-title">NOT YOUR SPACE</h1>
   <p class="aw-sub" id="aw-msg">You can only edit your own space. Sign in to continue.</p>
-  <a href="/" class="aw-btn">&#8592; Go home</a>
+  <a href="#" id="aw-signin" class="aw-btn" style="display:none">&#x2192; Sign in with GitHub</a>
+  <a href="/" class="aw-btn" id="aw-home">&#8592; Go home</a>
 </div>
 
 <!-- ══════════════════════════════════════
@@ -469,13 +470,30 @@
   var authWall    = document.getElementById('auth-wall');
   var awMsg       = document.getElementById('aw-msg');
 
-  function showWall(msg) {
+  function showWall(msg, needSignIn) {
     awMsg.textContent = msg;
+    if (needSignIn) {
+      document.getElementById('aw-tag').textContent   = '// sign in required';
+      document.getElementById('aw-title').textContent = 'NOT SIGNED IN';
+      var signinBtn = document.getElementById('aw-signin');
+      signinBtn.style.display = 'inline-flex';
+      signinBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var nonce = crypto.randomUUID();
+        sessionStorage.setItem('oauth_state', nonce);
+        var CID  = 'Ov23likbVZBfG5a3rnEu';
+        var CBCK = 'https://reachflow.site/auth/callback';
+        window.location.href =
+          'https://github.com/login/oauth/authorize?client_id=' + CID +
+          '&redirect_uri=' + encodeURIComponent(CBCK) +
+          '&scope=read:user&state=' + encodeURIComponent(nonce);
+      });
+    }
     authWall.classList.remove('gone');
   }
 
   if (!storedUser || !storedToken) {
-    showWall('Sign in first to edit your space.');
+    showWall('You need to sign in with GitHub to edit your space.', true);
     return;
   }
   if (qLogin && qLogin.toLowerCase() !== storedUser.toLowerCase()) {
