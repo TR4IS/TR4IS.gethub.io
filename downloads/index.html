@@ -374,7 +374,7 @@
   <div class="grid">
 
     <!-- ── WindowsOptimizer ── -->
-    <div class="card" style="--card-accent:#f59e0b; --icon-rgb:245,158,11">
+    <div class="card" data-gh-repo="TR4IS/WindowsOptimizer" style="--card-accent:#f59e0b; --icon-rgb:245,158,11">
       <div class="card-head">
         <div class="card-mono-icon">WO</div>
         <div class="card-titles">
@@ -397,7 +397,7 @@
       </div>
       <div class="dl-variants">
         <p class="dl-lbl" data-i18n="dlChoose">Choose download</p>
-        <a class="dl-opt" href="https://github.com/TR4IS/WindowsOptimizer/releases/download/v1.3.4/WindowsOptimizerSetup.exe">
+        <a class="dl-opt" data-gh-asset=".exe" href="https://github.com/TR4IS/WindowsOptimizer/releases/download/v1.3.4/WindowsOptimizerSetup.exe">
           <span class="dl-opt-type">EXE</span>
           <div class="dl-opt-info">
             <span class="dl-opt-name" data-i18n="dlOptExeName">Installer</span>
@@ -417,7 +417,7 @@
     </div>
 
     <!-- ── FileOrganizer ── -->
-    <div class="card" style="--card-accent:#8b5cf6; --icon-rgb:139,92,246">
+    <div class="card" data-gh-repo="TR4IS/FileOrganizer" style="--card-accent:#8b5cf6; --icon-rgb:139,92,246">
       <div class="card-head">
         <div class="card-mono-icon">FO</div>
         <div class="card-titles">
@@ -440,14 +440,14 @@
       </div>
       <div class="card-actions">
         <a href="https://github.com/TR4IS/FileOrganizer" class="source-link" target="_blank" rel="noopener" data-i18n="srcLink">Source &#8599;</a>
-        <a class="dl-btn" href="https://github.com/TR4IS/FileOrganizer/releases/download/v2.0.3/FileOrganizerSetup.exe">
+        <a class="dl-btn" data-gh-asset=".exe" href="https://github.com/TR4IS/FileOrganizer/releases/download/v2.0.3/FileOrganizerSetup.exe">
           &#8595; <span data-i18n="dlBtn">Download</span>
         </a>
       </div>
     </div>
 
     <!-- ── J2P ── -->
-    <div class="card" style="--card-accent:#10b981; --icon-rgb:16,185,129">
+    <div class="card" data-gh-repo="TR4IS/J2P" style="--card-accent:#10b981; --icon-rgb:16,185,129">
       <div class="card-head">
         <div class="card-mono-icon">J2P</div>
         <div class="card-titles">
@@ -469,14 +469,14 @@
       </div>
       <div class="card-actions">
         <a href="https://github.com/TR4IS/J2P" class="source-link" target="_blank" rel="noopener" data-i18n="srcLink">Source &#8599;</a>
-        <a class="dl-btn" href="https://github.com/TR4IS/J2P/releases/download/v1.0.1/J2P-v1.0.1.exe">
+        <a class="dl-btn" data-gh-asset=".exe" href="https://github.com/TR4IS/J2P/releases/download/v1.0.1/J2P-v1.0.1.exe">
           &#8595; <span data-i18n="dlBtn">Download</span>
         </a>
       </div>
     </div>
 
     <!-- ── SoundDeck ── -->
-    <div class="card" style="--card-accent:#06b6d4; --icon-rgb:6,182,212">
+    <div class="card" data-gh-repo="TR4IS/SoundDeck" style="--card-accent:#06b6d4; --icon-rgb:6,182,212">
       <div class="card-head">
         <div class="card-mono-icon">SD</div>
         <div class="card-titles">
@@ -497,7 +497,7 @@
       </div>
       <div class="card-actions">
         <a href="https://github.com/TR4IS/SoundDeck" class="source-link" target="_blank" rel="noopener" data-i18n="srcLink">Source &#8599;</a>
-        <a class="dl-btn" href="https://github.com/TR4IS/SoundDeck/releases/download/v1.0.0/sounddeck.Setup.1.0.0.exe">
+        <a class="dl-btn" data-gh-asset=".exe" href="https://github.com/TR4IS/SoundDeck/releases/download/v1.0.0/sounddeck.Setup.1.0.0.exe">
           &#8595; <span data-i18n="dlBtn">Download</span>
         </a>
       </div>
@@ -613,6 +613,53 @@
   var savedLang = localStorage.getItem('rf_lang') || 'en';
   setLang(savedLang);
 
+})();
+</script>
+
+<script>
+/* ── Auto-update download links from GitHub latest releases ── */
+(function () {
+  function fmtSize(bytes) {
+    if (!bytes) return '';
+    var mb = bytes / 1024 / 1024;
+    return mb >= 1 ? (Math.round(mb * 10) / 10) + ' MB' : Math.round(bytes / 1024) + ' KB';
+  }
+
+  document.querySelectorAll('[data-gh-repo]').forEach(function (card) {
+    var repo = card.dataset.ghRepo;
+    var cacheKey = 'gh_rel_' + repo;
+    var cached = sessionStorage.getItem(cacheKey);
+
+    function applyRelease(data) {
+      var tag = data.tag_name;
+      var assets = data.assets || [];
+
+      var badge = card.querySelector('.badge-ver');
+      if (badge && tag) badge.textContent = tag;
+
+      card.querySelectorAll('[data-gh-asset]').forEach(function (link) {
+        var ext = link.dataset.ghAsset;
+        var asset = assets.find(function (a) { return a.name.endsWith(ext); });
+        if (!asset) return;
+        link.href = asset.browser_download_url;
+        var sizeEl = card.querySelector('.meta-size');
+        if (sizeEl) sizeEl.textContent = fmtSize(asset.size);
+      });
+    }
+
+    if (cached) {
+      try { applyRelease(JSON.parse(cached)); } catch (e) {}
+      return;
+    }
+
+    fetch('https://api.github.com/repos/' + repo + '/releases/latest')
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (data) {
+        try { sessionStorage.setItem(cacheKey, JSON.stringify(data)); } catch (e) {}
+        applyRelease(data);
+      })
+      .catch(function () { /* keep hardcoded fallback links */ });
+  });
 })();
 </script>
 
