@@ -1,19 +1,23 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
+    },
+  },
   build: {
     lib: {
-      entry: 'src/main.jsx',
+      entry: resolve(__dirname, 'src/main.tsx'),
       name: 'N3trunner',
       fileName: 'react-bundle',
       formats: ['es'],
     },
     outDir: 'assets',
     emptyOutDir: false,
-    rollupOptions: {
-      external: [],
-    },
+    cssCodeSplit: false,
   },
 });

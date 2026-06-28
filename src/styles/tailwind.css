@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 2%;
+    --foreground: 0 0% 94%;
+    --border: 263 68% 66% / 0.14;
+    --input: 263 68% 66% / 0.14;
+    --ring: 263 68% 66%;
+  }
+}
