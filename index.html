@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>reachflow — your developer page</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%23060606'/><rect width='32' height='32' rx='5' fill='%238b5cf6' opacity='.15'/><text x='7' y='23' font-family='monospace' font-size='20' font-weight='900' fill='%238b5cf6'>r</text></svg>">
+  <title>n3trunner — your developer node</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%23060606'/><rect width='32' height='32' rx='5' fill='%238b5cf6' opacity='.15'/><text x='4' y='23' font-family='monospace' font-size='14' font-weight='900' fill='%238b5cf6'>n3t</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
@@ -14,6 +14,7 @@
       --bg:      #060606;
       --fg:      #efefef;
       --accent:  #8b5cf6;
+      --accent2: #06b6d4;
       --border:  rgba(139,92,246,.14);
       --dim:     rgba(239,239,239,.35);
       --mono:    'JetBrains Mono', monospace;
@@ -54,13 +55,13 @@
     .nav-brand span { color: var(--accent); }
     .nav-right { display: flex; align-items: center; gap: 20px; }
     .nav-link {
-      font-size: .56rem; letter-spacing: 2px; text-transform: uppercase;
+      font-size: .84rem; letter-spacing: 2px; text-transform: uppercase;
       color: var(--dim); transition: color .2s; font-family: var(--mono);
     }
     .nav-link:hover { color: var(--fg); }
     .nav-signin {
       font-family: var(--mono); font-weight: 700;
-      font-size: .56rem; letter-spacing: 2px; text-transform: uppercase;
+      font-size: .84rem; letter-spacing: 2px; text-transform: uppercase;
       color: var(--bg); background: var(--accent);
       padding: 8px 18px; border: 1.5px solid var(--accent);
       transition: background .2s, color .2s; cursor: pointer;
@@ -70,14 +71,14 @@
     /* Language toggle */
     .lang-toggle {
       display: flex; align-items: center; gap: 5px;
-      background: none; border: 1px solid var(--border);
-      padding: 5px 10px; cursor: pointer;
-      font-family: var(--mono); font-size: .46rem;
+      background: none; border: 1px solid rgba(139,92,246,.22);
+      padding: 7px 13px; cursor: pointer;
+      font-family: var(--mono); font-size: .74rem;
       letter-spacing: 2px; color: var(--dim);
       transition: border-color .2s;
     }
     .lang-toggle:hover { border-color: rgba(139,92,246,.4); }
-    .lang-sep { color: rgba(239,239,239,.15); font-size: .4rem; }
+    .lang-sep { color: rgba(239,239,239,.15); font-size: .7rem; }
     .lang-opt.on { color: var(--accent); }
 
     /* ── Page layout ── */
@@ -90,15 +91,24 @@
     /* ── Hero ── */
     .hero { display: flex; flex-direction: column; gap: 14px; }
     .hero-tag {
-      font-size: .48rem; color: var(--accent);
+      font-size: .80rem; color: var(--accent);
       letter-spacing: 3px; text-transform: uppercase;
       font-family: var(--mono);
     }
+
+    /* Glitch animation */
+    @keyframes glitch {
+      0%,100% { text-shadow: 0 0 100px rgba(139,92,246,.35); transform: none; }
+      92%      { text-shadow: -2px 0 rgba(6,182,212,.7), 2px 0 rgba(139,92,246,.7); transform: skewX(-1deg); }
+      94%      { text-shadow: 2px 0 rgba(6,182,212,.7), -2px 0 rgba(139,92,246,.7); transform: skewX(1deg); }
+      96%      { text-shadow: 0 0 100px rgba(139,92,246,.35); transform: none; }
+    }
+
     .hero h1 {
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(4rem, 11vw, 9rem);
       letter-spacing: 4px; line-height: .92;
-      text-shadow: 0 0 100px rgba(139,92,246,.35);
+      animation: glitch 6s infinite;
     }
     [dir="rtl"] .hero h1 {
       font-family: 'Cairo', sans-serif;
@@ -106,6 +116,7 @@
       font-size: clamp(3rem, 8vw, 6.5rem);
       letter-spacing: 0;
       line-height: 1.05;
+      animation: none;
     }
     .hero-body {
       margin-top: 14px;
@@ -113,7 +124,7 @@
       flex-wrap: wrap; gap: 28px;
     }
     .hero-sub {
-      font-size: .65rem; color: rgba(239,239,239,.4);
+      font-size: .95rem; color: rgba(239,239,239,.4);
       letter-spacing: .4px; line-height: 1.95; max-width: 390px;
     }
     .hero-sub strong { color: rgba(239,239,239,.85); font-weight: 700; }
@@ -122,23 +133,23 @@
 
     .hero-cta {
       font-family: var(--mono); font-weight: 700;
-      font-size: .65rem; letter-spacing: 3px; text-transform: uppercase;
+      font-size: .88rem; letter-spacing: 3px; text-transform: uppercase;
       color: var(--bg); background: var(--accent);
       border: 1.5px solid var(--accent);
-      padding: 13px 28px;
+      padding: 15px 32px;
       display: inline-flex; align-items: center; gap: 10px;
       transition: background .25s, color .25s;
     }
     .hero-cta:hover { background: transparent; color: var(--accent); }
     .hero-count {
-      font-size: .46rem; color: rgba(239,239,239,.2);
+      font-size: .76rem; color: rgba(239,239,239,.2);
       letter-spacing: 2px; font-family: var(--mono);
     }
     .hero-count strong { color: rgba(239,239,239,.5); }
 
     /* ── Section label ── */
     .section-lbl {
-      font-size: .48rem; color: var(--accent);
+      font-size: .80rem; color: var(--accent);
       letter-spacing: 3px; text-transform: uppercase;
       padding-bottom: 14px;
       border-bottom: 1px solid var(--border);
@@ -165,10 +176,10 @@
     }
     .s-card::before {
       content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 1px; background: var(--accent); opacity: 0; transition: opacity .2s;
+      height: 1px; background: var(--accent2); opacity: 0; transition: opacity .2s;
     }
-    .s-card:hover { border-color: rgba(139,92,246,.3); background: rgba(139,92,246,.04); }
-    .s-card:hover::before { opacity: .5; }
+    .s-card:hover { border-color: rgba(6,182,212,.3); background: rgba(6,182,212,.04); }
+    .s-card:hover::before { opacity: .6; }
     .s-card-av {
       width: 40px; height: 40px; border-radius: 50%;
       background: rgba(255,255,255,.06);
@@ -176,14 +187,14 @@
       border: 1px solid rgba(139,92,246,.2);
     }
     .s-card-name {
-      font-size: .5rem; color: rgba(239,239,239,.4);
-      letter-spacing: 1px; text-align: center;
+      font-size: .74rem; color: rgba(239,239,239,.4);
+      letter-spacing: .5px; text-align: center;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       width: 100%; font-family: var(--mono);
     }
     .s-card-dot {
       width: 4px; height: 4px; border-radius: 50%;
-      background: var(--accent); opacity: .5;
+      background: var(--accent2); opacity: .5;
     }
 
     /* ── How it works ── */
@@ -205,7 +216,7 @@
     .how-card:hover { border-color: rgba(139,92,246,.3); background: rgba(139,92,246,.04); }
     .how-card:hover::before { opacity: .5; }
     .how-num {
-      font-size: .46rem; color: var(--accent);
+      font-size: .74rem; color: var(--accent);
       letter-spacing: 3px; font-family: var(--mono);
     }
     .how-title {
@@ -219,17 +230,17 @@
       letter-spacing: 0;
     }
     .how-body {
-      font-size: .6rem; color: rgba(239,239,239,.4);
-      line-height: 1.85; letter-spacing: .3px;
+      font-size: .88rem; color: rgba(239,239,239,.4);
+      line-height: 1.9; letter-spacing: .3px;
     }
-    .how-body span { color: var(--accent); }
+    .how-body span { color: var(--accent2); }
 
     /* ── Footer ── */
     footer {
       border-top: 1px solid var(--border);
       padding: 14px 40px;
       display: flex; justify-content: space-between;
-      font-size: .5rem; color: rgba(239,239,239,.12);
+      font-size: .76rem; color: rgba(239,239,239,.12);
       letter-spacing: 2px; font-family: var(--mono);
     }
     footer a { color: rgba(239,239,239,.12); transition: color .2s; }
@@ -248,20 +259,6 @@
       footer { padding: 14px 20px; }
     }
 
-    /* ── Readability: scale up all small text ── */
-    .nav-link, .nav-signin { font-size: .84rem; }
-    .lang-toggle { font-size: .74rem; padding: 7px 13px; gap: 7px; border-color: rgba(139,92,246,.22); }
-    .lang-sep { font-size: .7rem; }
-    .hero-tag { font-size: .8rem; }
-    .hero-sub { font-size: .95rem; line-height: 2; }
-    .hero-cta { font-size: .88rem; padding: 15px 32px; }
-    .hero-count { font-size: .76rem; }
-    .section-lbl { font-size: .8rem; }
-    .s-card-name { font-size: .74rem; letter-spacing: .5px; }
-    .how-num { font-size: .74rem; }
-    .how-body { font-size: .88rem; line-height: 1.9; }
-    footer { font-size: .76rem; }
-
     /* ── Arabic: kill letter-spacing (broken connected script) ── */
     [dir="rtl"] * { letter-spacing: 0 !important; }
     [dir="rtl"] .hero-sub { line-height: 2.1; }
@@ -273,125 +270,126 @@
       50%      { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(139,92,246,.18); }
     }
     .lang-toggle.hinting { animation: langHint 1.5s ease .8s 3; }
-  /* ── Creator card (hero + section) ── */
-  .hero-eyebrow {
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 10px;
-  }
-  .built-by {
-    display: flex; align-items: center; gap: 8px;
-    font-size: .74rem; color: rgba(239,239,239,.3); letter-spacing: .5px;
-  }
-  .built-av {
-    width: 24px; height: 24px; border-radius: 50%;
-    border: 1px solid rgba(139,92,246,.35);
-    object-fit: cover;
-  }
-  .built-by strong { color: var(--accent); font-weight: 700; }
 
-  .hero-main { display: flex; align-items: flex-start; gap: 48px; }
-  .hero-left  { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+    /* ── Creator card (hero + section) ── */
+    .hero-eyebrow {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 10px;
+    }
+    .built-by {
+      display: flex; align-items: center; gap: 8px;
+      font-size: .74rem; color: rgba(239,239,239,.3); letter-spacing: .5px;
+    }
+    .built-av {
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 1px solid rgba(139,92,246,.35);
+      object-fit: cover;
+    }
+    .built-by strong { color: var(--accent); font-weight: 700; }
 
-  /* ── Creator badge card ── */
-  .creator-badge {
-    width: 248px; flex-shrink: 0;
-    border: 1px solid var(--border);
-    background: rgba(6,6,6,.6);
-    padding: 22px 20px;
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
-    position: relative; align-self: flex-start;
-  }
-  .creator-badge::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0;
-    height: 1px; background: var(--accent); opacity: .65;
-  }
-  .cb-label {
-    font-size: .6rem; color: var(--accent);
-    letter-spacing: 3px; text-transform: uppercase;
-    align-self: flex-start; margin-bottom: 2px;
-  }
-  .cb-av {
-    width: 76px; height: 76px; border-radius: 50%;
-    border: 2px solid rgba(139,92,246,.45);
-    box-shadow: 0 0 40px rgba(139,92,246,.25);
-    object-fit: cover; margin: 4px 0;
-  }
-  .cb-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.7rem; letter-spacing: 4px; line-height: 1;
-  }
-  .cb-role {
-    font-size: .66rem; color: rgba(239,239,239,.32);
-    letter-spacing: .8px;
-  }
-  .cb-quote {
-    font-size: .68rem; color: rgba(239,239,239,.38);
-    line-height: 1.75; text-align: center;
-    border-top: 1px solid var(--border);
-    padding-top: 12px; margin-top: 2px; width: 100%;
-  }
-  .cb-links { display: flex; flex-direction: column; gap: 6px; width: 100%; }
-  .cb-link {
-    font-size: .66rem; color: var(--dim); letter-spacing: 1px;
-    padding: 7px 10px; border: 1px solid var(--border);
-    text-align: center; transition: border-color .2s, color .2s;
-  }
-  .cb-link:hover { border-color: rgba(139,92,246,.4); color: var(--fg); }
+    .hero-main { display: flex; align-items: flex-start; gap: 48px; }
+    .hero-left  { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
 
-  /* ── Creator section ── */
-  .creator-section { display: flex; flex-direction: column; gap: 20px; }
-  .creator-wide {
-    display: flex; align-items: center; gap: 40px;
-    border: 1px solid var(--border); background: rgba(6,6,6,.6);
-    padding: 32px 36px; position: relative;
-  }
-  .creator-wide::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0;
-    height: 1px; background: var(--accent); opacity: .5;
-  }
-  .cw-av {
-    width: 96px; height: 96px; border-radius: 50%; flex-shrink: 0;
-    border: 2px solid rgba(139,92,246,.5);
-    box-shadow: 0 0 60px rgba(139,92,246,.2);
-    object-fit: cover;
-  }
-  .cw-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
-  .cw-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.5rem; letter-spacing: 5px; line-height: 1;
-    text-shadow: 0 0 60px rgba(139,92,246,.4);
-  }
-  .cw-bio { font-size: .88rem; color: rgba(239,239,239,.45); line-height: 1.8; max-width: 480px; }
-  .cw-stats {
-    font-size: .72rem; color: rgba(239,239,239,.28); letter-spacing: 1px;
-    display: flex; gap: 20px; flex-wrap: wrap;
-  }
-  .cw-stats strong { color: var(--accent); }
-  .cw-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
-  .cw-btn {
-    font-family: var(--mono); font-size: .72rem; font-weight: 700;
-    letter-spacing: 2px; text-transform: uppercase;
-    padding: 9px 20px; border: 1.5px solid var(--border);
-    color: var(--dim); transition: border-color .2s, color .2s;
-  }
-  .cw-btn:hover { border-color: rgba(139,92,246,.5); color: var(--fg); }
-  .cw-btn.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
-  .cw-btn.primary:hover { background: transparent; color: var(--accent); }
+    /* ── Creator badge card ── */
+    .creator-badge {
+      width: 248px; flex-shrink: 0;
+      border: 1px solid var(--border);
+      background: rgba(6,6,6,.6);
+      padding: 22px 20px;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      position: relative; align-self: flex-start;
+    }
+    .creator-badge::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 1px; background: var(--accent2); opacity: .65;
+    }
+    .cb-label {
+      font-size: .74rem; color: var(--accent2);
+      letter-spacing: 3px; text-transform: uppercase;
+      align-self: flex-start; margin-bottom: 2px;
+    }
+    .cb-av {
+      width: 76px; height: 76px; border-radius: 50%;
+      border: 2px solid rgba(6,182,212,.45);
+      box-shadow: 0 0 40px rgba(6,182,212,.2);
+      object-fit: cover; margin: 4px 0;
+    }
+    .cb-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem; letter-spacing: 4px; line-height: 1;
+    }
+    .cb-role {
+      font-size: .74rem; color: rgba(239,239,239,.32);
+      letter-spacing: .8px;
+    }
+    .cb-quote {
+      font-size: .76rem; color: rgba(239,239,239,.38);
+      line-height: 1.75; text-align: center;
+      border-top: 1px solid var(--border);
+      padding-top: 12px; margin-top: 2px; width: 100%;
+    }
+    .cb-links { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+    .cb-link {
+      font-size: .74rem; color: var(--dim); letter-spacing: 1px;
+      padding: 7px 10px; border: 1px solid var(--border);
+      text-align: center; transition: border-color .2s, color .2s;
+    }
+    .cb-link:hover { border-color: rgba(6,182,212,.4); color: var(--fg); }
 
-  @media (max-width: 720px) {
-    .hero-main { flex-direction: column-reverse; }
-    .creator-badge { width: 100%; }
-    .built-by { display: none; }
-    .creator-wide { flex-direction: column; align-items: flex-start; gap: 20px; padding: 24px 20px; }
-    .cw-av { width: 72px; height: 72px; }
-    .cw-name { font-size: 1.8rem; }
-  }
+    /* ── Creator section ── */
+    .creator-section { display: flex; flex-direction: column; gap: 20px; }
+    .creator-wide {
+      display: flex; align-items: center; gap: 40px;
+      border: 1px solid var(--border); background: rgba(6,6,6,.6);
+      padding: 32px 36px; position: relative;
+    }
+    .creator-wide::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 1px; background: var(--accent); opacity: .5;
+    }
+    .cw-av {
+      width: 96px; height: 96px; border-radius: 50%; flex-shrink: 0;
+      border: 2px solid rgba(139,92,246,.5);
+      box-shadow: 0 0 60px rgba(139,92,246,.2);
+      object-fit: cover;
+    }
+    .cw-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+    .cw-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem; letter-spacing: 5px; line-height: 1;
+      text-shadow: 0 0 60px rgba(139,92,246,.4);
+    }
+    .cw-bio { font-size: .88rem; color: rgba(239,239,239,.45); line-height: 1.8; max-width: 480px; }
+    .cw-stats {
+      font-size: .72rem; color: rgba(239,239,239,.28); letter-spacing: 1px;
+      display: flex; gap: 20px; flex-wrap: wrap;
+    }
+    .cw-stats strong { color: var(--accent); }
+    .cw-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+    .cw-btn {
+      font-family: var(--mono); font-size: .72rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 9px 20px; border: 1.5px solid var(--border);
+      color: var(--dim); transition: border-color .2s, color .2s;
+    }
+    .cw-btn:hover { border-color: rgba(139,92,246,.5); color: var(--fg); }
+    .cw-btn.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+    .cw-btn.primary:hover { background: transparent; color: var(--accent); }
+
+    @media (max-width: 720px) {
+      .hero-main { flex-direction: column-reverse; }
+      .creator-badge { width: 100%; }
+      .built-by { display: none; }
+      .creator-wide { flex-direction: column; align-items: flex-start; gap: 20px; padding: 24px 20px; }
+      .cw-av { width: 72px; height: 72px; }
+      .cw-name { font-size: 1.8rem; }
+    }
   </style>
 </head>
 <body>
 
 <nav>
-  <a href="/" class="nav-brand">REACH<span>_</span>FLOW</a>
+  <a href="/" class="nav-brand">N3T<span>_</span>RUNNER</a>
   <div class="nav-right">
     <a href="/spaces" class="nav-link" data-i18n="navSpaces">spaces</a>
     <a href="/downloads" class="nav-link" data-i18n="navDownloads">downloads</a>
@@ -403,7 +401,7 @@
       <span class="lang-sep">|</span>
       <span class="lang-opt" data-lang="ar">AR</span>
     </button>
-    <a href="#" class="nav-signin" id="nav-signin" data-i18n="navSignin">Sign in</a>
+    <a href="#" class="nav-signin" id="nav-signin" data-i18n="navSignin">Jack in</a>
   </div>
 </nav>
 
@@ -412,7 +410,7 @@
   <!-- ── Hero ── -->
   <div class="hero">
     <div class="hero-eyebrow">
-      <p class="hero-tag" data-i18n="heroTag">// your developer page</p>
+      <p class="hero-tag" data-i18n="heroTag">// jack in. own your node.</p>
       <div class="built-by">
         <img src="https://github.com/TR4IS.png" class="built-av" alt="TR4IS" loading="lazy">
         built by <strong>TR4IS</strong>
@@ -422,19 +420,19 @@
     <div class="hero-main">
       <!-- Left: pitch -->
       <div class="hero-left">
-        <h1 data-i18n-html="heroH1">YOUR PAGE.<br>YOUR&nbsp;RULES.<br>FREE.</h1>
+        <h1 data-i18n-html="heroH1">YOUR NODE.<br>YOUR&nbsp;NET.<br>FREE.</h1>
         <div class="hero-body">
           <p class="hero-sub" data-i18n-html="heroSub">
-            Get a <strong>personal developer page</strong> in seconds.<br>
+            Get a <strong>developer node</strong> in seconds.<br>
             Customize fonts, colors, layout &mdash; everything.<br>
             Share it anywhere. No setup, no hosting fees.
           </p>
           <div class="hero-cta-wrap">
             <a href="#" class="hero-cta" id="cta-main">
-              <span data-i18n="heroCta">Get my free page</span> &#8594;
+              <span data-i18n="heroCta">Get my free node</span> &#8594;
             </a>
             <p class="hero-count">
-              <strong id="count">&mdash;</strong>&nbsp;<span data-i18n="heroCountSuffix">developers already live</span>
+              <strong id="count">&mdash;</strong>&nbsp;<span data-i18n="heroCountSuffix">runners already live</span>
             </p>
           </div>
         </div>
@@ -446,9 +444,9 @@
         <img src="https://github.com/TR4IS.png" class="cb-av" alt="TR4IS" loading="lazy">
         <strong class="cb-name">TR4IS</strong>
         <p class="cb-role">Developer &middot; Builder &middot; Open Source</p>
-        <p class="cb-quote">"Built so every developer gets their own corner of the internet."</p>
+        <p class="cb-quote">"Built so every developer gets their own node on the network."</p>
         <div class="cb-links">
-          <a href="/spaces/TR4IS/" class="cb-link">My space &#8599;</a>
+          <a href="/spaces/TR4IS/" class="cb-link">My node &#8599;</a>
           <a href="/downloads" class="cb-link">Downloads &#8595;</a>
           <a href="https://github.com/TR4IS" class="cb-link" target="_blank" rel="noopener">GitHub &#8599;</a>
         </div>
@@ -458,29 +456,29 @@
 
   <!-- ── Spaces strip ── -->
   <div class="spaces-section">
-    <p class="section-lbl" data-i18n="showcaseLbl">// live right now</p>
+    <p class="section-lbl" data-i18n="showcaseLbl">// live on the net</p>
     <div class="showcase-track" id="track"></div>
   </div>
 
   <!-- ── Creator spotlight ── -->
   <div class="creator-section">
-    <p class="section-lbl" data-i18n="creatorLbl">// the developer behind reachflow</p>
+    <p class="section-lbl" data-i18n="creatorLbl">// the developer behind n3trunner</p>
     <div class="creator-wide">
       <img src="https://github.com/TR4IS.png" class="cw-av" alt="TR4IS" loading="lazy">
       <div class="cw-info">
         <div class="cw-name">TR4IS</div>
         <p class="cw-bio" data-i18n="creatorBio">
-          Developer, builder, and open-source creator. I built reachflow so developers
-          everywhere can have their own personal page on the internet — free, forever,
+          Developer, builder, and open-source creator. I built n3trunner so developers
+          everywhere can have their own node on the network — free, forever,
           with full HTML control. I also ship tools that solve real problems.
         </p>
         <div class="cw-stats">
           <span><strong>4</strong> open-source tools</span>
-          <span><strong id="creator-count">100+</strong> developers on reachflow</span>
+          <span><strong id="creator-count">100+</strong> runners on n3trunner</span>
           <span><strong>0</strong> dollars to use</span>
         </div>
         <div class="cw-actions">
-          <a href="/spaces/TR4IS/" class="cw-btn primary" data-i18n="creatorSpaceBtn">View my space &#8599;</a>
+          <a href="/spaces/TR4IS/" class="cw-btn primary" data-i18n="creatorSpaceBtn">View my node &#8599;</a>
           <a href="/downloads" class="cw-btn" data-i18n="creatorDlBtn">Downloads &#8595;</a>
           <a href="https://github.com/TR4IS" class="cw-btn" target="_blank" rel="noopener">GitHub &#8599;</a>
         </div>
@@ -494,13 +492,13 @@
     <div class="how-grid">
       <div class="how-card">
         <p class="how-num" data-i18n="step1Num">01 /</p>
-        <p class="how-title" data-i18n="step1Title">Sign in with GitHub</p>
+        <p class="how-title" data-i18n="step1Title">Jack in with GitHub</p>
         <p class="how-body" data-i18n="step1Body">One click. We read your public profile &mdash; name, avatar, bio. Nothing else.</p>
       </div>
       <div class="how-card">
         <p class="how-num" data-i18n="step2Num">02 /</p>
-        <p class="how-title" data-i18n="step2Title">Your page is created</p>
-        <p class="how-body" data-i18n-html="step2Body">A live page at <span>reachflow.site/spaces/you</span> goes live in under a minute.</p>
+        <p class="how-title" data-i18n="step2Title">Your node is created</p>
+        <p class="how-body" data-i18n-html="step2Body">A live node at <span>n3trunner.dev/spaces/you</span> goes live in under a minute.</p>
       </div>
       <div class="how-card">
         <p class="how-num" data-i18n="step3Num">03 /</p>
@@ -513,7 +511,7 @@
 </main>
 
 <footer>
-  <span>&copy; 2026 reachflow &middot; TR4IS</span>
+  <span>&copy; 2026 n3trunner.dev &middot; TR4IS</span>
   <div style="display:flex;gap:20px;align-items:center">
     <a href="/downloads" data-i18n="navDownloads">downloads</a>
     <a href="/terms">terms</a>
@@ -526,54 +524,54 @@
   /* ── Translation tables ── */
   var T = {
     en: {
-      heroTag:       '// your developer page',
-      heroH1:        'YOUR PAGE.<br>YOUR&nbsp;RULES.<br>FREE.',
-      heroSub:       'Get a <strong>personal developer page</strong> in seconds.<br>Customize fonts, colors, layout — everything.<br>Share it anywhere. No setup, no hosting fees.',
-      heroCta:       'Get my free page',
-      heroCountSuffix:'developers already live',
-      showcaseLbl:   '// live right now',
-      howLbl:        '// how it works',
-      navSpaces:     'spaces',
-      navDownloads:  'downloads',
-      navSignin:     'Sign in',
-      step1Num:      '01 /',
-      step1Title:    'Sign in with GitHub',
-      step1Body:     'One click. We read your public profile — name, avatar, bio. Nothing else.',
-      step2Num:      '02 /',
-      step2Title:    'Your page is created',
-      step2Body:     'A live page at <span>reachflow.site/spaces/you</span> goes live in under a minute.',
-      step3Num:      '03 /',
-      step3Title:    'Make it yours',
-      step3Body:     'Write your own HTML or paste any template. Full control, no limits.',
-      creatorLbl:    '// the developer behind reachflow',
-      creatorBio:    'Developer, builder, and open-source creator. I built reachflow so developers everywhere can have their own personal page on the internet — free, forever, with full HTML control. I also ship tools that solve real problems.',
-      creatorSpaceBtn: 'View my space ↗',
-      creatorDlBtn:  'Downloads ↓',
+      heroTag:        '// jack in. own your node.',
+      heroH1:         'YOUR NODE.<br>YOUR&nbsp;NET.<br>FREE.',
+      heroSub:        'Get a <strong>developer node</strong> in seconds.<br>Customize fonts, colors, layout — everything.<br>Share it anywhere. No setup, no hosting fees.',
+      heroCta:        'Get my free node',
+      heroCountSuffix: 'runners already live',
+      showcaseLbl:    '// live on the net',
+      howLbl:         '// how it works',
+      navSpaces:      'spaces',
+      navDownloads:   'downloads',
+      navSignin:      'Jack in',
+      step1Num:       '01 /',
+      step1Title:     'Jack in with GitHub',
+      step1Body:      'One click. We read your public profile — name, avatar, bio. Nothing else.',
+      step2Num:       '02 /',
+      step2Title:     'Your node is created',
+      step2Body:      'A live node at <span>n3trunner.dev/spaces/you</span> goes live in under a minute.',
+      step3Num:       '03 /',
+      step3Title:     'Make it yours',
+      step3Body:      'Write your own HTML or paste any template. Full control, no limits.',
+      creatorLbl:     '// the developer behind n3trunner',
+      creatorBio:     'Developer, builder, and open-source creator. I built n3trunner so developers everywhere can have their own node on the network — free, forever, with full HTML control. I also ship tools that solve real problems.',
+      creatorSpaceBtn: 'View my node ↗',
+      creatorDlBtn:   'Downloads ↓',
     },
     ar: {
-      heroTag:       '// صفحتك كمطوّر',
-      heroH1:        'صفحتك.<br>قواعدك.<br>مجاناً.',
-      heroSub:       'احصل على <strong>صفحة شخصية</strong> في ثوانِ.<br>خصّص الخطوط والألوان والتخطيط — كل شيء.<br>شاركها في أي مكان. بدون إعداد، بدون رسوم.',
-      heroCta:       'احصل على صفحتي المجانية',
-      heroCountSuffix:'مطوّر مسجّلون الآن',
-      showcaseLbl:   '// مباشر الآن',
-      howLbl:        '// كيف يعمل',
-      navSpaces:     'المساحات',
-      navDownloads:  'التنزيلات',
-      navSignin:     'تسجيل الدخول',
-      step1Num:      '01 /',
-      step1Title:    'سجّل دخول بـ GitHub',
-      step1Body:     'نقرة واحدة. نقرأ ملفّك الشخصي العام — الاسم والصورة والسيرة. لا شيء آخر.',
-      step2Num:      '02 /',
-      step2Title:    'تُنشأ صفحتك تلقائيّاً',
-      step2Body:     'صفحة مباشرة على <span>reachflow.site/spaces/you</span> تنطلق في أقل من دقيقة.',
-      step3Num:      '03 /',
-      step3Title:    'اجعلها لك',
-      step3Body:     'اكتب HTML الخاص بك أو الصق أي قالب. تحكّم كامل، بدون قيود.',
-      creatorLbl:    '// المطوّر خلف reachflow',
-      creatorBio:    'مطوّر وصانع أدوات مفتوحة المصدر. بنيت reachflow لكي يحصل كل مطوّر على صفحته الشخصية على الإنترنت — مجاناً، للأبد، مع تحكّم كامل بـ HTML. كما أطوّر أدوات تحل مشكلات حقيقية.',
-      creatorSpaceBtn: 'صفحتي ↗',
-      creatorDlBtn:  'التنزيلات ↓',
+      heroTag:        '// اتصل. امتلك عقدتك.',
+      heroH1:         'عقدتك.<br>شبكتك.<br>مجاناً.',
+      heroSub:        'احصل على <strong>عقدة مطوّر</strong> في ثوانِ.<br>خصّص الخطوط والألوان والتخطيط — كل شيء.<br>شاركها في أي مكان. بدون إعداد، بدون رسوم.',
+      heroCta:        'احصل على عقدتي المجانية',
+      heroCountSuffix: 'مطوّر مسجّلون الآن',
+      showcaseLbl:    '// مباشر على الشبكة',
+      howLbl:         '// كيف يعمل',
+      navSpaces:      'المساحات',
+      navDownloads:   'التنزيلات',
+      navSignin:      'اتصل',
+      step1Num:       '01 /',
+      step1Title:     'اتصل بـ GitHub',
+      step1Body:      'نقرة واحدة. نقرأ ملفّك الشخصي العام — الاسم والصورة والسيرة. لا شيء آخر.',
+      step2Num:       '02 /',
+      step2Title:     'تُنشأ عقدتك تلقائيّاً',
+      step2Body:      'عقدة مباشرة على <span>n3trunner.dev/spaces/you</span> تنطلق في أقل من دقيقة.',
+      step3Num:       '03 /',
+      step3Title:     'اجعلها لك',
+      step3Body:      'اكتب HTML الخاص بك أو الصق أي قالب. تحكّم كامل، بدون قيود.',
+      creatorLbl:     '// المطوّر خلف n3trunner',
+      creatorBio:     'مطوّر وصانع أدوات مفتوحة المصدر. بنيت n3trunner لكي يحصل كل مطوّر على عقدته الشخصية على الشبكة — مجاناً، للأبد، مع تحكّم كامل بـ HTML.',
+      creatorSpaceBtn: 'عقدتي ↗',
+      creatorDlBtn:   'التنزيلات ↓',
     }
   };
 
@@ -597,7 +595,7 @@
       o.classList.toggle('on', o.dataset.lang === lang);
     });
 
-    localStorage.setItem('rf_lang', lang);
+    localStorage.setItem('n3t_lang', lang);
   }
 
   /* ── Lang toggle ── */
@@ -607,7 +605,7 @@
 
   /* ── GitHub OAuth ── */
   var CID  = 'Ov23likbVZBfG5a3rnEu';
-  var CBCK = 'https://reachflow.site/auth/callback';
+  var CBCK = 'https://n3trunner.dev/auth/callback';
   function startAuth(e) {
     e.preventDefault();
     var nonce = crypto.randomUUID();
@@ -655,15 +653,15 @@
     });
 
   /* ── Language hint (pulse on first visit) ── */
-  if (!localStorage.getItem('rf_lang_seen')) {
+  if (!localStorage.getItem('n3t_lang_seen')) {
     var btn = document.getElementById('lang-toggle');
     btn.classList.add('hinting');
     btn.addEventListener('animationend', function () { btn.classList.remove('hinting'); }, { once: true });
-    localStorage.setItem('rf_lang_seen', '1');
+    localStorage.setItem('n3t_lang_seen', '1');
   }
 
   /* ── Init ── */
-  var savedLang = localStorage.getItem('rf_lang') || 'en';
+  var savedLang = localStorage.getItem('n3t_lang') || 'en';
   setLang(savedLang);
 
 })();

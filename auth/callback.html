@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>reachflow — signing in</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%23060606'/><rect width='32' height='32' rx='5' fill='%238b5cf6' opacity='.15'/><text x='7' y='23' font-family='monospace' font-size='20' font-weight='900' fill='%238b5cf6'>r</text></svg>">
+  <title>n3trunner — jacking in</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%23060606'/><rect width='32' height='32' rx='5' fill='%238b5cf6' opacity='.15'/><text x='4' y='23' font-family='monospace' font-size='14' font-weight='900' fill='%238b5cf6'>n3t</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
@@ -100,13 +100,13 @@
 </head>
 <body>
   <div class="box" id="box">
-    <p class="status-label"><svg width="14" height="14" viewBox="0 0 32 32" style="display:inline-block;vertical-align:middle;margin-right:6px" aria-hidden="true"><rect width="32" height="32" rx="5" fill="#8b5cf6"/><text x="10" y="22" font-family="monospace" font-size="17" font-weight="900" fill="white">r</text></svg>// reachflow auth</p>
+    <p class="status-label"><svg width="14" height="14" viewBox="0 0 32 32" style="display:inline-block;vertical-align:middle;margin-right:6px" aria-hidden="true"><rect width="32" height="32" rx="5" fill="#8b5cf6"/><text x="3" y="22" font-family="monospace" font-size="12" font-weight="900" fill="white">n3t</text></svg>// n3trunner auth</p>
     <p class="status-text" id="headline">Authenticating<span class="blink">_</span></p>
     <p class="sub" id="sub">Talking to GitHub, hang tight.</p>
   </div>
 
   <script>
-    const WORKER_URL = 'https://reachflow-auth.cr4cker.workers.dev';
+    const WORKER_URL = 'https://n3trunner-auth.cr4cker.workers.dev';
 
     const box      = document.getElementById('box');
     const headline = document.getElementById('headline');
@@ -121,7 +121,7 @@
       const link = document.createElement('a');
       link.href = '/';
       link.className = 'back-link';
-      link.textContent = '← back to reachflow';
+      link.textContent = '← back to n3trunner';
       box.appendChild(link);
     }
 
@@ -193,7 +193,7 @@
       termsLink.href = '/terms';
       termsLink.target = '_blank';
       termsLink.rel = 'noopener';
-      termsLink.textContent = 'reachflow Terms of Use';
+      termsLink.textContent = 'n3trunner Terms of Use';
 
       checkLabel.appendChild(checkbox);
       checkLabel.appendChild(checkText);
@@ -258,8 +258,8 @@
 
       /* ── Refresh / no code: check existing session ── */
       if (!code) {
-        const existingToken = localStorage.getItem('rf_token');
-        const existingUser  = localStorage.getItem('rf_user');
+        const existingToken = localStorage.getItem('n3t_token');
+        const existingUser  = localStorage.getItem('n3t_user');
         if (existingToken && existingUser) {
           headline.textContent = 'Checking';
           headline.className = 'status-text';
@@ -303,8 +303,8 @@
       }
 
       if (data.sessionToken) {
-        localStorage.setItem('rf_token', data.sessionToken);
-        localStorage.setItem('rf_user',  data.username);
+        localStorage.setItem('n3t_token', data.sessionToken);
+        localStorage.setItem('n3t_user',  data.username);
       }
 
       /* ── Edit flow ── */

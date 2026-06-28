@@ -1,7 +1,7 @@
-# reachflow Design System
-**Version 2.0 — May 2026**
+# n3trunner Design System
+**Version 3.0 — June 2026** *(formerly reachflow v2.0)*
 
-A complete specification of the reachflow visual identity. Use this document to recreate any page with the same look and feel. Every rule here is exact — follow it and the output will match.
+A complete specification of the n3trunner visual identity. Use this document to recreate any page with the same look and feel. Every rule here is exact — follow it and the output will match.
 
 ---
 
@@ -508,4 +508,85 @@ Footer padding:        14px 40px desktop / 14px 20px mobile
 
 ---
 
-*Last updated: May 2026 — reachflow by TR4IS*
+*Last updated: June 2026 — n3trunner by TR4IS*
+
+---
+
+## 19. n3trunner Identity
+
+Brand display: `N3T_RUNNER` — underscore in `--accent` color, same Bebas Neue pattern.
+
+### Secondary Accent (Cyan)
+```css
+--accent2: #06b6d4;   /* Cyan — secondary cyberpunk highlight */
+```
+Use cyan for: space card dots, creator badge top-line, card hover borders (alternate cards).
+Never use cyan as a primary CTA — violet owns that slot.
+
+### Glitch Animation (hero H1 only)
+```css
+@keyframes glitch {
+  0%,100% { text-shadow: 0 0 100px rgba(139,92,246,.35); transform: none; }
+  92%      { text-shadow: -2px 0 rgba(6,182,212,.7), 2px 0 rgba(139,92,246,.7); transform: skewX(-1deg); }
+  94%      { text-shadow: 2px 0 rgba(6,182,212,.7), -2px 0 rgba(139,92,246,.7); transform: skewX(1deg); }
+  96%      { text-shadow: 0 0 100px rgba(139,92,246,.35); transform: none; }
+}
+.hero h1 { animation: glitch 6s infinite; }
+```
+Disable on `[dir="rtl"]` — Arabic display font doesn't suit the effect.
+
+### Scanline Overlay (optional full-bleed hero sections)
+```css
+.scanlines::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 2px,
+    rgba(0,0,0,.03) 2px, rgba(0,0,0,.03) 4px
+  );
+}
+```
+
+### Favicon Pattern
+```html
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%23060606'/><rect width='32' height='32' rx='5' fill='%238b5cf6' opacity='.15'/><text x='4' y='23' font-family='monospace' font-size='14' font-weight='900' fill='%238b5cf6'>n3t</text></svg>">
+```
+
+### Copy Voice
+- Section labels: keep `//` prefix
+- Hero sign-in CTA: "Jack in" (not "Sign in")
+- "developer page" → "developer node" in all copy
+- "spaces" terminology stays: `n3trunner.dev/spaces/{username}`
+- Runners/nodes, not users/pages
+
+### localStorage Key Prefix
+`n3t_` (was `rf_`) — all keys: `n3t_lang`, `n3t_lang_seen`, `n3t_token`, `n3t_user`, `n3t_editData`
+
+---
+
+## 20. React + framer-motion Layer
+
+Pages load React components via `/assets/react-bundle.js` (Vite library build, `format: 'es'`).
+
+```html
+<script type="module" src="/assets/react-bundle.js"></script>
+```
+
+**framer-motion conventions:**
+```jsx
+import { motion } from 'framer-motion';
+
+// Card entrance
+<motion.div
+  initial={{ opacity: 0, y: 16 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+/>
+
+// Stagger list
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.07 } }
+};
+```
+
+Keep transitions ≤ 350ms. No bounce/spring on UI chrome. Use `ease: [0.25, 0.1, 0.25, 1]` (snappy cubic). Glow and glitch effects remain CSS — framer-motion handles entrance/exit and interactive micro-animations only.

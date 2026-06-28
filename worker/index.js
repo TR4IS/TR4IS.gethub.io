@@ -1,4 +1,4 @@
-const ALLOWED_ORIGIN = 'https://reachflow.site';
+const ALLOWED_ORIGIN = 'https://n3trunner.dev';
 
 const CORS = {
   'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
@@ -87,7 +87,7 @@ function ghHeaders(env) {
   return {
     Authorization: `Bearer ${env.REPO_TOKEN}`,
     'Content-Type': 'application/json',
-    'User-Agent': 'reachflow-auth',
+    'User-Agent': 'n3trunner-auth',
   };
 }
 
@@ -199,7 +199,7 @@ function buildTemplate(d) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${title} — reachflow</title>
+  <title>${title} — n3trunner</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -222,7 +222,7 @@ function buildTemplate(d) {
 </head>
 <body>
   <nav>
-    <a href="/" class="nav-brand">REACH<span>_</span>FLOW</a>
+    <a href="/" class="nav-brand">N3T<span>_</span>RUNNER</a>
     <div class="nav-right">
       <a href="/spaces" class="nav-back">&#8592; spaces</a>
       <a href="#" id="edit-btn">&#x270F;&nbsp;Edit</a>
@@ -234,7 +234,7 @@ function buildTemplate(d) {
     loading="eager"
   ></iframe>
   <footer>
-    <span>&#169; 2026 reachflow.site &middot; TR4IS</span>
+    <span>&#169; 2026 n3trunner.dev &middot; TR4IS</span>
     <a href="/terms">terms</a>
   </footer>
   <script id="user-html" type="text/x-user-html">${userHtml}<\/script>
@@ -242,14 +242,14 @@ function buildTemplate(d) {
   (function(){
     var login=${JSON.stringify(login)};
     document.getElementById('space-frame').srcdoc=document.getElementById('user-html').textContent;
-    var u=localStorage.getItem('rf_user');
-    var t=localStorage.getItem('rf_token');
+    var u=localStorage.getItem('n3t_user');
+    var t=localStorage.getItem('n3t_token');
     var btn=document.getElementById('edit-btn');
     if(u&&u.toLowerCase()===login.toLowerCase()&&t){
       btn.style.display='inline-flex';
       btn.addEventListener('click',function(e){
         e.preventDefault();
-        localStorage.setItem('rf_editData',JSON.stringify({login:login}));
+        localStorage.setItem('n3t_editData',JSON.stringify({login:login}));
         window.location.href='/editor.html?user='+encodeURIComponent(login);
       });
     }
@@ -278,7 +278,7 @@ async function handleExchange(url, env) {
   if (!tokenData.access_token) return json({ error: 'Token exchange failed' }, 400);
 
   const userRes = await fetch('https://api.github.com/user', {
-    headers: { Authorization: `Bearer ${tokenData.access_token}`, 'User-Agent': 'reachflow-auth' },
+    headers: { Authorization: `Bearer ${tokenData.access_token}`, 'User-Agent': 'n3trunner-auth' },
   });
   const user = await userRes.json();
   const username = user.login;
