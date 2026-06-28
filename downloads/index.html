@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Downloads — reachflow</title>
+  <title>Downloads — n3trunner.dev</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%23060606'/><rect width='32' height='32' rx='5' fill='%238b5cf6' opacity='.15'/><text x='7' y='23' font-family='monospace' font-size='20' font-weight='900' fill='%238b5cf6'>r</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,24 +52,36 @@
       letter-spacing: 5px; color: var(--fg);
     }
     .nav-brand span { color: var(--accent); }
-    .nav-right { display: flex; align-items: center; gap: 16px; }
-    .nav-back {
-      font-size: .58rem; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--dim); transition: color .2s; font-family: var(--mono);
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-link {
+      font-size: .84rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--dim); transition: color .2s, text-shadow .2s;
     }
-    .nav-back:hover { color: var(--fg); }
+    .nav-link:hover { color: var(--fg); }
+    .nav-link.active {
+      color: var(--accent);
+      text-shadow: 0 0 12px rgba(139,92,246,.55), 0 0 28px rgba(139,92,246,.25);
+    }
+    .nav-signin {
+      font-family: var(--mono); font-weight: 700; font-size: .84rem;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--bg); background: var(--accent);
+      padding: 8px 18px; border: 1.5px solid var(--accent);
+      transition: background .2s, color .2s;
+    }
+    .nav-signin:hover { background: transparent; color: var(--accent); }
 
     /* Language toggle */
     .lang-toggle {
       display: flex; align-items: center; gap: 5px;
-      background: none; border: 1px solid var(--border);
-      padding: 5px 10px; cursor: pointer;
-      font-family: var(--mono); font-size: .46rem;
+      background: none; border: 1px solid rgba(139,92,246,.22);
+      padding: 7px 13px; cursor: pointer;
+      font-family: var(--mono); font-size: .74rem;
       letter-spacing: 2px; color: var(--dim);
       transition: border-color .2s;
     }
     .lang-toggle:hover { border-color: rgba(139,92,246,.4); }
-    .lang-sep { color: rgba(239,239,239,.15); font-size: .4rem; }
+    .lang-sep { color: rgba(239,239,239,.15); }
     .lang-opt.on { color: var(--accent); }
 
     /* ── Page layout ── */
@@ -276,7 +288,7 @@
     }
 
     /* ── Readability: scale up all small text ── */
-    .nav-back { font-size: .84rem; }
+    .nav-link { font-size: .84rem; }
     .lang-toggle { font-size: .74rem; padding: 7px 13px; gap: 7px; border-color: rgba(139,92,246,.22); }
     .lang-sep { font-size: .7rem; }
     .hero-tag { font-size: .8rem; }
@@ -304,6 +316,8 @@
     /* ── Arabic: kill letter-spacing (broken connected script) ── */
     [dir="rtl"] * { letter-spacing: 0 !important; }
     [dir="rtl"] .av-body { line-height: 2.05; }
+    [dir="rtl"] .nav-link { text-transform: none; font-family: 'Cairo', sans-serif; }
+    [dir="rtl"] .nav-signin { text-transform: none; font-family: 'Cairo', sans-serif; }
     [dir="rtl"] .card-desc { line-height: 2; }
     [dir="rtl"] .av-list li { line-height: 1.9; }
 
@@ -318,8 +332,10 @@
 <body>
 
 <nav>
-  <a href="/" class="nav-brand">REACH<span>_</span>FLOW</a>
+  <a href="/" class="nav-brand">N3T<span>_</span>RUNNER</a>
   <div class="nav-right">
+    <a href="/#tools" class="nav-link" data-page="tools" data-i18n="navTools">tools</a>
+    <a href="/downloads" class="nav-link" data-page="downloads" data-i18n="navDownloads">downloads</a>
     <button class="lang-toggle" id="lang-toggle"
             title="Switch language · تبديل اللغة"
             aria-label="Switch language">
@@ -328,7 +344,7 @@
       <span class="lang-sep">|</span>
       <span class="lang-opt" data-lang="ar">AR</span>
     </button>
-    <a href="/spaces" class="nav-back" data-i18n="navBack">&#8592; spaces</a>
+    <a href="/#hire" class="nav-signin" data-i18n="navHire">hire me</a>
   </div>
 </nav>
 
@@ -339,7 +355,7 @@
     <p class="hero-tag" data-i18n="heroTag">// free &amp; open source &middot; windows</p>
     <h1 data-i18n="heroH1">Downloads</h1>
     <p class="hero-sub" data-i18n-html="heroSub">
-      Tools built by <a href="https://github.com/TR4IS" target="_blank" rel="noopener">TR4IS</a>.
+      Tools built by <a href="https://github.com/Cr4cker" target="_blank" rel="noopener">Cr4cker</a>.
       Free forever. Source code available on GitHub for every release.
     </p>
   </div>
@@ -446,32 +462,25 @@
       </div>
     </div>
 
-    <!-- ── J2P ── -->
-    <div class="card" data-gh-repo="TR4IS/J2P" style="--card-accent:#10b981; --icon-rgb:16,185,129">
+    <!-- ── ScamGuard ── -->
+    <div class="card" data-gh-repo="TR4IS/ScamGuard" style="--card-accent:#10b981; --icon-rgb:16,185,129">
       <div class="card-head">
-        <div class="card-mono-icon">J2P</div>
+        <div class="card-mono-icon">SG</div>
         <div class="card-titles">
-          <div class="card-name">J2P &mdash; Image to PDF</div>
+          <div class="card-name">ScamGuard</div>
           <div class="card-badges">
-            <span class="badge badge-ver">v1.0.1</span>
-            <span class="badge badge-platform">Windows</span>
+            <span class="badge badge-ver">Discord Bot</span>
+            <span class="badge badge-platform">Free</span>
           </div>
         </div>
       </div>
-      <p class="card-desc" data-i18n="descJ2P">
-        Converts images (JPG, PNG, and more) to PDF in seconds. Select your images,
-        set an optional filename, click Convert &mdash; the PDF is saved directly to
-        your Downloads folder. Simple, fast, no account needed.
-      </p>
+      <p class="card-desc" data-i18n="descSG">Source code for a Discord bot that detects and flags scam links, phishing messages, and suspicious invites. Self-host it on your own server.</p>
       <div class="card-meta">
-        <span class="badge badge-platform" data-i18n="metaExePortable">EXE &middot; Portable</span>
-        <span class="meta-size">25 MB</span>
+        <span class="badge badge-platform">Discord · Python</span>
+        <span class="meta-size">Open Source</span>
       </div>
       <div class="card-actions">
-        <a href="https://github.com/TR4IS/J2P" class="source-link" target="_blank" rel="noopener" data-i18n="srcLink">Source &#8599;</a>
-        <a class="dl-btn" data-gh-asset=".exe" href="https://github.com/TR4IS/J2P/releases/download/v1.0.1/J2P-v1.0.1.exe">
-          &#8595; <span data-i18n="dlBtn">Download</span>
-        </a>
+        <a href="https://github.com/TR4IS/ScamGuard" class="dl-btn" target="_blank" rel="noopener" data-i18n="srcLink">Source &#8599;</a>
       </div>
     </div>
 
@@ -508,8 +517,8 @@
 </main>
 
 <footer>
-  <span>&#169; 2026 reachflow.site &middot; TR4IS</span>
-  <a href="/terms">terms</a>
+  <span data-i18n-html="footerCopy">&#169; 2026 Cr4cker &middot; n3trunner.dev</span>
+  <a href="/terms" data-i18n="footerTerms">terms</a>
 </footer>
 
 <script>
@@ -518,10 +527,14 @@
   /* ── Translation tables ── */
   var T = {
     en: {
-      navBack:         '← spaces',
+      navTools:        'tools',
+      navDownloads:    'downloads',
+      navHire:         'hire me',
+      footerCopy:      '&copy; 2026 Cr4cker &middot; n3trunner.dev',
+      footerTerms:     'terms',
       heroTag:         '// free & open source · windows',
       heroH1:          'Downloads',
-      heroSub:         'Tools built by <a href="https://github.com/TR4IS" target="_blank" rel="noopener">TR4IS</a>. Free forever. Source code available on GitHub for every release.',
+      heroSub:         'Tools built by <a href="https://github.com/TR4IS" target="_blank" rel="noopener">Cr4cker</a>. Free forever. Source code available on GitHub for every release.',
       avTitle:         'Antivirus & Windows Defender Notice',
       avBody:          'Some programs on this page apply <strong>system-level tweaks</strong>, write to <strong>Windows Registry</strong> entries, monitor file system activity, or use techniques that security software may not recognise. Windows Defender, SmartScreen, and third-party antivirus tools may flag these as threats or <strong>Potentially Unwanted Programs (PUP)</strong> — these are <strong>false positives</strong>. The programs do exactly what is described, nothing more.',
       avLi1:           'All source code is publicly auditable on GitHub before you download',
@@ -541,14 +554,18 @@
       dlOptExeSub:     'Full app with GUI · 19 MB',
       dlOptBatName:    'Script',
       dlOptBatSub:     'Lightweight · no install needed',
-      descJ2P:         'Converts images (JPG, PNG, and more) to PDF in seconds. Select your images, set an optional filename, click Convert — the PDF is saved directly to your Downloads folder. Simple, fast, no account needed.',
+      descSG:          'Source code for a Discord bot that detects and flags scam links, phishing messages, and suspicious invites. Self-host it on your own server.',
       descSD:          'A sound deck application for managing and triggering audio clips. First stable release. Large install size due to the Electron runtime bundled with the app.',
     },
     ar: {
-      navBack:         '← الرئيسية',
+      navTools:        'الأدوات',
+      navDownloads:    'التنزيلات',
+      navHire:         'وظّفني',
+      footerCopy:      '&copy; 2026 Cr4cker &middot; n3trunner.dev',
+      footerTerms:     'الشروط',
       heroTag:         '// مجاني ومفتوح المصدر · ويندوز',
       heroH1:          'التنزيلات',
-      heroSub:         'أدوات من تطوير <a href="https://github.com/TR4IS" target="_blank" rel="noopener">TR4IS</a>. مجانية للأبد. الكود المصدري متاح على GitHub مع كل إصدار.',
+      heroSub:         'أدوات من تطوير <a href="https://github.com/TR4IS" target="_blank" rel="noopener">Cr4cker</a>. مجانية للأبد. الكود المصدري متاح على GitHub مع كل إصدار.',
       avTitle:         'تنبيه مكافح الفيروسات و Windows Defender',
       avBody:          'بعض البرامج في هذه الصفحة تُطبّق <strong>تعديلات على مستوى النظام</strong>، تكتب في <strong>سجل ويندوز</strong>، تُراقب نشاط نظام الملفات، أو تستخدم أساليب قد لا يتعرف عليها برنامج الأمان. قد يُصنّف Windows Defender أو SmartScreen أو مكافح فيروسات آخر هذه البرامج كتهديدات أو <strong>برامج غير مرغوبة (PUP)</strong> — وهذه <strong>إنذارات كاذبة</strong>. البرامج تفعل بالضبط ما هو موصوف، لا أكثر.',
       avLi1:           'الكود المصدري متاح للتدقيق العام على GitHub قبل التنزيل',
@@ -568,7 +585,7 @@
       dlOptExeSub:     'تطبيق كامل بواجهة رسومية · 19 MB',
       dlOptBatName:    'سكريبت',
       dlOptBatSub:     'خفيف الوزن · لا يحتاج تثبيت',
-      descJ2P:         'يحوّل الصور (JPG وPNG والمزيد) إلى PDF في ثوانٍ. اختر صورك، أدخل اسم الملف اختيارياً، انقر تحويل — يُحفظ الـ PDF مباشرةً في مجلد التنزيلات. بسيط وسريع، بدون حساب.',
+      descSG:          'كود مصدري لبوت ديسكورد يكتشف ويُعلم عن روابط الاحتيال والرسائل التصيّدية والدعوات المشبوهة. استضفه بنفسك على سيرفرك الخاص.',
       descSD:          'تطبيق للتحكم في الصوت وتشغيل المقاطع الصوتية. الإصدار الأول المستقر. حجم التثبيت كبير بسبب بيئة تشغيل Electron المُضمَّنة مع التطبيق.',
     }
   };
@@ -593,7 +610,7 @@
       o.classList.toggle('on', o.dataset.lang === lang);
     });
 
-    localStorage.setItem('rf_lang', lang);
+    localStorage.setItem('n3t_lang', lang);
   }
 
   /* ── Lang toggle ── */
@@ -602,15 +619,26 @@
   });
 
   /* ── Language hint (pulse on first visit) ── */
-  if (!localStorage.getItem('rf_lang_seen')) {
+  if (!localStorage.getItem('n3t_lang_seen')) {
     var btn = document.getElementById('lang-toggle');
     btn.classList.add('hinting');
     btn.addEventListener('animationend', function () { btn.classList.remove('hinting'); }, { once: true });
-    localStorage.setItem('rf_lang_seen', '1');
+    localStorage.setItem('n3t_lang_seen', '1');
   }
 
+  /* ── Active nav ── */
+  (function () {
+    var path = window.location.pathname.replace(/\/+$/, '') || '/';
+    var map = { '/downloads': 'downloads' };
+    var key = map[path];
+    if (key) {
+      var el = document.querySelector('.nav-link[data-page="' + key + '"]');
+      if (el) el.classList.add('active');
+    }
+  })();
+
   /* ── Init ── */
-  var savedLang = localStorage.getItem('rf_lang') || 'en';
+  var savedLang = localStorage.getItem('n3t_lang') || 'en';
   setLang(savedLang);
 
 })();

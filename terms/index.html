@@ -58,13 +58,26 @@
       font-size: 1.1rem; letter-spacing: 5px; color: var(--fg);
     }
     .nav-brand span { color: var(--accent); }
-    .nav-right { display: flex; align-items: center; gap: 16px; }
-    .nav-back {
-      font-size: .82rem; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--dim); transition: color .2s;
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-link {
+      font-size: .84rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--dim); transition: color .2s, text-shadow .2s;
     }
-    [dir="rtl"] .nav-back { text-transform: none; }
-    .nav-back:hover { color: var(--fg); }
+    .nav-link:hover { color: var(--fg); }
+    .nav-link.active {
+      color: var(--accent);
+      text-shadow: 0 0 12px rgba(139,92,246,.55), 0 0 28px rgba(139,92,246,.25);
+    }
+    .nav-signin {
+      font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: .84rem;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--bg); background: var(--accent);
+      padding: 8px 18px; border: 1.5px solid var(--accent);
+      transition: background .2s, color .2s;
+    }
+    .nav-signin:hover { background: transparent; color: var(--accent); }
+    [dir="rtl"] .nav-link { text-transform: none; }
+    [dir="rtl"] .nav-signin { text-transform: none; }
 
     /* Language toggle */
     .lang-toggle {
@@ -239,7 +252,8 @@
   <nav>
     <a href="/" class="nav-brand">N3T<span>_</span>RUNNER</a>
     <div class="nav-right">
-      <a href="/" class="nav-back" data-i18n="navBack">&#8592; back</a>
+      <a href="/#tools" class="nav-link" data-page="tools" data-i18n="navTools">tools</a>
+      <a href="/downloads" class="nav-link" data-page="downloads" data-i18n="navDownloads">downloads</a>
       <button class="lang-toggle" id="lang-toggle"
               title="Switch language · تبديل اللغة"
               aria-label="Switch language">
@@ -254,6 +268,7 @@
         <span class="lang-sep">|</span>
         <span class="lang-opt" data-lang="ar">AR</span>
       </button>
+      <a href="/#hire" class="nav-signin" data-i18n="navHire">hire me</a>
     </div>
   </nav>
 
@@ -261,8 +276,8 @@
     <div class="hero-bg" aria-hidden="true" data-i18n="heroBg">TOS</div>
     <div class="hero-content">
       <p class="hero-tag" data-i18n="heroTag">// legal</p>
-      <h1 class="hero-headline" data-i18n="heroHeadline">TERMS</h1>
-      <p class="hero-meta" data-i18n="heroMeta">// last compiled: May 2026 &nbsp;·&nbsp; applies to all spaces and members</p>
+      <h1 class="hero-headline" data-i18n="heroHeadline">TERMS &amp;<br>PRIVACY</h1>
+      <p class="hero-meta" data-i18n="heroMeta">// last updated: June 2026 &nbsp;·&nbsp; n3trunner.dev &nbsp;·&nbsp; Cr4cker</p>
     </div>
   </div>
 
@@ -276,12 +291,12 @@
       </div>
       <div>
         <h2 class="ts-title" data-i18n="title01">What This Is</h2>
-        <p class="ts-text" data-i18n-html="body01a">n3trunner is a <span class="hi">network of developers</span>. Each member gets a public-facing space and access to free tools — all hosted under their GitHub identity.</p>
-        <p class="ts-text" data-i18n="body01b">By using any part of n3trunner — spaces, downloads, or the editor — you agree to everything on this page. If you disagree with any part, stop using the service.</p>
+        <p class="ts-text" data-i18n-html="body01a">This is the personal website of <span class="hi">Cr4cker</span> — a developer who builds tools. The site showcases those tools, offers free downloads, and accepts commission requests for custom software.</p>
+        <p class="ts-text" data-i18n="body01b">There are no accounts, no sign-up, no membership, and no community features. By visiting this site or downloading any tool, you agree to everything on this page.</p>
       </div>
     </div>
 
-    <!-- 02 Downloads -->
+    <!-- 02 Tools / Downloads -->
     <div class="ts">
       <div class="ts-label">
         <span class="ts-num">02</span>
@@ -289,112 +304,94 @@
       </div>
       <div>
         <h2 class="ts-title" data-i18n="title02">Software, As-Is</h2>
-        <p class="ts-text" data-i18n="body02a">The tools available on the downloads page are developed and distributed by TR4IS. They are provided free of charge, with no warranty — use them at your own risk.</p>
-        <p class="ts-text" data-i18n-html="body02b">Antivirus software may flag these tools as suspicious. This is a <span class="hi">false positive</span> — they contain no malware. The flags occur because of how the executables are packaged.</p>
+        <p class="ts-text" data-i18n="body02a">All tools are built and distributed by Cr4cker, free of charge, with no warranty of any kind. Use them at your own risk.</p>
+        <p class="ts-text" data-i18n-html="body02b">The Windows tools (WindowsOptimizer, FileOrganizer, SoundDeck) run <span class="hi">entirely offline</span> on your machine. They do not send data to any server, collect telemetry, or require an internet connection.</p>
+        <p class="ts-text" data-i18n-html="body02c">Antivirus software may flag these tools as suspicious. This is a <span class="hi">false positive</span> caused by how the executables are packaged — not malware. Source code is available on GitHub.</p>
         <ul class="rule-list">
-          <li class="ok" data-i18n="dl01">You may use the tools for personal and commercial purposes free of charge.</li>
-          <li class="ok" data-i18n="dl02">You may share direct download links to this page.</li>
-          <li class="warn" data-i18n="dl03">We are not liable for data loss, system issues, or any damage caused by using the software.</li>
-          <li class="warn" data-i18n="dl04">Tool availability may change. Downloads can be removed or updated at any time without notice.</li>
-          <li class="deny" data-i18n="dl05">Do not redistribute, repackage, or re-host the binaries without written permission.</li>
-          <li class="deny" data-i18n="dl06">Do not reverse-engineer, decompile, or claim authorship of these tools.</li>
-          <li class="deny" data-i18n="dl07">Do not use the tools for illegal, harmful, or malicious purposes.</li>
+          <li class="ok" data-i18n="dl01">Free to use for personal and commercial purposes.</li>
+          <li class="ok" data-i18n="dl02">You may share download links to this page.</li>
+          <li class="warn" data-i18n="dl03">Not liable for data loss, system issues, or damage from using the software.</li>
+          <li class="warn" data-i18n="dl04">Tools may be updated or removed at any time without notice.</li>
+          <li class="deny" data-i18n="dl05">Do not repackage, re-host, or redistribute the binaries without permission.</li>
+          <li class="deny" data-i18n="dl06">Do not reverse-engineer or claim authorship of these tools.</li>
+          <li class="deny" data-i18n="dl07">Do not use for illegal, harmful, or malicious purposes.</li>
         </ul>
       </div>
     </div>
 
-    <!-- 03 Spaces -->
+    <!-- 03 ScamGuard -->
     <div class="ts">
       <div class="ts-label">
         <span class="ts-num">03</span>
-        <span class="ts-name" data-i18n="name03">Spaces</span>
+        <span class="ts-name" data-i18n="name03">ScamGuard</span>
       </div>
       <div>
-        <h2 class="ts-title" data-i18n="title03">Developer Spaces</h2>
-        <p class="ts-text" data-i18n-html="body03a">Each developer gets a public page at <span class="hi">n3trunner.dev/spaces/[username]</span>. Spaces are fully customizable with HTML, CSS, and JavaScript — what you build is yours.</p>
-        <p class="ts-text" data-i18n="body03b">Everything published in a space is committed to a public GitHub repository. Your content is open and visible to anyone on the internet.</p>
+        <h2 class="ts-title" data-i18n="title03">Discord Bot</h2>
+        <p class="ts-text" data-i18n="body03a">ScamGuard is a Discord bot that monitors messages in servers where it is invited. It scans messages for known scam patterns, phishing URLs, and suspicious invite links.</p>
         <ul class="rule-list">
-          <li class="ok" data-i18n="sp01">Your space runs sandboxed in an iframe — isolated from the main site and other spaces.</li>
-          <li class="ok" data-i18n="sp02">You keep full ownership of your creative content.</li>
-          <li class="warn" data-i18n="sp03">Spaces are static HTML only — no server-side code, databases, or persistent backends.</li>
-          <li class="warn" data-i18n="sp04">Spaces are a free service. We may modify, limit, or discontinue hosting at any time.</li>
-          <li class="deny" data-i18n="sp05">Do not use your space to impersonate another person or claim a false identity.</li>
-          <li class="deny" data-i18n="sp06">Do not embed content that violates the rules in section 04.</li>
+          <li class="ok" data-i18n="sg01">The bot only reads messages in servers where it has been explicitly added by a server admin.</li>
+          <li class="ok" data-i18n="sg02">No message content is stored or logged by the bot beyond what Discord itself retains.</li>
+          <li class="ok" data-i18n="sg03">The bot does not collect personal information about Discord users.</li>
+          <li class="warn" data-i18n="sg04">ScamGuard is provided as-is. Detection is not guaranteed to be 100% accurate.</li>
+          <li class="deny" data-i18n="sg05">Do not add the bot to servers with the intent to abuse, spam, or test against real users without their knowledge.</li>
         </ul>
       </div>
     </div>
 
-    <!-- 04 Rules -->
+    <!-- 04 Commissions -->
     <div class="ts">
       <div class="ts-label">
         <span class="ts-num">04</span>
-        <span class="ts-name" data-i18n="name04">Rules</span>
+        <span class="ts-name" data-i18n="name04">Commissions</span>
       </div>
       <div>
-        <h2 class="ts-title" data-i18n="title04">What's Not Allowed</h2>
-        <p class="ts-text" data-i18n-html="body04a">The following content will get your space <span class="red">removed immediately</span> with no warning, across both spaces and any submitted content.</p>
+        <h2 class="ts-title" data-i18n="title04">Hiring &amp; Custom Work</h2>
+        <p class="ts-text" data-i18n="body04a">When you use the commission form or email contact@n3trunner.dev, you are contacting Cr4cker directly. This is not a managed platform — it is a direct conversation between two people.</p>
         <ul class="rule-list">
-          <li class="deny" data-i18n-html="rule01"><span class="red">Child sexual abuse material (CSAM)</span> — zero tolerance. Reported to authorities and GitHub.</li>
-          <li class="deny" data-i18n="rule02">Illegal content — piracy, fraud, hacking tools targeting others.</li>
-          <li class="deny" data-i18n="rule03">Hate speech, threats, or targeted harassment of any person or group.</li>
-          <li class="deny" data-i18n="rule04">Spam, phishing, or malware distribution.</li>
-          <li class="deny" data-i18n="rule05">Content that infringes copyright, trademarks, or intellectual property.</li>
-          <li class="deny" data-i18n="rule06">Impersonation of any person or organization.</li>
-          <li class="deny" data-i18n="rule07">Anything designed to deceive, manipulate, or cause harm.</li>
+          <li class="ok" data-i18n="cm01">All commission details, pricing, and timelines are agreed privately via email.</li>
+          <li class="ok" data-i18n="cm02">You own the final deliverable unless otherwise agreed in writing.</li>
+          <li class="warn" data-i18n="cm03">No guaranteed response time. Availability depends on current workload.</li>
+          <li class="warn" data-i18n="cm04">Cr4cker reserves the right to decline any commission request without explanation.</li>
+          <li class="deny" data-i18n="cm05">Do not request tools designed to harm, deceive, or target individuals.</li>
         </ul>
       </div>
     </div>
 
-    <!-- 05 Enforcement -->
+    <!-- 05 Privacy -->
     <div class="ts">
       <div class="ts-label">
         <span class="ts-num">05</span>
-        <span class="ts-name" data-i18n="name05">Enforcement</span>
+        <span class="ts-name" data-i18n="name05">Privacy</span>
       </div>
       <div>
-        <h2 class="ts-title" data-i18n="title05">How We Handle It</h2>
-        <p class="ts-text" data-i18n="body05a">The site owner reserves the right to remove any space or content, at any time, with or without notice, for any violation of these terms.</p>
+        <h2 class="ts-title" data-i18n="title05">What We Collect</h2>
+        <p class="ts-text" data-i18n-html="body05a">This website collects <span class="hi">nothing</span> about you. No accounts, no cookies, no tracking scripts, no analytics.</p>
         <ul class="rule-list">
-          <li class="ok" data-i18n="enf01">n3trunner is curated — membership is a privilege, not a right.</li>
-          <li class="ok" data-i18n="enf02">Serious violations may be reported to GitHub and relevant authorities.</li>
-          <li class="warn" data-i18n="enf03">There is no formal appeals process. Owner discretion is final.</li>
+          <li class="ok" data-i18n="prv01">The only data stored on your device is your language preference (localStorage key: n3t_lang).</li>
+          <li class="ok" data-i18n="prv02">Commission messages go directly to an email client — nothing is captured server-side by this website.</li>
+          <li class="ok" data-i18n="prv03">The site is hosted on GitHub Pages. GitHub may log standard server request data (IP, user-agent) per their own privacy policy.</li>
+          <li class="ok" data-i18n="prv04">Windows tools run fully offline — no telemetry, no network requests, no data leaves your machine.</li>
         </ul>
       </div>
     </div>
 
-    <!-- 06 Privacy -->
+    <!-- 06 Changes -->
     <div class="ts">
       <div class="ts-label">
         <span class="ts-num">06</span>
-        <span class="ts-name" data-i18n="name06">Privacy</span>
+        <span class="ts-name" data-i18n="name06">Changes</span>
       </div>
       <div>
-        <h2 class="ts-title" data-i18n="title06">What We Store</h2>
-        <p class="ts-text" data-i18n-html="body06a">n3trunner stores only what GitHub provides at sign-in: your <span class="hi">username</span>, <span class="hi">display name</span>, <span class="hi">bio</span>, and <span class="hi">avatar</span>.</p>
-        <ul class="rule-list">
-          <li class="ok" data-i18n="prv01">No passwords. No emails. No tracking cookies.</li>
-          <li class="ok" data-i18n="prv02">Your space content lives in a public GitHub repository.</li>
-          <li class="ok" data-i18n="prv03">Anyone can view or fork that repository — it's open source.</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- 07 Changes -->
-    <div class="ts">
-      <div class="ts-label">
-        <span class="ts-num">07</span>
-        <span class="ts-name" data-i18n="name07">Changes</span>
-      </div>
-      <div>
-        <h2 class="ts-title" data-i18n="title07">Updates</h2>
-        <p class="ts-text" data-i18n="body07a">These terms can change at any time. Continued use of your space or the downloads means you accept whatever they say at that point.</p>
+        <h2 class="ts-title" data-i18n="title06">Updates</h2>
+        <p class="ts-text" data-i18n="body06a">These terms can be updated at any time. Continued use of the site or any tool means you accept the current version. The date at the top of this page reflects the last revision.</p>
+        <p class="ts-text" data-i18n-html="body06b">Questions? Email <span class="hi">contact@n3trunner.dev</span>.</p>
       </div>
     </div>
 
   </div>
 
   <footer>
-    <span data-i18n="footerLeft">&#169; 2026 n3trunner.dev · TR4IS · All rights reserved</span>
+    <span data-i18n="footerLeft">&#169; 2026 n3trunner.dev · Cr4cker · All rights reserved</span>
     <a href="/" data-i18n="footerBack">&#8592; home</a>
   </footer>
 
@@ -404,138 +401,114 @@
     /* ════════ TRANSLATIONS ════════ */
     var T = {
       en: {
-        navBack:       '← back',
-        heroBg:        'TOS',
-        heroTag:       '// legal',
-        heroHeadline:  'TERMS',
-        heroMeta:      '// last compiled: May 2026 · applies to all spaces and members',
+        navTools:     'tools',
+        navDownloads: 'downloads',
+        navHire:      'hire me',
+        heroBg:       'TOS',
+        heroTag:      '// legal',
+        heroHeadline: 'TERMS &amp;<br>PRIVACY',
+        heroMeta:     '// last updated: June 2026 · n3trunner.dev · Cr4cker',
 
-        name01: 'Overview',
-        title01: 'What This Is',
-        body01a: 'n3trunner is a <span class="hi">network of developers</span>. Each member gets a public-facing space and access to free tools — all hosted under their GitHub identity.',
-        body01b: 'By using any part of n3trunner — spaces, downloads, or the editor — you agree to everything on this page. If you disagree with any part, stop using the service.',
+        name01: 'Overview', title01: 'What This Is',
+        body01a: 'This is the personal website of <span class="hi">Cr4cker</span> — a developer who builds tools. The site showcases those tools, offers free downloads, and accepts commission requests for custom software.',
+        body01b: 'There are no accounts, no sign-up, no membership, and no community features. By visiting this site or downloading any tool, you agree to everything on this page.',
 
-        name02: 'Downloads',
-        title02: 'Software, As-Is',
-        body02a: 'The tools available on the downloads page are developed and distributed by TR4IS. They are provided free of charge, with no warranty — use them at your own risk.',
-        body02b: 'Antivirus software may flag these tools as suspicious. This is a <span class="hi">false positive</span> — they contain no malware. The flags occur because of how the executables are packaged.',
-        dl01: 'You may use the tools for personal and commercial purposes free of charge.',
-        dl02: 'You may share direct download links to this page.',
-        dl03: 'We are not liable for data loss, system issues, or any damage caused by using the software.',
-        dl04: 'Tool availability may change. Downloads can be removed or updated at any time without notice.',
-        dl05: 'Do not redistribute, repackage, or re-host the binaries without written permission.',
-        dl06: 'Do not reverse-engineer, decompile, or claim authorship of these tools.',
-        dl07: 'Do not use the tools for illegal, harmful, or malicious purposes.',
+        name02: 'Downloads', title02: 'Software, As-Is',
+        body02a: 'All tools are built and distributed by Cr4cker, free of charge, with no warranty of any kind. Use them at your own risk.',
+        body02b: 'The Windows tools (WindowsOptimizer, FileOrganizer, SoundDeck) run <span class="hi">entirely offline</span> on your machine. They do not send data to any server, collect telemetry, or require an internet connection.',
+        body02c: 'Antivirus software may flag these tools as suspicious. This is a <span class="hi">false positive</span> caused by how the executables are packaged — not malware. Source code is available on GitHub.',
+        dl01: 'Free to use for personal and commercial purposes.',
+        dl02: 'You may share download links to this page.',
+        dl03: 'Not liable for data loss, system issues, or damage from using the software.',
+        dl04: 'Tools may be updated or removed at any time without notice.',
+        dl05: 'Do not repackage, re-host, or redistribute the binaries without permission.',
+        dl06: 'Do not reverse-engineer or claim authorship of these tools.',
+        dl07: 'Do not use for illegal, harmful, or malicious purposes.',
 
-        name03: 'Spaces',
-        title03: 'Developer Spaces',
-        body03a: 'Each developer gets a public page at <span class="hi">n3trunner.dev/spaces/[username]</span>. Spaces are fully customizable with HTML, CSS, and JavaScript — what you build is yours.',
-        body03b: 'Everything published in a space is committed to a public GitHub repository. Your content is open and visible to anyone on the internet.',
-        sp01: 'Your space runs sandboxed in an iframe — isolated from the main site and other spaces.',
-        sp02: 'You keep full ownership of your creative content.',
-        sp03: 'Spaces are static HTML only — no server-side code, databases, or persistent backends.',
-        sp04: 'Spaces are a free service. We may modify, limit, or discontinue hosting at any time.',
-        sp05: 'Do not use your space to impersonate another person or claim a false identity.',
-        sp06: 'Do not embed content that violates the rules in section 04.',
+        name03: 'ScamGuard', title03: 'Discord Bot',
+        body03a: 'ScamGuard is a Discord bot that monitors messages in servers where it is invited. It scans messages for known scam patterns, phishing URLs, and suspicious invite links.',
+        sg01: 'The bot only reads messages in servers where it has been explicitly added by a server admin.',
+        sg02: 'No message content is stored or logged by the bot beyond what Discord itself retains.',
+        sg03: 'The bot does not collect personal information about Discord users.',
+        sg04: 'ScamGuard is provided as-is. Detection is not guaranteed to be 100% accurate.',
+        sg05: 'Do not add the bot to servers with the intent to abuse, spam, or test against real users without their knowledge.',
 
-        name04: 'Rules',
-        title04: "What's Not Allowed",
-        body04a: 'The following content will get your space <span class="red">removed immediately</span> with no warning, across both spaces and any submitted content.',
-        rule01: '<span class="red">Child sexual abuse material (CSAM)</span> — zero tolerance. Reported to authorities and GitHub.',
-        rule02: 'Illegal content — piracy, fraud, hacking tools targeting others.',
-        rule03: 'Hate speech, threats, or targeted harassment of any person or group.',
-        rule04: 'Spam, phishing, or malware distribution.',
-        rule05: 'Content that infringes copyright, trademarks, or intellectual property.',
-        rule06: 'Impersonation of any person or organization.',
-        rule07: 'Anything designed to deceive, manipulate, or cause harm.',
+        name04: 'Commissions', title04: 'Hiring & Custom Work',
+        body04a: 'When you use the commission form or email contact@n3trunner.dev, you are contacting Cr4cker directly. This is not a managed platform — it is a direct conversation between two people.',
+        cm01: 'All commission details, pricing, and timelines are agreed privately via email.',
+        cm02: 'You own the final deliverable unless otherwise agreed in writing.',
+        cm03: 'No guaranteed response time. Availability depends on current workload.',
+        cm04: 'Cr4cker reserves the right to decline any commission request without explanation.',
+        cm05: 'Do not request tools designed to harm, deceive, or target individuals.',
 
-        name05: 'Enforcement',
-        title05: 'How We Handle It',
-        body05a: 'The site owner reserves the right to remove any space or content, at any time, with or without notice, for any violation of these terms.',
-        enf01: 'n3trunner is curated — membership is a privilege, not a right.',
-        enf02: 'Serious violations may be reported to GitHub and relevant authorities.',
-        enf03: 'There is no formal appeals process. Owner discretion is final.',
+        name05: 'Privacy', title05: 'What We Collect',
+        body05a: 'This website collects <span class="hi">nothing</span> about you. No accounts, no cookies, no tracking scripts, no analytics.',
+        prv01: 'The only data stored on your device is your language preference (localStorage key: n3t_lang).',
+        prv02: 'Commission messages go directly to an email client — nothing is captured server-side by this website.',
+        prv03: 'The site is hosted on GitHub Pages. GitHub may log standard server request data (IP, user-agent) per their own privacy policy.',
+        prv04: 'Windows tools run fully offline — no telemetry, no network requests, no data leaves your machine.',
 
-        name06: 'Privacy',
-        title06: 'What We Store',
-        body06a: 'n3trunner stores only what GitHub provides at sign-in: your <span class="hi">username</span>, <span class="hi">display name</span>, <span class="hi">bio</span>, and <span class="hi">avatar</span>.',
-        prv01: 'No passwords. No emails. No tracking cookies.',
-        prv02: 'Your space content lives in a public GitHub repository.',
-        prv03: "Anyone can view or fork that repository — it's open source.",
+        name06: 'Changes', title06: 'Updates',
+        body06a: 'These terms can be updated at any time. Continued use of the site or any tool means you accept the current version. The date at the top of this page reflects the last revision.',
+        body06b: 'Questions? Email <span class="hi">contact@n3trunner.dev</span>.',
 
-        name07: 'Changes',
-        title07: 'Updates',
-        body07a: 'These terms can change at any time. Continued use of your space or the downloads means you accept whatever they say at that point.',
-
-        footerLeft: '© 2026 n3trunner.dev · TR4IS · All rights reserved',
+        footerLeft: '© 2026 Cr4cker · n3trunner.dev · All rights reserved',
         footerBack: '← home',
       },
 
       ar: {
-        navBack:       'العودة ←',
-        heroBg:        'شروط',
-        heroTag:       '// قانوني',
-        heroHeadline:  'الشروط',
-        heroMeta:      '// آخر تحديث: مايو 2026 · تسري على جميع المساحات والأعضاء',
+        navTools:     'الأدوات',
+        navDownloads: 'التنزيلات',
+        navHire:      'وظّفني',
+        heroBg:       'شروط',
+        heroTag:      '// قانوني',
+        heroHeadline: 'الشروط<br>والخصوصية',
+        heroMeta:     '// آخر تحديث: يونيو 2026 · n3trunner.dev · Cr4cker',
 
-        name01: 'نظرة عامة',
-        title01: 'ما هذا؟',
-        body01a: 'n3trunner هو <span class="hi">شبكة مطوّرين</span>. يحصل كل عضو على صفحة عامة وصلاحية الوصول إلى أدوات مجانية — كل ذلك مرتبط بهويته على GitHub.',
-        body01b: 'باستخدام أي جزء من n3trunner — المساحات أو التنزيلات أو المحرّر — فإنك توافق على كل ما هو مذكور في هذه الصفحة. إذا كنت لا توافق على أي جزء، توقّف عن استخدام الخدمة.',
+        name01: 'نظرة عامة', title01: 'ما هذا الموقع؟',
+        body01a: 'هذا الموقع الشخصي لـ <span class="hi">Cr4cker</span> — مطوّر يبني أدوات برمجية. يعرض الموقع تلك الأدوات، يوفّر تنزيلات مجانية، ويقبل طلبات تطوير مخصّص.',
+        body01b: 'لا توجد حسابات ولا تسجيل ولا عضوية ولا ميزات مجتمعية. باستخدامك للموقع أو تنزيل أي أداة، فإنك توافق على كل ما في هذه الصفحة.',
 
-        name02: 'التنزيلات',
-        title02: 'البرامج كما هي',
-        body02a: 'الأدوات المتاحة في صفحة التنزيلات مطوَّرة وموزَّعة من قِبل TR4IS. تُقدَّم مجاناً بدون أي ضمان — استخدمها على مسؤوليتك الخاصة.',
-        body02b: 'قد تُشير بعض برامج مكافحة الفيروسات إلى هذه الأدوات. هذا <span class="hi">إنذار خاطئ</span> — لا تحتوي على أي برمجيات ضارة. يحدث ذلك بسبب طريقة تجميع الملفات التنفيذية.',
-        dl01: 'يمكنك استخدام الأدوات للأغراض الشخصية والتجارية مجاناً.',
-        dl02: 'يمكنك مشاركة روابط التنزيل المباشرة لهذه الصفحة.',
-        dl03: 'لا نتحمّل مسؤولية فقدان البيانات أو مشاكل النظام أو أي أضرار ناتجة عن استخدام البرامج.',
-        dl04: 'قد تتغيّر توفّر الأدوات. يمكن حذف التنزيلات أو تحديثها في أي وقت دون إشعار.',
-        dl05: 'لا تُعيد توزيع الملفات أو إعادة تغليفها أو استضافتها بدون إذن كتابي.',
-        dl06: 'لا تقم بالهندسة العكسية أو فكّ التشفير أو ادّعاء ملكية هذه الأدوات.',
-        dl07: 'لا تستخدم الأدوات لأغراض غير قانونية أو ضارة أو خبيثة.',
+        name02: 'التنزيلات', title02: 'البرامج كما هي',
+        body02a: 'جميع الأدوات مطوَّرة وموزَّعة من قِبل Cr4cker، مجاناً، بدون أي ضمان. استخدمها على مسؤوليتك الخاصة.',
+        body02b: 'أدوات ويندوز (WindowsOptimizer وFileOrganizer وSoundDeck) تعمل <span class="hi">بالكامل دون اتصال بالإنترنت</span>. لا ترسل أي بيانات لأي خادم، ولا تجمع إحصاءات، ولا تحتاج اتصالاً بالشبكة.',
+        body02c: 'قد تُشير بعض برامج مكافحة الفيروسات إلى هذه الأدوات. هذا <span class="hi">تحذير خاطئ</span> بسبب طريقة تجميع الملفات التنفيذية — وليس برمجيات خبيثة. الكود المصدري متاح على GitHub.',
+        dl01: 'مجانية للاستخدام الشخصي والتجاري.',
+        dl02: 'يمكنك مشاركة روابط التنزيل من هذه الصفحة.',
+        dl03: 'لا مسؤولية عن فقدان البيانات أو مشاكل النظام أو أي ضرر ناتج عن استخدام البرامج.',
+        dl04: 'قد يتم تحديث الأدوات أو إزالتها في أي وقت بدون إشعار.',
+        dl05: 'لا تُعيد تغليف الملفات أو استضافتها أو توزيعها بدون إذن.',
+        dl06: 'لا تقم بالهندسة العكسية أو ادّعاء ملكية هذه الأدوات.',
+        dl07: 'لا تستخدمها لأغراض غير قانونية أو ضارة أو خبيثة.',
 
-        name03: 'المساحات',
-        title03: 'مساحات المطوّرين',
-        body03a: 'يحصل كل مطوّر على صفحة عامة على <span class="hi">n3trunner.dev/spaces/[username]</span>. المساحات قابلة للتخصيص الكامل بـ HTML وCSS وJavaScript — ما تبنيه هو ملكك.',
-        body03b: 'كل ما تنشره في مساحتك يُحفظ في مستودع GitHub عام. محتواك مفتوح ومرئي لأي شخص على الإنترنت.',
-        sp01: 'تعمل مساحتك في بيئة معزولة داخل iframe — منفصلة عن الموقع الرئيسي والمساحات الأخرى.',
-        sp02: 'تحتفظ بالملكية الكاملة لمحتواك الإبداعي.',
-        sp03: 'المساحات HTML ثابت فقط — لا كود من جانب الخادم، ولا قواعد بيانات، ولا خلفيات دائمة.',
-        sp04: 'المساحات خدمة مجانية. قد نعدّل الخدمة أو نحدّ منها أو نوقفها في أي وقت.',
-        sp05: 'لا تستخدم مساحتك لانتحال شخصية شخص آخر أو ادّعاء هوية زائفة.',
-        sp06: 'لا تضمّن محتوى يخالف القواعد الواردة في القسم 04.',
+        name03: 'ScamGuard', title03: 'بوت ديسكورد',
+        body03a: 'ScamGuard بوت ديسكورد يراقب الرسائل في السيرفرات التي تمت دعوته إليها. يفحص الرسائل بحثاً عن أنماط احتيال معروفة وروابط تصيّد ودعوات مشبوهة.',
+        sg01: 'البوت يقرأ الرسائل فقط في السيرفرات التي أضافه فيها مشرف السيرفر.',
+        sg02: 'لا يتم حفظ أو تسجيل محتوى الرسائل من قِبل البوت خارج ما يحتفظ به ديسكورد.',
+        sg03: 'البوت لا يجمع معلومات شخصية عن مستخدمي ديسكورد.',
+        sg04: 'يُقدَّم ScamGuard كما هو. لا ضمان بدقة الكشف 100%.',
+        sg05: 'لا تضيف البوت لسيرفرات بنيّة إساءة الاستخدام أو الاختبار على مستخدمين حقيقيين.',
 
-        name04: 'القواعد',
-        title04: 'ما هو غير مسموح',
-        body04a: 'المحتوى التالي سيؤدي إلى <span class="red">حذف مساحتك فوراً</span> بدون تحذير، سواء في المساحات أو أي محتوى مُقدَّم.',
-        rule01: '<span class="red">مواد الاستغلال الجنسي للأطفال (CSAM)</span> — تسامح صفري. يُبلَّغ عنها للسلطات وGitHub.',
-        rule02: 'المحتوى غير القانوني — القرصنة والاحتيال وأدوات الاختراق التي تستهدف الآخرين.',
-        rule03: 'خطاب الكراهية أو التهديدات أو التحرش الموجّه بأي شخص أو مجموعة.',
-        rule04: 'البريد المزعج أو التصيّد الاحتيالي أو توزيع البرمجيات الضارة.',
-        rule05: 'المحتوى الذي ينتهك حقوق الطبع والنشر أو العلامات التجارية أو الملكية الفكرية.',
-        rule06: 'انتحال شخصية أي شخص أو مؤسسة.',
-        rule07: 'أي شيء مصمَّم للخداع أو التلاعب أو الإضرار بالآخرين.',
+        name04: 'التوظيف', title04: 'العمل المخصّص',
+        body04a: 'عند استخدام نموذج التوظيف أو مراسلة contact@n3trunner.dev، فأنت تتواصل مع Cr4cker مباشرة. هذه ليست منصة مُدارة — بل محادثة مباشرة بين شخصين.',
+        cm01: 'جميع تفاصيل العمل والتسعير والمواعيد تُتّفق عليها بشكل خاص عبر البريد الإلكتروني.',
+        cm02: 'أنت تمتلك المنتج النهائي ما لم يُتّفق على خلاف ذلك كتابياً.',
+        cm03: 'لا يوجد وقت استجابة مضمون. التوفّر يعتمد على عبء العمل الحالي.',
+        cm04: 'يحتفظ Cr4cker بالحق في رفض أي طلب توظيف بدون تفسير.',
+        cm05: 'لا تطلب أدوات مصمَّمة للإضرار بالآخرين أو خداعهم.',
 
-        name05: 'التطبيق',
-        title05: 'كيف نتعامل معها',
-        body05a: 'يحتفظ مالك الموقع بالحق في إزالة أي مساحة أو محتوى في أي وقت، مع إشعار أو بدونه، لأي انتهاك لهذه الشروط.',
-        enf01: 'n3trunner منظَّم بعناية — العضوية امتياز وليست حقاً.',
-        enf02: 'قد يُبلَّغ عن الانتهاكات الخطيرة إلى GitHub والسلطات المختصة.',
-        enf03: 'لا توجد آلية استئناف رسمية. قرار المالك نهائي.',
+        name05: 'الخصوصية', title05: 'ما الذي نجمعه',
+        body05a: 'هذا الموقع لا يجمع <span class="hi">أي شيء</span> عنك. لا حسابات، لا كوكيز، لا سكريبتات تتبّع، لا إحصاءات.',
+        prv01: 'البيانات الوحيدة المخزّنة على جهازك هي تفضيل اللغة (مفتاح localStorage: n3t_lang).',
+        prv02: 'رسائل التوظيف تذهب مباشرة إلى تطبيق البريد الإلكتروني — لا شيء يُسجَّل على خوادم هذا الموقع.',
+        prv03: 'الموقع مستضاف على GitHub Pages. قد تسجّل GitHub بيانات الطلبات القياسية (IP، المتصفح) وفق سياسة خصوصيتها الخاصة.',
+        prv04: 'أدوات ويندوز تعمل دون اتصال — لا إحصاءات، لا طلبات شبكة، لا بيانات تغادر جهازك.',
 
-        name06: 'الخصوصية',
-        title06: 'ما الذي نخزّنه',
-        body06a: 'يخزّن n3trunner فقط ما يوفّره GitHub عند تسجيل الدخول: <span class="hi">اسم المستخدم</span> و<span class="hi">الاسم الظاهر</span> و<span class="hi">السيرة الذاتية</span> و<span class="hi">الصورة الشخصية</span>.',
-        prv01: 'لا كلمات مرور. لا بريد إلكتروني. لا ملفات تتبع.',
-        prv02: 'محتوى مساحتك موجود في مستودع GitHub عام.',
-        prv03: 'يمكن لأي شخص عرض ذلك المستودع أو نسخه — إنه مفتوح المصدر.',
+        name06: 'التغييرات', title06: 'التحديثات',
+        body06a: 'يمكن تحديث هذه الشروط في أي وقت. استمرارك في استخدام الموقع أو أي أداة يعني قبولك للنسخة الحالية. التاريخ أعلى الصفحة يعكس آخر مراجعة.',
+        body06b: 'أسئلة؟ راسل <span class="hi">contact@n3trunner.dev</span>.',
 
-        name07: 'التغييرات',
-        title07: 'التحديثات',
-        body07a: 'يمكن تغيير هذه الشروط في أي وقت. الاستمرار في استخدام مساحتك أو التنزيلات يعني قبولك لما تنص عليه في ذلك الوقت.',
-
-        footerLeft: '© 2026 n3trunner.dev · TR4IS · جميع الحقوق محفوظة',
+        footerLeft: '© 2026 Cr4cker · n3trunner.dev · جميع الحقوق محفوظة',
         footerBack: 'الرئيسية ←',
       }
     };
@@ -569,6 +542,17 @@
     document.getElementById('lang-toggle').addEventListener('click', function () {
       setLang(document.documentElement.lang === 'ar' ? 'en' : 'ar');
     });
+
+    /* ════════ ACTIVE NAV ════════ */
+    (function () {
+      var path = window.location.pathname.replace(/\/+$/, '') || '/';
+      var map = { '/downloads': 'downloads' };
+      var key = map[path];
+      if (key) {
+        var el = document.querySelector('.nav-link[data-page="' + key + '"]');
+        if (el) el.classList.add('active');
+      }
+    })();
 
     /* ════════ SCROLL REVEAL ════════ */
     var observer = new IntersectionObserver(function (entries) {

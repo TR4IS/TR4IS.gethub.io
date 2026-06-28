@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>n3trunner — your developer node</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%23060606'/><rect width='32' height='32' rx='5' fill='%238b5cf6' opacity='.15'/><text x='4' y='23' font-family='monospace' font-size='14' font-weight='900' fill='%238b5cf6'>n3t</text></svg>">
+  <title>Cr4cker — developer & tool builder</title>
+  <meta name="description" content="Cr4cker builds tools that solve real problems. Windows apps, web tools, automation. Free, open source. Need something built? I'll build it.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23060606'/><text x='4' y='23' font-family='monospace' font-size='14' font-weight='900' fill='%238b5cf6'>n3t</text></svg>">
   <link rel="stylesheet" href="/assets/react-bundle.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,9 +36,6 @@
       min-height: 100vh;
     }
 
-    [dir="rtl"] body,
-    [dir="rtl"] { font-family: 'Cairo', sans-serif; }
-
     a { color: inherit; text-decoration: none; }
 
     /* ── Nav ── */
@@ -45,59 +43,61 @@
       position: sticky; top: 0; z-index: 50;
       display: flex; align-items: center; justify-content: space-between;
       padding: 18px 40px;
-      background: rgba(6,6,6,.9);
+      background: rgba(6,6,6,.92);
       border-bottom: 1px solid var(--border);
       backdrop-filter: blur(12px);
     }
-    .nav-brand {
-      font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem;
-      letter-spacing: 5px; color: var(--fg);
-    }
+    .nav-brand { font-family: var(--display); font-size: 1.1rem; letter-spacing: 5px; }
     .nav-brand span { color: var(--accent); }
     .nav-right { display: flex; align-items: center; gap: 20px; }
     .nav-link {
       font-size: .84rem; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--dim); transition: color .2s; font-family: var(--mono);
+      color: var(--dim); transition: color .2s, text-shadow .2s;
     }
     .nav-link:hover { color: var(--fg); }
+    .nav-link.active {
+      color: var(--accent);
+      text-shadow: 0 0 12px rgba(139,92,246,.55), 0 0 28px rgba(139,92,246,.25);
+    }
     .nav-signin {
-      font-family: var(--mono); font-weight: 700;
-      font-size: .84rem; letter-spacing: 2px; text-transform: uppercase;
+      font-family: var(--mono); font-weight: 700; font-size: .84rem;
+      letter-spacing: 2px; text-transform: uppercase;
       color: var(--bg); background: var(--accent);
       padding: 8px 18px; border: 1.5px solid var(--accent);
       transition: background .2s, color .2s; cursor: pointer;
     }
     .nav-signin:hover { background: transparent; color: var(--accent); }
 
-    /* Language toggle */
+    /* ── Lang toggle ── */
     .lang-toggle {
       display: flex; align-items: center; gap: 5px;
       background: none; border: 1px solid rgba(139,92,246,.22);
       padding: 7px 13px; cursor: pointer;
       font-family: var(--mono); font-size: .74rem;
-      letter-spacing: 2px; color: var(--dim);
-      transition: border-color .2s;
+      letter-spacing: 2px; color: var(--dim); transition: border-color .2s;
     }
     .lang-toggle:hover { border-color: rgba(139,92,246,.4); }
-    .lang-sep { color: rgba(239,239,239,.15); font-size: .7rem; }
+    .lang-sep { color: rgba(239,239,239,.15); }
     .lang-opt.on { color: var(--accent); }
 
-    /* ── Page layout ── */
-    main {
-      max-width: 920px; margin: 0 auto;
-      padding: 64px 40px 100px;
-      display: flex; flex-direction: column; gap: 56px;
+    /* ── Main layout ── */
+    main { max-width: 960px; margin: 0 auto; padding: 80px 40px 120px; display: flex; flex-direction: column; gap: 100px; }
+
+    /* ── Section label ── */
+    .section-lbl {
+      font-size: .80rem; color: var(--accent); letter-spacing: 3px;
+      text-transform: uppercase; padding-bottom: 16px;
+      border-bottom: 1px solid var(--border); font-family: var(--mono);
+      margin-bottom: 4px;
     }
 
-    /* ── Hero ── */
-    .hero { display: flex; flex-direction: column; gap: 14px; }
+    /* ─────────────── HERO ─────────────── */
+    .hero { display: flex; flex-direction: column; gap: 0; }
     .hero-tag {
-      font-size: .80rem; color: var(--accent);
-      letter-spacing: 3px; text-transform: uppercase;
-      font-family: var(--mono);
+      font-size: .80rem; color: var(--accent); letter-spacing: 3px;
+      text-transform: uppercase; margin-bottom: 18px;
     }
 
-    /* Glitch animation */
     @keyframes glitch {
       0%,100% { text-shadow: 0 0 100px rgba(139,92,246,.35); transform: none; }
       92%      { text-shadow: -2px 0 rgba(6,182,212,.7), 2px 0 rgba(139,92,246,.7); transform: skewX(-1deg); }
@@ -106,421 +106,372 @@
     }
 
     .hero h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(4rem, 11vw, 9rem);
-      letter-spacing: 4px; line-height: .92;
+      font-family: var(--display);
+      font-size: clamp(4.5rem, 13vw, 10rem);
+      letter-spacing: 3px; line-height: .9;
       animation: glitch 6s infinite;
+      margin-bottom: 40px;
     }
+    .hero h1 em { font-style: normal; color: var(--accent2); }
     [dir="rtl"] .hero h1 {
-      font-family: 'Cairo', sans-serif;
-      font-weight: 900;
-      font-size: clamp(3rem, 8vw, 6.5rem);
-      letter-spacing: 0;
-      line-height: 1.05;
-      animation: none;
+      font-family: 'Cairo', sans-serif; font-weight: 900;
+      letter-spacing: 0; font-size: clamp(3.5rem, 10vw, 7.5rem);
+      line-height: 1.05; animation: none;
     }
-    .hero-body {
-      margin-top: 14px;
-      display: flex; align-items: flex-end; justify-content: space-between;
-      flex-wrap: wrap; gap: 28px;
-    }
+    [dir="rtl"] .hero-sub { font-family: 'Cairo', sans-serif; line-height: 2.1; letter-spacing: 0; }
+    [dir="rtl"] * { letter-spacing: 0 !important; }
+    [dir="rtl"] .hero-tag { font-family: 'Cairo', sans-serif; }
+    [dir="rtl"] .nav-link { text-transform: none; font-family: 'Cairo', sans-serif; }
+    [dir="rtl"] .nav-signin { text-transform: none; font-family: 'Cairo', sans-serif; }
+    [dir="rtl"] .section-lbl { text-transform: none; font-family: 'Cairo', sans-serif; }
+    [dir="rtl"] .ci-h { font-family: 'Cairo', sans-serif; font-weight: 900; line-height: 1.1; }
+    [dir="rtl"] .ci-body { font-family: 'Cairo', sans-serif; line-height: 2.1; }
+
     .hero-sub {
-      font-size: .95rem; color: rgba(239,239,239,.4);
-      letter-spacing: .4px; line-height: 1.95; max-width: 390px;
+      font-size: 1rem; color: rgba(239,239,239,.42); line-height: 2;
+      letter-spacing: .3px; margin-bottom: 36px; max-width: 560px;
     }
     .hero-sub strong { color: rgba(239,239,239,.85); font-weight: 700; }
-    .hero-cta-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 11px; }
-    [dir="rtl"] .hero-cta-wrap { align-items: flex-start; }
 
-    .hero-cta {
-      font-family: var(--mono); font-weight: 700;
-      font-size: .88rem; letter-spacing: 3px; text-transform: uppercase;
+    .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-primary {
+      font-family: var(--mono); font-weight: 700; font-size: .88rem;
+      letter-spacing: 3px; text-transform: uppercase;
       color: var(--bg); background: var(--accent);
       border: 1.5px solid var(--accent);
-      padding: 15px 32px;
-      display: inline-flex; align-items: center; gap: 10px;
-      transition: background .25s, color .25s;
+      padding: 14px 28px; display: inline-flex; align-items: center; gap: 8px;
+      transition: background .25s, color .25s; cursor: pointer;
     }
-    .hero-cta:hover { background: transparent; color: var(--accent); }
-    .hero-count {
-      font-size: .76rem; color: rgba(239,239,239,.2);
-      letter-spacing: 2px; font-family: var(--mono);
-    }
-    .hero-count strong { color: rgba(239,239,239,.5); }
-
-    /* ── Section label ── */
-    .section-lbl {
-      font-size: .80rem; color: var(--accent);
+    .btn-primary:hover { background: transparent; color: var(--accent); }
+    .btn-ghost {
+      font-family: var(--mono); font-weight: 700; font-size: .88rem;
       letter-spacing: 3px; text-transform: uppercase;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--border);
-      font-family: var(--mono);
+      color: var(--dim); border: 1.5px solid var(--border);
+      padding: 14px 28px; display: inline-flex; align-items: center; gap: 8px;
+      transition: border-color .25s, color .25s;
     }
+    .btn-ghost:hover { border-color: rgba(139,92,246,.4); color: var(--fg); }
 
-    /* ── Spaces showcase ── */
-    .spaces-section { display: flex; flex-direction: column; gap: 20px; }
-    .showcase-track {
-      display: flex; gap: 10px;
-      overflow-x: auto; scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 2px;
-    }
-    .showcase-track::-webkit-scrollbar { display: none; }
-    .s-card {
-      flex-shrink: 0; width: 134px;
+
+    /* ─────────────── TOOLS ─────────────── */
+    .tools-section { display: flex; flex-direction: column; gap: 24px; }
+    .tools-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+      background: var(--border);
       border: 1px solid var(--border);
-      background: rgba(6,6,6,.6);
-      padding: 18px 14px;
-      display: flex; flex-direction: column; align-items: center; gap: 10px;
-      transition: border-color .2s, background .2s;
-      position: relative;
     }
-    .s-card::before {
+    .tool-card {
+      background: rgba(6,6,6,.8); padding: 28px 28px 24px;
+      position: relative; overflow: hidden;
+      transition: background .25s;
+    }
+    .tool-card:hover { background: rgba(10,10,10,.95); }
+    .tool-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--card-accent, var(--accent));
+      opacity: .85;
+    }
+    .tool-card::after {
       content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 1px; background: var(--accent2); opacity: 0; transition: opacity .2s;
+      height: 100%;
+      background: radial-gradient(ellipse at top left, rgba(var(--card-accent-raw, 139,92,246),.04) 0%, transparent 70%);
+      pointer-events: none;
     }
-    .s-card:hover { border-color: rgba(6,182,212,.3); background: rgba(6,182,212,.04); }
-    .s-card:hover::before { opacity: .6; }
-    .s-card-av {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: rgba(255,255,255,.06);
-      background-size: cover; background-position: center;
-      border: 1px solid rgba(139,92,246,.2);
+    .tool-tag {
+      font-size: .70rem; letter-spacing: 3px; text-transform: uppercase;
+      margin-bottom: 12px; font-family: var(--mono);
     }
-    .s-card-name {
-      font-size: .74rem; color: rgba(239,239,239,.4);
-      letter-spacing: .5px; text-align: center;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      width: 100%; font-family: var(--mono);
+    .tool-name {
+      font-family: var(--display); font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      letter-spacing: 2px; line-height: 1; margin-bottom: 10px;
     }
-    .s-card-dot {
-      width: 4px; height: 4px; border-radius: 50%;
-      background: var(--accent2); opacity: .5;
+    .tool-version {
+      display: inline-block; font-size: .66rem; letter-spacing: 2px;
+      padding: 3px 8px; border: 1px solid; opacity: .65;
+      margin-bottom: 14px; font-family: var(--mono);
+    }
+    .tool-desc {
+      font-size: .86rem; color: rgba(239,239,239,.4); line-height: 1.85;
+      letter-spacing: .2px; margin-bottom: 18px;
+    }
+    .tool-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 8px;
+    }
+    .tool-platform {
+      font-size: .68rem; letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(239,239,239,.2); font-family: var(--mono);
+    }
+    .tool-dl {
+      font-family: var(--mono); font-size: .74rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 8px 16px; border: 1.5px solid;
+      transition: background .2s, color .2s;
     }
 
-    /* ── How it works ── */
-    .how-grid {
-      display: grid; grid-template-columns: repeat(3,1fr); gap: 12px;
-    }
-    .how-card {
+    /* Individual tool accents */
+    .tool-card.wo   { --card-accent: #f59e0b; }
+    .tool-card.fo   { --card-accent: #8b5cf6; }
+    .tool-card.j2p  { --card-accent: #10b981; }
+    .tool-card.deck { --card-accent: #06b6d4; }
+
+    .tool-card.wo   .tool-tag,  .tool-card.wo   .tool-version { color: #f59e0b; border-color: #f59e0b; }
+    .tool-card.fo   .tool-tag,  .tool-card.fo   .tool-version { color: #8b5cf6; border-color: #8b5cf6; }
+    .tool-card.j2p  .tool-tag,  .tool-card.j2p  .tool-version { color: #10b981; border-color: #10b981; }
+    .tool-card.deck .tool-tag,  .tool-card.deck .tool-version { color: #06b6d4; border-color: #06b6d4; }
+
+    .tool-card.wo  .tool-dl { color: #f59e0b; border-color: rgba(245,158,11,.35); }
+    .tool-card.fo  .tool-dl { color: #8b5cf6; border-color: rgba(139,92,246,.35); }
+    .tool-card.j2p .tool-dl { color: #10b981; border-color: rgba(16,185,129,.35); }
+    .tool-card.deck .tool-dl { color: #06b6d4; border-color: rgba(6,182,212,.35); }
+
+    .tool-card.wo  .tool-dl:hover { background: rgba(245,158,11,.1); border-color: #f59e0b; }
+    .tool-card.fo  .tool-dl:hover { background: rgba(139,92,246,.1); border-color: #8b5cf6; }
+    .tool-card.j2p .tool-dl:hover { background: rgba(16,185,129,.1); border-color: #10b981; }
+    .tool-card.deck .tool-dl:hover { background: rgba(6,182,212,.1); border-color: #06b6d4; }
+
+    .tools-more {
+      text-align: center;
+      padding: 16px;
       border: 1px solid var(--border);
-      background: rgba(6,6,6,.6);
-      padding: 26px 22px;
-      display: flex; flex-direction: column; gap: 14px;
-      transition: border-color .2s, background .2s;
-      position: relative;
+      font-size: .78rem; color: var(--dim); letter-spacing: 2px;
+      transition: border-color .2s, color .2s;
     }
-    .how-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 1px; background: var(--accent); opacity: 0; transition: opacity .2s;
-    }
-    .how-card:hover { border-color: rgba(139,92,246,.3); background: rgba(139,92,246,.04); }
-    .how-card:hover::before { opacity: .5; }
-    .how-num {
-      font-size: .74rem; color: var(--accent);
-      letter-spacing: 3px; font-family: var(--mono);
-    }
-    .how-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.4rem; letter-spacing: 2px; line-height: 1.1;
-    }
-    [dir="rtl"] .how-title {
-      font-family: 'Cairo', sans-serif;
-      font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: 0;
-    }
-    .how-body {
-      font-size: .88rem; color: rgba(239,239,239,.4);
-      line-height: 1.9; letter-spacing: .3px;
-    }
-    .how-body span { color: var(--accent2); }
+    .tools-more:hover { border-color: rgba(139,92,246,.3); color: var(--fg); }
 
-    /* ── Footer ── */
+    /* ─────────────── COMMISSION ─────────────── */
+    .commission-section { display: flex; flex-direction: column; gap: 24px; }
+    .commission-intro {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+      align-items: center;
+      padding: 36px; border: 1px solid var(--border); background: rgba(6,6,6,.6);
+      position: relative; margin-bottom: 8px;
+    }
+    .commission-intro::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+    .ci-h {
+      font-family: var(--display); font-size: clamp(2.2rem, 5vw, 3.8rem);
+      letter-spacing: 3px; line-height: .92;
+    }
+    .ci-h em { font-style: normal; color: var(--accent); }
+    .ci-body {
+      font-size: .9rem; color: rgba(239,239,239,.42); line-height: 1.9;
+    }
+    .ci-body strong { color: rgba(239,239,239,.78); }
+    .ci-body .email-link {
+      color: var(--accent2); border-bottom: 1px solid rgba(6,182,212,.3);
+      transition: border-color .2s;
+    }
+    .ci-body .email-link:hover { border-color: var(--accent2); }
+    .commission-widget {
+      padding: 40px; border: 1px solid rgba(139,92,246,.18);
+      background: rgba(6,6,6,.8); position: relative;
+    }
+    .commission-widget::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+    }
+    #n3t-ai-root { width: 100%; }
+
+
+    /* ─────────────── FOOTER ─────────────── */
     footer {
-      border-top: 1px solid var(--border);
-      padding: 14px 40px;
-      display: flex; justify-content: space-between;
-      font-size: .76rem; color: rgba(239,239,239,.12);
-      letter-spacing: 2px; font-family: var(--mono);
+      border-top: 1px solid var(--border); padding: 20px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+      font-size: .76rem; color: rgba(239,239,239,.18); letter-spacing: 1.5px;
     }
-    footer a { color: rgba(239,239,239,.12); transition: color .2s; }
-    footer a:hover { color: rgba(239,239,239,.4); }
+    footer a { color: rgba(239,239,239,.18); transition: color .2s; }
+    footer a:hover { color: rgba(239,239,239,.5); }
+    .footer-email {
+      color: var(--accent) !important; border-bottom: 1px solid rgba(139,92,246,.3);
+      transition: border-color .2s !important;
+    }
+    .footer-email:hover { border-color: var(--accent) !important; }
 
-    /* ── Mobile ── */
-    @media (max-width: 720px) {
+    /* ─────────────── MOBILE ─────────────── */
+    @media (max-width: 740px) {
       nav { padding: 14px 20px; }
       .nav-link { display: none; }
-      main { padding: 40px 20px 80px; gap: 40px; }
-      .hero h1 { font-size: clamp(3.5rem, 14vw, 6rem); }
-      [dir="rtl"] .hero h1 { font-size: clamp(2.5rem, 11vw, 5rem); }
-      .hero-body { flex-direction: column; align-items: flex-start; }
-      .hero-cta-wrap { align-items: flex-start !important; }
-      .how-grid { grid-template-columns: 1fr; }
-      footer { padding: 14px 20px; }
+      main { padding: 48px 20px 80px; gap: 64px; }
+      .hero h1 { font-size: clamp(3.8rem, 15vw, 7rem); }
+      .tools-grid { grid-template-columns: 1fr; }
+      .commission-intro { grid-template-columns: 1fr; gap: 20px; padding: 24px 20px; }
+      .commission-widget { padding: 24px 20px; }
+      footer { padding: 16px 20px; }
     }
 
-    /* ── Arabic: kill letter-spacing (broken connected script) ── */
-    [dir="rtl"] * { letter-spacing: 0 !important; }
-    [dir="rtl"] .hero-sub { line-height: 2.1; }
-    [dir="rtl"] .how-body { line-height: 2; }
-
-    /* ── Language hint pulse (first visit) ── */
+    /* ── Language hint ── */
     @keyframes langHint {
       0%,100% { border-color: rgba(139,92,246,.22); box-shadow: none; }
-      50%      { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(139,92,246,.18); }
+      50%      { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(139,92,246,.15); }
     }
     .lang-toggle.hinting { animation: langHint 1.5s ease .8s 3; }
-
-    /* ── Creator card (hero + section) ── */
-    .hero-eyebrow {
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 10px;
-    }
-    .built-by {
-      display: flex; align-items: center; gap: 8px;
-      font-size: .74rem; color: rgba(239,239,239,.3); letter-spacing: .5px;
-    }
-    .built-av {
-      width: 24px; height: 24px; border-radius: 50%;
-      border: 1px solid rgba(139,92,246,.35);
-      object-fit: cover;
-    }
-    .built-by strong { color: var(--accent); font-weight: 700; }
-
-    .hero-main { display: flex; align-items: flex-start; gap: 48px; }
-    .hero-left  { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
-
-    /* ── Creator badge card ── */
-    .creator-badge {
-      width: 248px; flex-shrink: 0;
-      border: 1px solid var(--border);
-      background: rgba(6,6,6,.6);
-      padding: 22px 20px;
-      display: flex; flex-direction: column; align-items: center; gap: 10px;
-      position: relative; align-self: flex-start;
-    }
-    .creator-badge::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 1px; background: var(--accent2); opacity: .65;
-    }
-    .cb-label {
-      font-size: .74rem; color: var(--accent2);
-      letter-spacing: 3px; text-transform: uppercase;
-      align-self: flex-start; margin-bottom: 2px;
-    }
-    .cb-av {
-      width: 76px; height: 76px; border-radius: 50%;
-      border: 2px solid rgba(6,182,212,.45);
-      box-shadow: 0 0 40px rgba(6,182,212,.2);
-      object-fit: cover; margin: 4px 0;
-    }
-    .cb-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.7rem; letter-spacing: 4px; line-height: 1;
-    }
-    .cb-role {
-      font-size: .74rem; color: rgba(239,239,239,.32);
-      letter-spacing: .8px;
-    }
-    .cb-quote {
-      font-size: .76rem; color: rgba(239,239,239,.38);
-      line-height: 1.75; text-align: center;
-      border-top: 1px solid var(--border);
-      padding-top: 12px; margin-top: 2px; width: 100%;
-    }
-    .cb-links { display: flex; flex-direction: column; gap: 6px; width: 100%; }
-    .cb-link {
-      font-size: .74rem; color: var(--dim); letter-spacing: 1px;
-      padding: 7px 10px; border: 1px solid var(--border);
-      text-align: center; transition: border-color .2s, color .2s;
-    }
-    .cb-link:hover { border-color: rgba(6,182,212,.4); color: var(--fg); }
-
-    /* ── Creator section ── */
-    .creator-section { display: flex; flex-direction: column; gap: 20px; }
-    .creator-wide {
-      display: flex; align-items: center; gap: 40px;
-      border: 1px solid var(--border); background: rgba(6,6,6,.6);
-      padding: 32px 36px; position: relative;
-    }
-    .creator-wide::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 1px; background: var(--accent); opacity: .5;
-    }
-    .cw-av {
-      width: 96px; height: 96px; border-radius: 50%; flex-shrink: 0;
-      border: 2px solid rgba(139,92,246,.5);
-      box-shadow: 0 0 60px rgba(139,92,246,.2);
-      object-fit: cover;
-    }
-    .cw-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
-    .cw-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2.5rem; letter-spacing: 5px; line-height: 1;
-      text-shadow: 0 0 60px rgba(139,92,246,.4);
-    }
-    .cw-bio { font-size: .88rem; color: rgba(239,239,239,.45); line-height: 1.8; max-width: 480px; }
-    .cw-stats {
-      font-size: .72rem; color: rgba(239,239,239,.28); letter-spacing: 1px;
-      display: flex; gap: 20px; flex-wrap: wrap;
-    }
-    .cw-stats strong { color: var(--accent); }
-    .cw-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
-    .cw-btn {
-      font-family: var(--mono); font-size: .72rem; font-weight: 700;
-      letter-spacing: 2px; text-transform: uppercase;
-      padding: 9px 20px; border: 1.5px solid var(--border);
-      color: var(--dim); transition: border-color .2s, color .2s;
-    }
-    .cw-btn:hover { border-color: rgba(139,92,246,.5); color: var(--fg); }
-    .cw-btn.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
-    .cw-btn.primary:hover { background: transparent; color: var(--accent); }
-
-    @media (max-width: 720px) {
-      .hero-main { flex-direction: column-reverse; }
-      .creator-badge { width: 100%; }
-      .built-by { display: none; }
-      .creator-wide { flex-direction: column; align-items: flex-start; gap: 20px; padding: 24px 20px; }
-      .cw-av { width: 72px; height: 72px; }
-      .cw-name { font-size: 1.8rem; }
-    }
   </style>
 </head>
 <body>
 
+<!-- ── Nav ── -->
 <nav>
   <a href="/" class="nav-brand">N3T<span>_</span>RUNNER</a>
   <div class="nav-right">
-    <a href="/spaces" class="nav-link" data-i18n="navSpaces">spaces</a>
-    <a href="/downloads" class="nav-link" data-i18n="navDownloads">downloads</a>
-    <button class="lang-toggle" id="lang-toggle"
-            title="Switch language · تبديل اللغة"
-            aria-label="Switch language">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:.55;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    <a href="/#tools" class="nav-link" data-page="tools" data-i18n="navTools">tools</a>
+    <a href="/downloads" class="nav-link" data-page="downloads" data-i18n="navDownloads">downloads</a>
+    <button class="lang-toggle" id="lang-toggle" title="Switch language · تبديل اللغة" aria-label="Switch language">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:.5;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
       <span class="lang-opt on" data-lang="en">EN</span>
       <span class="lang-sep">|</span>
       <span class="lang-opt" data-lang="ar">AR</span>
     </button>
-    <a href="#" class="nav-signin" id="nav-signin" data-i18n="navSignin">Jack in</a>
+    <a href="#hire" class="nav-signin" data-i18n="navHire">Hire me</a>
   </div>
 </nav>
 
 <main>
 
-  <!-- ── Hero ── -->
-  <div class="hero">
-    <div class="hero-eyebrow">
-      <p class="hero-tag" data-i18n="heroTag">// jack in. own your node.</p>
-      <div class="built-by">
-        <img src="https://github.com/TR4IS.png" class="built-av" alt="TR4IS" loading="lazy">
-        built by <strong>TR4IS</strong>
-      </div>
+  <!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+  <section class="hero">
+    <p class="hero-tag" data-i18n-html="heroTag">// developer &middot; builder &middot; open source</p>
+    <h1 data-i18n-html="heroH1">TOOLS<br>THAT<br>WORK<em>.</em></h1>
+    <p class="hero-sub" data-i18n-html="heroSub">
+      I'm <strong>Cr4cker</strong> — Windows apps, web utilities, automation scripts.<br>
+      No bloat, no BS. Most of it is free.<br>
+      Need something custom? I'll build it.
+    </p>
+    <div class="hero-ctas">
+      <a href="#tools" class="btn-primary" data-i18n="heroTools">My tools &#8595;</a>
+      <a href="#hire" class="btn-ghost" data-i18n="heroHire">Hire me &#8599;</a>
     </div>
+  </section>
 
-    <div class="hero-main">
-      <!-- Left: pitch -->
-      <div class="hero-left">
-        <h1 data-i18n-html="heroH1">YOUR NODE.<br>YOUR&nbsp;NET.<br>FREE.</h1>
-        <div class="hero-body">
-          <p class="hero-sub" data-i18n-html="heroSub">
-            Get a <strong>developer node</strong> in seconds.<br>
-            Customize fonts, colors, layout &mdash; everything.<br>
-            Share it anywhere. No setup, no hosting fees.
-          </p>
-          <div class="hero-cta-wrap">
-            <a href="#" class="hero-cta" id="cta-main">
-              <span data-i18n="heroCta">Get my free node</span> &#8594;
-            </a>
-            <p class="hero-count">
-              <strong id="count">&mdash;</strong>&nbsp;<span data-i18n="heroCountSuffix">runners already live</span>
-            </p>
-          </div>
-        </div>
-      </div>
+  <!-- ════════════════════════════════ TOOLS ════════════════════════════════ -->
+  <section class="tools-section" id="tools">
+    <p class="section-lbl" data-i18n="sectionTools">// tools i've built</p>
 
-      <!-- Right: TR4IS creator card -->
-      <div class="creator-badge">
-        <span class="cb-label">// the developer</span>
-        <img src="https://github.com/TR4IS.png" class="cb-av" alt="TR4IS" loading="lazy">
-        <strong class="cb-name">TR4IS</strong>
-        <p class="cb-role">Developer &middot; Builder &middot; Open Source</p>
-        <p class="cb-quote">"Built so every developer gets their own node on the network."</p>
-        <div class="cb-links">
-          <a href="/spaces/TR4IS/" class="cb-link">My node &#8599;</a>
-          <a href="/downloads" class="cb-link">Downloads &#8595;</a>
-          <a href="https://github.com/TR4IS" class="cb-link" target="_blank" rel="noopener">GitHub &#8599;</a>
-        </div>
-      </div>
-    </div>
-  </div>
+    <div class="tools-grid">
 
-  <!-- ── Spaces strip ── -->
-  <div class="spaces-section">
-    <p class="section-lbl" data-i18n="showcaseLbl">// live on the net</p>
-    <div class="showcase-track" id="track"></div>
-  </div>
-
-  <!-- ── Creator spotlight ── -->
-  <div class="creator-section">
-    <p class="section-lbl" data-i18n="creatorLbl">// the developer behind n3trunner</p>
-    <div class="creator-wide">
-      <img src="https://github.com/TR4IS.png" class="cw-av" alt="TR4IS" loading="lazy">
-      <div class="cw-info">
-        <div class="cw-name">TR4IS</div>
-        <p class="cw-bio" data-i18n="creatorBio">
-          Developer, builder, and open-source creator. I built n3trunner so developers
-          everywhere can have their own node on the network — free, forever,
-          with full HTML control. I also ship tools that solve real problems.
+      <!-- WindowsOptimizer -->
+      <div class="tool-card wo">
+        <p class="tool-tag">// windows &middot; performance</p>
+        <p class="tool-name">WINDOWS<br>OPTIMIZER</p>
+        <span class="tool-version">v1.3.4</span>
+        <p class="tool-desc">
+          System-level tweaks built for gaming and max performance.
+          Reduces input latency, kills background bloat,
+          and tunes Windows for speed — no fluff, no reversal headaches.
         </p>
-        <div class="cw-stats">
-          <span><strong>4</strong> open-source tools</span>
-          <span><strong id="creator-count">100+</strong> runners on n3trunner</span>
-          <span><strong>0</strong> dollars to use</span>
-        </div>
-        <div class="cw-actions">
-          <a href="/spaces/TR4IS/" class="cw-btn primary" data-i18n="creatorSpaceBtn">View my node &#8599;</a>
-          <a href="/downloads" class="cw-btn" data-i18n="creatorDlBtn">Downloads &#8595;</a>
-          <a href="https://github.com/TR4IS" class="cw-btn" target="_blank" rel="noopener">GitHub &#8599;</a>
+        <div class="tool-meta">
+          <span class="tool-platform">Windows &middot; EXE + BAT</span>
+          <a href="/downloads" class="tool-dl">Download &#8595;</a>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- ── AI Builder ── -->
-  <div class="spaces-section">
-    <div id="n3t-ai-root"></div>
-  </div>
+      <!-- FileOrganizer -->
+      <div class="tool-card fo">
+        <p class="tool-tag">// automation &middot; utility</p>
+        <p class="tool-name">FILE<br>ORGANIZER</p>
+        <span class="tool-version">v2.0.3</span>
+        <p class="tool-desc">
+          Automatically sorts your Downloads folder into clean categories.
+          Set it and forget it — runs in the background,
+          keeps your filesystem sane without you lifting a finger.
+        </p>
+        <div class="tool-meta">
+          <span class="tool-platform">Windows &middot; 74.3 MB EXE</span>
+          <a href="/downloads" class="tool-dl">Download &#8595;</a>
+        </div>
+      </div>
 
-  <!-- ── How it works ── -->
-  <div class="spaces-section">
-    <p class="section-lbl" data-i18n="howLbl">// how it works</p>
-    <div class="how-grid">
-      <div class="how-card">
-        <p class="how-num" data-i18n="step1Num">01 /</p>
-        <p class="how-title" data-i18n="step1Title">Jack in with GitHub</p>
-        <p class="how-body" data-i18n="step1Body">One click. We read your public profile &mdash; name, avatar, bio. Nothing else.</p>
+      <!-- ScamGuard -->
+      <div class="tool-card j2p">
+        <p class="tool-tag">// discord &middot; security</p>
+        <p class="tool-name">SCAM<br>GUARD</p>
+        <span class="tool-version">bot</span>
+        <p class="tool-desc">
+          Source code for a Discord bot that detects and flags scam links,
+          phishing messages, and suspicious invites.
+          Self-host it on your own server.
+        </p>
+        <div class="tool-meta">
+          <span class="tool-platform">Discord · Open Source</span>
+          <a href="/downloads" class="tool-dl">Source &#8599;</a>
+        </div>
       </div>
-      <div class="how-card">
-        <p class="how-num" data-i18n="step2Num">02 /</p>
-        <p class="how-title" data-i18n="step2Title">Your node is created</p>
-        <p class="how-body" data-i18n-html="step2Body">A live node at <span>n3trunner.dev/spaces/you</span> goes live in under a minute.</p>
+
+      <!-- SoundDeck -->
+      <div class="tool-card deck">
+        <p class="tool-tag">// audio &middot; media</p>
+        <p class="tool-name">SOUND<br>DECK</p>
+        <span class="tool-version">v1.0.0</span>
+        <p class="tool-desc">
+          Audio clip manager and instant trigger board.
+          Map sounds to hotkeys, build a library,
+          fire them on demand. For streamers, content creators, or anyone
+          who needs instant audio control.
+        </p>
+        <div class="tool-meta">
+          <span class="tool-platform">Windows &middot; 73.6 MB EXE</span>
+          <a href="/downloads" class="tool-dl">Download &#8595;</a>
+        </div>
       </div>
-      <div class="how-card">
-        <p class="how-num" data-i18n="step3Num">03 /</p>
-        <p class="how-title" data-i18n="step3Title">Make it yours</p>
-        <p class="how-body" data-i18n="step3Body">Write your own HTML or paste any template. Full control, no limits.</p>
+
+    </div>
+
+    <!-- Download stats bar -->
+    <div style="display:flex;gap:1px;background:var(--border);border:1px solid var(--border)">
+      <div style="flex:1;padding:14px 20px;background:rgba(6,6,6,.7);text-align:center">
+        <div style="font-family:var(--display);font-size:1.6rem;letter-spacing:2px;color:var(--accent)" id="dl-wo">—</div>
+        <div style="font-family:var(--mono);font-size:.62rem;color:rgba(239,239,239,.25);letter-spacing:2px;text-transform:uppercase;margin-top:4px">WindowsOptimizer</div>
+      </div>
+      <div style="flex:1;padding:14px 20px;background:rgba(6,6,6,.7);text-align:center">
+        <div style="font-family:var(--display);font-size:1.6rem;letter-spacing:2px;color:#8b5cf6" id="dl-fo">—</div>
+        <div style="font-family:var(--mono);font-size:.62rem;color:rgba(239,239,239,.25);letter-spacing:2px;text-transform:uppercase;margin-top:4px">FileOrganizer</div>
+      </div>
+      <div style="flex:1;padding:14px 20px;background:rgba(6,6,6,.7);text-align:center">
+        <div style="font-family:var(--display);font-size:1.6rem;letter-spacing:2px;color:#06b6d4" id="dl-sd">—</div>
+        <div style="font-family:var(--mono);font-size:.62rem;color:rgba(239,239,239,.25);letter-spacing:2px;text-transform:uppercase;margin-top:4px">SoundDeck</div>
+      </div>
+      <div style="flex:1;padding:14px 20px;background:rgba(6,6,6,.7);text-align:center">
+        <div style="font-family:var(--display);font-size:1.6rem;letter-spacing:2px;color:var(--accent)" id="dl-total">—</div>
+        <div style="font-family:var(--mono);font-size:.62rem;color:rgba(239,239,239,.25);letter-spacing:2px;text-transform:uppercase;margin-top:4px" data-i18n="dlLabelTotal">Total downloads</div>
       </div>
     </div>
-  </div>
+
+    <a href="/downloads" class="tools-more" data-i18n-html="toolsMoreLink">All tools &amp; downloads &rarr;</a>
+  </section>
+
+  <!-- ═══════════════════════════════ COMMISSION ═══════════════════════════════ -->
+  <section class="commission-section" id="hire">
+    <p class="section-lbl" data-i18n="sectionHire">// commission a tool</p>
+
+    <div class="commission-intro">
+      <div>
+        <h2 class="ci-h" data-i18n-html="commH">NEED<br>SOMETHING<br><em>BUILT?</em></h2>
+      </div>
+      <div>
+        <p class="ci-body" data-i18n-html="commBody">I take commissions for <strong>custom tools</strong> — Windows apps, web utilities, automation scripts, anything you need.<br><br>Describe what you need below and I'll get back to you with a timeline and what it'll take.<br><br>Or reach me directly at <a href="mailto:contact@n3trunner.dev" class="email-link">contact@n3trunner.dev</a>.</p>
+      </div>
+    </div>
+
+    <div class="commission-widget">
+      <div id="n3t-ai-root"></div>
+    </div>
+  </section>
+
 
 </main>
 
 <footer>
-  <span>&copy; 2026 n3trunner.dev &middot; TR4IS</span>
-  <div style="display:flex;gap:20px;align-items:center">
-    <a href="/downloads" data-i18n="navDownloads">downloads</a>
-    <a href="/terms">terms</a>
+  <span data-i18n-html="footerCopy">&copy; 2026 Cr4cker &middot; n3trunner.dev</span>
+  <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+    <a href="mailto:contact@n3trunner.dev" class="footer-email">contact@n3trunner.dev</a>
+    <a href="/downloads" data-i18n="footerDl">downloads</a>
+    <a href="https://github.com/TR4IS" target="_blank" rel="noopener" data-i18n="footerGh">github</a>
+    <a href="/terms" data-i18n="footerTerms">terms</a>
   </div>
 </footer>
 
@@ -528,144 +479,125 @@
 <script>
 (function () {
 
-  /* ── Translation tables ── */
+  /* ── i18n ── */
   var T = {
     en: {
-      heroTag:        '// jack in. own your node.',
-      heroH1:         'YOUR NODE.<br>YOUR&nbsp;NET.<br>FREE.',
-      heroSub:        'Get a <strong>developer node</strong> in seconds.<br>Customize fonts, colors, layout — everything.<br>Share it anywhere. No setup, no hosting fees.',
-      heroCta:        'Get my free node',
-      heroCountSuffix: 'runners already live',
-      showcaseLbl:    '// live on the net',
-      howLbl:         '// how it works',
-      navSpaces:      'spaces',
-      navDownloads:   'downloads',
-      navSignin:      'Jack in',
-      step1Num:       '01 /',
-      step1Title:     'Jack in with GitHub',
-      step1Body:      'One click. We read your public profile — name, avatar, bio. Nothing else.',
-      step2Num:       '02 /',
-      step2Title:     'Your node is created',
-      step2Body:      'A live node at <span>n3trunner.dev/spaces/you</span> goes live in under a minute.',
-      step3Num:       '03 /',
-      step3Title:     'Make it yours',
-      step3Body:      'Write your own HTML or paste any template. Full control, no limits.',
-      creatorLbl:     '// the developer behind n3trunner',
-      creatorBio:     'Developer, builder, and open-source creator. I built n3trunner so developers everywhere can have their own node on the network — free, forever, with full HTML control. I also ship tools that solve real problems.',
-      creatorSpaceBtn: 'View my node ↗',
-      creatorDlBtn:   'Downloads ↓',
+      navTools:      'tools',
+      navDownloads:  'downloads',
+      navHire:       'Hire me',
+      heroTag:       '// developer &middot; builder &middot; open source',
+      heroH1:        'TOOLS<br>THAT<br>WORK<em>.</em>',
+      heroSub:       "I'm <strong>Cr4cker</strong> — Windows apps, web utilities, automation scripts.<br>No bloat, no BS. Most of it is free.<br>Need something custom? I'll build it.",
+      heroTools:     'My tools ↓',
+      heroHire:      'Hire me ↗',
+      sectionTools:  "// tools i've built",
+      sectionHire:   '// commission a tool',
+      toolsMoreLink: 'All tools &amp; downloads &rarr;',
+      dlLabelTotal:  'Total downloads',
+      commH:         'NEED<br>SOMETHING<br><em>BUILT?</em>',
+      commBody:      'I take commissions for <strong>custom tools</strong> — Windows apps, web utilities, automation scripts, anything you need.<br><br>Describe what you need below and I\'ll get back to you with a timeline and what it\'ll take.<br><br>Or reach me directly at <a href="mailto:contact@n3trunner.dev" class="email-link">contact@n3trunner.dev</a>.',
+      footerCopy:    '&copy; 2026 Cr4cker &middot; n3trunner.dev',
+      footerDl:      'downloads',
+      footerGh:      'github',
+      footerTerms:   'terms',
     },
     ar: {
-      heroTag:        '// اتصل. امتلك عقدتك.',
-      heroH1:         'عقدتك.<br>شبكتك.<br>مجاناً.',
-      heroSub:        'احصل على <strong>عقدة مطوّر</strong> في ثوانِ.<br>خصّص الخطوط والألوان والتخطيط — كل شيء.<br>شاركها في أي مكان. بدون إعداد، بدون رسوم.',
-      heroCta:        'احصل على عقدتي المجانية',
-      heroCountSuffix: 'مطوّر مسجّلون الآن',
-      showcaseLbl:    '// مباشر على الشبكة',
-      howLbl:         '// كيف يعمل',
-      navSpaces:      'المساحات',
-      navDownloads:   'التنزيلات',
-      navSignin:      'اتصل',
-      step1Num:       '01 /',
-      step1Title:     'اتصل بـ GitHub',
-      step1Body:      'نقرة واحدة. نقرأ ملفّك الشخصي العام — الاسم والصورة والسيرة. لا شيء آخر.',
-      step2Num:       '02 /',
-      step2Title:     'تُنشأ عقدتك تلقائيّاً',
-      step2Body:      'عقدة مباشرة على <span>n3trunner.dev/spaces/you</span> تنطلق في أقل من دقيقة.',
-      step3Num:       '03 /',
-      step3Title:     'اجعلها لك',
-      step3Body:      'اكتب HTML الخاص بك أو الصق أي قالب. تحكّم كامل، بدون قيود.',
-      creatorLbl:     '// المطوّر خلف n3trunner',
-      creatorBio:     'مطوّر وصانع أدوات مفتوحة المصدر. بنيت n3trunner لكي يحصل كل مطوّر على عقدته الشخصية على الشبكة — مجاناً، للأبد، مع تحكّم كامل بـ HTML.',
-      creatorSpaceBtn: 'عقدتي ↗',
-      creatorDlBtn:   'التنزيلات ↓',
+      navTools:      'الأدوات',
+      navDownloads:  'التنزيلات',
+      navHire:       'وظّفني',
+      heroTag:       '// مطوّر &middot; بانٍ &middot; مفتوح المصدر',
+      heroH1:        'أدوات<br>تعمل<br>فعلاً<em>.</em>',
+      heroSub:       'أنا <strong>Cr4cker</strong> — تطبيقات ويندوز، أدوات ويب، سكريبتات أتمتة.<br>بدون فائض أو هراء. معظمها مجاني.<br>تحتاج شيئاً مخصصاً؟ سأبنيه لك.',
+      heroTools:     'أدواتي ↓',
+      heroHire:      'وظّفني ↗',
+      sectionTools:  '// أدواتي',
+      sectionHire:   '// اطلب أداة مخصصة',
+      toolsMoreLink: 'كل الأدوات والتنزيلات ←',
+      dlLabelTotal:  'مجموع التنزيلات',
+      commH:         'تحتاج<br>شيئاً<br><em>نبنيه؟</em>',
+      commBody:      'أقبل طلبات تطوير <strong>أدوات مخصصة</strong> — تطبيقات ويندوز، أدوات ويب، سكريبتات أتمتة، أي شيء تحتاجه.<br><br>صف ما تحتاجه أدناه وسأرد عليك بجدول زمني وما يتطلبه.<br><br>أو تواصل معي مباشرة على <a href="mailto:contact@n3trunner.dev" class="email-link">contact@n3trunner.dev</a>.',
+      footerCopy:    '&copy; 2026 Cr4cker &middot; n3trunner.dev',
+      footerDl:      'التنزيلات',
+      footerGh:      'github',
+      footerTerms:   'الشروط',
     }
   };
 
-  /* ── Apply language ── */
   function setLang(lang) {
     var html = document.documentElement;
     html.lang = lang;
     html.dir  = lang === 'ar' ? 'rtl' : 'ltr';
     var t = T[lang] || T.en;
-
     document.querySelectorAll('[data-i18n]').forEach(function (el) {
-      var key = el.dataset.i18n;
-      if (t[key] !== undefined) el.textContent = t[key];
+      var k = el.dataset.i18n; if (t[k] !== undefined) el.textContent = t[k];
     });
     document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
-      var key = el.dataset.i18nHtml;
-      if (t[key] !== undefined) el.innerHTML = t[key];
+      var k = el.dataset.i18nHtml; if (t[k] !== undefined) el.innerHTML = t[k];
     });
-
     document.querySelectorAll('.lang-opt').forEach(function (o) {
       o.classList.toggle('on', o.dataset.lang === lang);
     });
-
     localStorage.setItem('n3t_lang', lang);
   }
 
-  /* ── Lang toggle ── */
   document.getElementById('lang-toggle').addEventListener('click', function () {
     setLang(document.documentElement.lang === 'ar' ? 'en' : 'ar');
   });
 
-  /* ── GitHub OAuth ── */
-  var CID  = 'Ov23likbVZBfG5a3rnEu';
-  var CBCK = 'https://n3trunner.dev/auth/callback';
-  function startAuth(e) {
-    e.preventDefault();
-    var nonce = crypto.randomUUID();
-    sessionStorage.setItem('oauth_state', nonce);
-    window.location.href =
-      'https://github.com/login/oauth/authorize?client_id=' + CID +
-      '&redirect_uri=' + encodeURIComponent(CBCK) +
-      '&scope=read:user&state=' + encodeURIComponent(nonce);
-  }
-  document.getElementById('nav-signin').addEventListener('click', startAuth);
-  document.getElementById('cta-main').addEventListener('click', startAuth);
 
-  /* ── Spaces fetch ── */
-  fetch('https://api.github.com/repos/TR4IS/TR4IS.gethub.io/contents/spaces')
-    .then(function (r) { return r.json(); })
-    .then(function (data) {
-      var dirs = data.filter(function (d) { return d.type === 'dir'; });
-      var countEl = document.getElementById('count');
-      var creatorCountEl = document.getElementById('creator-count');
-      if (countEl) countEl.textContent = dirs.length;
-      if (creatorCountEl) creatorCountEl.textContent = dirs.length;
-      var track = document.getElementById('track');
-      dirs.slice(0, 20).forEach(function (d) {
-        var card = document.createElement('a');
-        card.href = '/spaces/' + d.name + '/';
-        card.className = 's-card';
-        card.innerHTML =
-          '<div class="s-card-av" id="sav-' + d.name + '"></div>' +
-          '<p class="s-card-name">' + d.name + '</p>' +
-          '<div class="s-card-dot"></div>';
-        track.appendChild(card);
-        fetch('https://api.github.com/users/' + d.name)
-          .then(function (r) { return r.json(); })
-          .then(function (u) {
-            if (u.avatar_url) {
-              var av = document.getElementById('sav-' + d.name);
-              if (av) av.style.backgroundImage = 'url(' + u.avatar_url + ')';
-            }
-          }).catch(function () {});
-      });
-    })
-    .catch(function () {
-      var c = document.getElementById('count');
-      if (c) c.textContent = '100+';
+  /* ── Download counts from GitHub Releases ── */
+  (function () {
+    var repos = [
+      { id: 'dl-wo', repo: 'TR4IS/WindowsOptimizer' },
+      { id: 'dl-fo', repo: 'TR4IS/FileOrganizer' },
+      { id: 'dl-sd', repo: 'TR4IS/SoundDeck' },
+    ];
+    var total = 0;
+    var done = 0;
+    repos.forEach(function (r) {
+      fetch('https://api.github.com/repos/' + r.repo + '/releases')
+        .then(function (res) { return res.json(); })
+        .then(function (releases) {
+          var count = 0;
+          if (Array.isArray(releases)) {
+            releases.forEach(function (rel) {
+              if (Array.isArray(rel.assets)) {
+                rel.assets.forEach(function (a) { count += a.download_count || 0; });
+              }
+            });
+          }
+          var el = document.getElementById(r.id);
+          if (el) el.textContent = count >= 1000 ? (count / 1000).toFixed(1) + 'k' : count;
+          total += count;
+          done++;
+          if (done === repos.length) {
+            var tot = document.getElementById('dl-total');
+            if (tot) tot.textContent = total >= 1000 ? (total / 1000).toFixed(1) + 'k' : total;
+          }
+        }).catch(function () {
+          done++;
+        });
     });
+  })();
 
-  /* ── Language hint (pulse on first visit) ── */
+  /* ── Lang hint ── */
   if (!localStorage.getItem('n3t_lang_seen')) {
     var btn = document.getElementById('lang-toggle');
     btn.classList.add('hinting');
     btn.addEventListener('animationend', function () { btn.classList.remove('hinting'); }, { once: true });
     localStorage.setItem('n3t_lang_seen', '1');
   }
+
+  /* ── Active nav ── */
+  (function () {
+    var path = window.location.pathname.replace(/\/+$/, '') || '/';
+    var map = { '/downloads': 'downloads' };
+    var key = map[path];
+    if (key) {
+      var el = document.querySelector('.nav-link[data-page="' + key + '"]');
+      if (el) el.classList.add('active');
+    }
+  })();
 
   /* ── Init ── */
   var savedLang = localStorage.getItem('n3t_lang') || 'en';
