@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cr4cker — Design Evolution | n3trunner.dev</title>
+    <meta name="description" content="A storytelling portfolio showing the evolution of the n3trunner.dev website through 5 design eras using live interactive page embeds.">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:ital,wght@0,400;0,700;1,300&display=swap');
+
+        :root {
+            --bg-color: #060606;
+            --text-main: #efefef;
+            --text-dim: rgba(239, 239, 239, 0.45);
+            --current-accent: #f3701e;
+            --grid-color: rgba(255, 255, 255, 0.03);
+            
+            /* Era Accents */
+            --era1: #f3701e; /* Origin Orange */
+            --era2: #00ff66; /* Terminal Matrix Green */
+            --era3: #a855f7; /* Cosmic Violet */
+            --era4: #00f3ff; /* Machine Cyber Cyan */
+            --era4-sec: #ff0055;
+            --era5: #8b5cf6; /* Builder Purple */
+            --era5-sec: #06b6d4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'JetBrains Mono', monospace;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            scroll-snap-type: y proximity;
+        }
+
+        body {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, var(--grid-color) 1px, transparent 1px), 
+                linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+        }
+
+        /* Scroll Progress Bar */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--current-accent);
+            z-index: 9999;
+            transition: background-color 0.8s ease, width 0.1s ease;
+            box-shadow: 0 0 12px var(--current-accent);
+        }
+
+        /* Floating Chapter Counter */
+        #floating-chapter {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            color: var(--current-accent);
+            opacity: 0.35;
+            z-index: 1000;
+            transition: color 0.8s ease;
+            mix-blend-mode: screen;
+            pointer-events: none;
+            letter-spacing: 2px;
+        }
+
+        /* Navigation Bar */
+        .site-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 2.5rem;
+            background: rgba(6, 6, 6, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 5000;
+        }
+
+        .nav-brand {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            color: var(--text-main);
+        }
+
+        .nav-brand span {
+            color: var(--current-accent);
+            transition: color 0.8s ease;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+        }
+
+        .nav-link {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--current-accent);
+        }
+
+        /* Section Layouts */
+        .section {
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 5rem 2rem 3rem;
+            scroll-snap-align: start;
+        }
+
+        /* Full Viewport Chapter Title Pages */
+        .indicator-page {
+            flex-direction: column;
+            text-align: center;
+            overflow: hidden;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.02) 0%, transparent 70%);
+        }
+
+        .indicator-glow {
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            border-radius: 50%;
+            opacity: 0.12;
+            filter: blur(120px);
+            pointer-events: none;
+            transition: background 0.8s ease;
+        }
+
+        .huge-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(10rem, 28vw, 22rem);
+            line-height: 0.8;
+            opacity: 0.15;
+            user-select: none;
+            transition: color 0.8s ease;
+            letter-spacing: -5px;
+        }
+
+        .indicator-content {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            z-index: 2;
+        }
+
+        .chapter-tagline {
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--current-accent);
+        }
+
+        .era-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3.5rem, 9vw, 7rem);
+            letter-spacing: 6px;
+            text-shadow: 0 0 30px rgba(0,0,0,0.8);
+            line-height: 1;
+        }
+
+        .era-line {
+            width: 80px;
+            height: 3px;
+            margin: 0.5rem 0;
+            transition: background 0.8s ease;
+        }
+
+        .era-date {
+            font-size: 0.95rem;
+            color: var(--text-dim);
+            letter-spacing: 3px;
+        }
+
+        /* Era Content Section */
+        .content-wrapper {
+            max-width: 1050px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+            z-index: 2;
+        }
+
+        /* Live Browser Mockup Container */
+        .browser-mockup {
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            background: #0d0d0d;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+            transition: border-color 0.5s ease;
+        }
+
+        .browser-header {
+            background: #161616;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .browser-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot-btn {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+        }
+
+        .dot-btn.red { background: #ff5f56; }
+        .dot-btn.yellow { background: #ffbd2e; }
+        .dot-btn.green { background: #27c93f; }
+
+        .browser-address {
+            background: #080808;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 6px;
+            padding: 4px 14px;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            flex: 1;
+            max-width: 400px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .live-iframe {
+            width: 100%;
+            height: 420px;
+            border: none;
+            background: #000;
+            display: block;
+        }
+
+        .era-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 0.8rem;
+        }
+
+        .era-brand-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+
+        .content-date {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        blockquote {
+            font-size: 1.05rem;
+            color: rgba(239, 239, 239, 0.85);
+            line-height: 1.7;
+            border-left: 3px solid var(--current-accent);
+            padding-left: 1.2rem;
+            font-style: italic;
+            transition: border-color 0.8s ease;
+        }
+
+        .tags {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Action Link Button */
+        .live-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: var(--era5);
+            color: #060606;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 6px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: fit-content;
+        }
+
+        .live-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.92);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .visible {
+            opacity: 1 !important;
+            transform: translateY(0) scale(1) !important;
+        }
+
+        .blinking-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background: var(--current-accent);
+            margin-left: 4px;
+            vertical-align: middle;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Responsive Mobile Adjustments */
+        @media (max-width: 768px) {
+            .site-nav { padding: 1rem 1.2rem; }
+            .nav-links { gap: 1rem; }
+            .huge-number { font-size: 10rem; }
+            .era-name { font-size: 3rem; }
+            .live-iframe { height: 320px; }
+            #floating-chapter { font-size: 2.5rem; bottom: 1rem; right: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="scroll-progress"></div>
+    <div id="floating-chapter">00</div>
+
+    <nav class="site-nav">
+        <div class="nav-brand">CR4CKER <span>// EVOLUTION</span></div>
+        <div class="nav-links">
+            <a href="https://n3trunner.dev" class="nav-link">HOME</a>
+            <a href="https://n3trunner.dev/downloads" class="nav-link">DOWNLOADS</a>
+            <a href="#portfolio" class="nav-link active">PORTFOLIO</a>
+        </div>
+    </nav>
+
+    <main>
+
+        <!-- PROLOGUE -->
+        <section class="section indicator-page" data-era="00" data-color="#f3701e">
+            <div class="indicator-glow" style="background: radial-gradient(circle, #f3701e 0%, transparent 70%);"></div>
+            <div class="indicator-content reveal-scale">
+                <div class="chapter-tagline">THE STORYTELLING ARCHIVE</div>
+                <h1 class="era-name" style="font-size: clamp(2.5rem, 6vw, 4.5rem);">EVERY SITE STARTS WITH A FIRST COMMIT<span class="blinking-cursor"></span></h1>
+                <div class="era-line" style="background: #f3701e"></div>
+                <div class="era-date">OCTOBER 6, 2025 → PRESENT</div>
+                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 1.5rem; letter-spacing: 2px;">SCROLL TO EXPERIENCE 5 DESIGN ERAS</p>
+            </div>
+        </section>
+
+
+        <!-- CHAPTER 01: FULL PAGE TITLE CARD -->
+        <section class="section indicator-page" data-era="01" data-color="var(--era1)">
+            <div class="indicator-glow" style="background: radial-gradient(circle, var(--era1) 0%, transparent 70%);"></div>
+            <div class="huge-number" style="color: var(--era1)">01</div>
+            <div class="indicator-content reveal-scale">
+                <div class="chapter-tagline">CHAPTER 01</div>
+                <h2 class="era-name">THE ORIGIN</h2>
+                <div class="era-line" style="background: var(--era1)"></div>
+                <div class="era-date">OCTOBER 2025</div>
+            </div>
+        </section>
+
+        <!-- CHAPTER 01: CONTENT (REAL ORIGINAL PAGE EMBED) -->
+        <section class="section" data-era="01" data-color="var(--era1)">
+            <div class="content-wrapper reveal">
+                <div class="browser-mockup" style="border-color: rgba(243, 112, 30, 0.4);">
+                    <div class="browser-header">
+                        <div class="browser-dots">
+                            <div class="dot-btn red"></div>
+                            <div class="dot-btn yellow"></div>
+                            <div class="dot-btn green"></div>
+                        </div>
+                        <div class="browser-address">https://reachflow.site (Oct 2025 Original)</div>
+                    </div>
+                    <iframe class="live-iframe" srcdoc="<!DOCTYPE html><html><head><style>@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap'); body{background:#0e1116;color:#e9eef5;font-family:'Fira Code',monospace;margin:0;padding:24px;box-sizing:border-box;} .hdr{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #222833;padding-bottom:12px;margin-bottom:24px;} .brand{display:flex;align-items:center;gap:8px;font-weight:bold;color:#e8d8c9;} .dot{width:8px;height:8px;border-radius:50%;background:#f3701e;box-shadow:0 0 10px #f3701e;} .nav{display:flex;gap:12px;} .navlink{padding:6px 12px;border-radius:8px;border:1px solid #222833;color:#9aa7b8;text-decoration:none;font-size:0.85rem;} .navlink.active{border-color:#f3701e;color:#f3701e;} .hero{background:#141922;border:1px solid #222833;border-radius:14px;padding:28px;margin-bottom:20px;} .hero h1{color:#e8d8c9;font-size:1.8rem;margin:0 0 10px 0;} .hero h1 span{color:#f3701e;} .hero p{color:#9aa7b8;line-height:1.6;font-size:0.9rem;} .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;} .card{background:#141922;border:1px solid #222833;border-radius:14px;padding:18px;} .card-title{color:#4b607f;font-size:0.75rem;text-transform:uppercase;margin-bottom:6px;} .card-name{color:#e9eef5;font-weight:bold;font-size:1rem;}</style></head><body><div class='hdr'><div class='brand'><div class='dot'></div>reachflow.home()</div><div class='nav'><a class='navlink active'>.home()</a><a class='navlink'>.is()</a><a class='navlink'>.projects()</a><a class='navlink'>.contact()</a></div></div><div class='hero'><h1>reachflow<span>.site()</span></h1><p>Free personal spaces for developers. Custom subdomains, zero config, static hosting.</p></div><div class='cards'><div class='card'><div class='card-title'>UTILITY</div><div class='card-name'>WindowsOptimizer</div></div><div class='card'><div class='card-title'>UTILITY</div><div class='card-name'>FileOrganizer</div></div></div></body></html>"></iframe>
+                </div>
+                <div class="era-meta">
+                    <div class="era-brand-title" style="color: var(--era1)">reachflow.site()</div>
+                    <div class="content-date">10.2025</div>
+                </div>
+                <blockquote style="border-color: var(--era1)">
+                    "It started simple. An orange dot, warm paper beige highlights, and navigation styled like function calls — .home(), .is(), .projects(). No frameworks, no overthinking. Just putting the work out there."
+                </blockquote>
+                <div class="tags">
+                    <span class="tag" style="border-color: var(--era1); color: var(--era1)">Fira Code</span>
+                    <span class="tag" style="border-color: var(--era1); color: var(--era1)">SPA Router</span>
+                    <span class="tag" style="border-color: var(--era1); color: var(--era1)">#f3701e Orange</span>
+                    <span class="tag" style="border-color: var(--era1); color: var(--era1)">Rounded Cards</span>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- CHAPTER 02: FULL PAGE TITLE CARD -->
+        <section class="section indicator-page" data-era="02" data-color="var(--era2)">
+            <div class="indicator-glow" style="background: radial-gradient(circle, var(--era2) 0%, transparent 70%);"></div>
+            <div class="huge-number" style="color: var(--era2)">02</div>
+            <div class="indicator-content reveal-scale">
+                <div class="chapter-tagline">CHAPTER 02</div>
+                <h2 class="era-name">THE TERMINAL</h2>
+                <div class="era-line" style="background: var(--era2)"></div>
+                <div class="era-date">APRIL 2026</div>
+            </div>
+        </section>
+
+        <!-- CHAPTER 02: CONTENT (REAL ORIGINAL PAGE EMBED) -->
+        <section class="section" data-era="02" data-color="var(--era2)">
+            <div class="content-wrapper reveal">
+                <div class="browser-mockup" style="border-color: rgba(0, 255, 102, 0.4);">
+                    <div class="browser-header">
+                        <div class="browser-dots">
+                            <div class="dot-btn red"></div>
+                            <div class="dot-btn yellow"></div>
+                            <div class="dot-btn green"></div>
+                        </div>
+                        <div class="browser-address">https://reachflow.site/terminal (Apr 2026 Original)</div>
+                    </div>
+                    <iframe class="live-iframe" srcdoc="<!DOCTYPE html><html><head><style>body{background:#030c07;color:#00ff66;font-family:monospace;margin:0;padding:24px;box-sizing:border-box;} .scanline{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,0.5) 51%);background-size:100% 4px;pointer-events:none;} .header{border-bottom:1px solid #00ff66;padding-bottom:10px;margin-bottom:20px;font-weight:bold;letter-spacing:1px;} .terminal-box{background:#06180e;border:1px solid #00ff66;padding:24px;box-shadow:0 0 15px rgba(0,255,102,0.25);} .title{font-size:1.8rem;text-shadow:0 0 10px #00ff66;margin-bottom:12px;} .btn{display:inline-block;background:#00ff66;color:#030c07;padding:12px 24px;font-weight:bold;text-decoration:none;margin-top:18px;box-shadow:0 0 15px #00ff66;letter-spacing:1px;}</style></head><body><div class='scanline'></div><div class='header'>[REACHFLOW // CYBER UTILITIES TERMINAL v1.0.4]</div><div class='terminal-box'><div class='title'>&gt; SYSTEM_READY</div><p style='color:rgba(0,255,102,0.8);line-height:1.6;'>High-performance open source tools &amp; automation scripts. Built for speed and utility.</p><a class='btn'>[EXECUTE_DOWNLOAD]</a></div></body></html>"></iframe>
+                </div>
+                <div class="era-meta">
+                    <div class="era-brand-title" style="color: var(--era2)">ReachFlow Terminal</div>
+                    <div class="content-date">04.2026</div>
+                </div>
+                <blockquote style="border-color: var(--era2)">
+                    "Then the warmth burned away. The orange became green. The curves became hard edges. The portfolio became a high-contrast hacker terminal."
+                </blockquote>
+                <div class="tags">
+                    <span class="tag" style="border-color: var(--era2); color: var(--era2)">CRT Scanlines</span>
+                    <span class="tag" style="border-color: var(--era2); color: var(--era2)">#00ff66 Matrix Green</span>
+                    <span class="tag" style="border-color: var(--era2); color: var(--era2)">ASCII Grid</span>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- CHAPTER 03: FULL PAGE TITLE CARD -->
+        <section class="section indicator-page" data-era="03" data-color="var(--era3)">
+            <div class="indicator-glow" style="background: radial-gradient(circle, var(--era3) 0%, transparent 70%);"></div>
+            <div class="huge-number" style="color: var(--era3)">03</div>
+            <div class="indicator-content reveal-scale">
+                <div class="chapter-tagline">CHAPTER 03</div>
+                <h2 class="era-name">THE COSMOS</h2>
+                <div class="era-line" style="background: var(--era3)"></div>
+                <div class="era-date">MAY 2026</div>
+            </div>
+        </section>
+
+        <!-- CHAPTER 03: CONTENT (REAL ORIGINAL PAGE EMBED) -->
+        <section class="section" data-era="03" data-color="var(--era3)">
+            <div class="content-wrapper reveal">
+                <div class="browser-mockup" style="border-color: rgba(168, 85, 247, 0.4);">
+                    <div class="browser-header">
+                        <div class="browser-dots">
+                            <div class="dot-btn red"></div>
+                            <div class="dot-btn yellow"></div>
+                            <div class="dot-btn green"></div>
+                        </div>
+                        <div class="browser-address">https://reachflow.site/spaces/tr4is (May 2026 Original)</div>
+                    </div>
+                    <iframe class="live-iframe" srcdoc="<!DOCTYPE html><html><head><style>body{background:#090714;color:#efefef;font-family:sans-serif;margin:0;padding:24px;box-sizing:border-box;} .nav{display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(12px);background:rgba(20,15,35,0.7);border:1px solid rgba(168,85,247,0.3);padding:14px 24px;border-radius:12px;margin-bottom:24px;} .logo{font-weight:bold;color:#a855f7;text-shadow:0 0 12px rgba(168,85,247,0.6);letter-spacing:2px;} .glass-card{background:rgba(20,15,35,0.6);border:1px solid rgba(168,85,247,0.3);backdrop-filter:blur(16px);border-radius:16px;padding:28px;box-shadow:0 8px 32px rgba(0,0,0,0.5);} .glass-card h1{color:#fff;margin-top:0;font-size:1.8rem;letter-spacing:1px;} .tag{display:inline-block;background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.4);color:#a855f7;padding:4px 12px;border-radius:20px;font-size:0.75rem;letter-spacing:1px;}</style></head><body><div class='nav'><div class='logo'>TR4IS SPACE</div><div class='tag'>COSMIC WORKSTATION</div></div><div class='glass-card'><h1>Digital Workstation &amp; Vault</h1><p style='color:rgba(239,239,239,0.7);line-height:1.6;'>Particle grids, orbital rings, and frosted glass containers floating in deep space.</p></div></body></html>"></iframe>
+                </div>
+                <div class="era-meta">
+                    <div class="era-brand-title" style="color: var(--era3)">TR4IS Space</div>
+                    <div class="content-date">05.2026</div>
+                </div>
+                <blockquote style="border-color: var(--era3)">
+                    "Green wasn't enough. The terminal opened into space. Glass replaced steel. Particles replaced scanlines. Electric violet took over."
+                </blockquote>
+                <div class="tags">
+                    <span class="tag" style="border-color: var(--era3); color: var(--era3)">Glassmorphism</span>
+                    <span class="tag" style="border-color: var(--era3); color: var(--era3)">Particle Canvas</span>
+                    <span class="tag" style="border-color: var(--era3); color: var(--era3)">#a855f7 Violet</span>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- CHAPTER 04: FULL PAGE TITLE CARD -->
+        <section class="section indicator-page" data-era="04" data-color="var(--era4)">
+            <div class="indicator-glow" style="background: radial-gradient(circle, var(--era4) 0%, transparent 70%);"></div>
+            <div class="huge-number" style="color: var(--era4)">04</div>
+            <div class="indicator-content reveal-scale">
+                <div class="chapter-tagline">CHAPTER 04</div>
+                <h2 class="era-name">THE MACHINE</h2>
+                <div class="era-line" style="background: var(--era4)"></div>
+                <div class="era-date">JUNE 2026</div>
+            </div>
+        </section>
+
+        <!-- CHAPTER 04: CONTENT (REAL ORIGINAL PAGE EMBED) -->
+        <section class="section" data-era="04" data-color="var(--era4)">
+            <div class="content-wrapper reveal">
+                <div class="browser-mockup" style="border-color: rgba(0, 243, 255, 0.4);">
+                    <div class="browser-header">
+                        <div class="browser-dots">
+                            <div class="dot-btn red"></div>
+                            <div class="dot-btn yellow"></div>
+                            <div class="dot-btn green"></div>
+                        </div>
+                        <div class="browser-address">https://n3trunner.dev (Jun 2026 Original)</div>
+                    </div>
+                    <iframe class="live-iframe" srcdoc="<!DOCTYPE html><html><head><style>body{background:#05070f;color:#00f3ff;font-family:monospace;margin:0;padding:24px;box-sizing:border-box;} .hud{border:1px solid #00f3ff;background:rgba(0,243,255,0.05);padding:10px 18px;display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:24px;letter-spacing:1px;} .glitch{font-size:2.4rem;font-weight:bold;color:#00f3ff;text-shadow:-2px 0 #ff0055, 2px 0 #00f3ff;margin-bottom:18px;letter-spacing:2px;} .poly-card{background:rgba(10,15,30,0.85);border:1px solid #00f3ff;clip-path:polygon(0 0, 95% 0, 100% 15%, 100% 100%, 5% 100%, 0 85%);padding:24px;} .poly-card h2{color:#ff0055;margin-top:0;font-size:1.3rem;letter-spacing:1px;}</style></head><body><div class='hud'><span>SYS_STATUS: ONLINE</span><span>LOC: N3TRUNNER.DEV</span></div><div class='glitch'>N3TRUNNER</div><div class='poly-card'><h2>// CYBERDECK HUB</h2><p style='color:#88aacc;line-height:1.6;'>Polygon clip-paths, HUD headers, Web Audio API synthesis, and cyberpunk dual-tone neon UI.</p></div></body></html>"></iframe>
+                </div>
+                <div class="era-meta">
+                    <div class="era-brand-title" style="color: var(--era4)">n3trunner.dev</div>
+                    <div class="content-date">06.2026</div>
+                </div>
+                <blockquote style="border-color: var(--era4)">
+                    "ReachFlow died. n3trunner was born. The site became a machine — HUD headers, glitch animations, audio synthesis. Not just a website, but a cyberdeck."
+                </blockquote>
+                <div class="tags">
+                    <span class="tag" style="border-color: var(--era4); color: var(--era4)">Glitch Text</span>
+                    <span class="tag" style="border-color: var(--era4); color: var(--era4)">HUD Header</span>
+                    <span class="tag" style="border-color: var(--era4); color: var(--era4)">Clip-path Polygons</span>
+                    <span class="tag" style="border-color: var(--era4); color: var(--era4)">Web Audio API</span>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- CHAPTER 05: FULL PAGE TITLE CARD -->
+        <section class="section indicator-page" data-era="05" data-color="var(--era5)">
+            <div class="indicator-glow" style="background: radial-gradient(circle, var(--era5) 0%, transparent 70%);"></div>
+            <div class="huge-number" style="color: var(--era5)">05</div>
+            <div class="indicator-content reveal-scale">
+                <div class="chapter-tagline">CHAPTER 05</div>
+                <h2 class="era-name">THE BUILDER</h2>
+                <div class="era-line" style="background: var(--era5)"></div>
+                <div class="era-date">PRESENT DAY</div>
+            </div>
+        </section>
+
+        <!-- CHAPTER 05: CONTENT (CURRENT LIVE SITE EMBED) -->
+        <section class="section" data-era="05" data-color="var(--era5)">
+            <div class="content-wrapper reveal">
+                <div class="browser-mockup" style="border-color: rgba(139, 92, 246, 0.4);">
+                    <div class="browser-header">
+                        <div class="browser-dots">
+                            <div class="dot-btn red"></div>
+                            <div class="dot-btn yellow"></div>
+                            <div class="dot-btn green"></div>
+                        </div>
+                        <div class="browser-address">https://n3trunner.dev (Current Live Website)</div>
+                    </div>
+                    <iframe class="live-iframe" src="https://n3trunner.dev"></iframe>
+                </div>
+                <div class="era-meta">
+                    <div class="era-brand-title" style="color: var(--era5)">Cr4cker // n3trunner.dev</div>
+                    <div class="content-date">NOW</div>
+                </div>
+                <blockquote style="border-color: var(--era5)">
+                    "The noise stripped away. What remained was the work. Tools that solve real problems. Sleek dark minimalism, bilingual EN/AR support, and building for the long term."
+                </blockquote>
+                <div class="tags">
+                    <span class="tag" style="border-color: var(--era5); color: var(--era5)">JetBrains Mono</span>
+                    <span class="tag" style="border-color: var(--era5); color: var(--era5)">Bebas Neue</span>
+                    <span class="tag" style="border-color: var(--era5); color: var(--era5)">Bilingual AR/EN</span>
+                    <span class="tag" style="border-color: var(--era5); color: var(--era5)">React / Vite</span>
+                </div>
+                <a href="https://n3trunner.dev" class="live-btn" target="_blank" style="background: var(--era5)">VISIT LIVE SITE →</a>
+            </div>
+        </section>
+
+
+        <!-- EPILOGUE -->
+        <section class="section indicator-page" data-era="06" data-color="#8b5cf6">
+            <div class="indicator-glow" style="background: radial-gradient(circle, #8b5cf6 0%, transparent 70%);"></div>
+            <div class="indicator-content reveal-scale">
+                <div class="chapter-tagline">THE NEXT CHAPTER</div>
+                <h2 class="era-name">STILL BUILDING<span class="blinking-cursor"></span></h2>
+                <div class="era-line" style="background: #8b5cf6"></div>
+                <div class="era-date">FOLLOW THE JOURNEY</div>
+                <div style="display: flex; gap: 1.5rem; margin-top: 2rem;">
+                    <a href="https://github.com/TR4IS" target="_blank" class="nav-link" style="color: var(--text-main); font-weight: bold;">GITHUB</a>
+                    <a href="https://n3trunner.dev" target="_blank" class="nav-link" style="color: var(--text-main); font-weight: bold;">N3TRUNNER.DEV</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Scroll Progress & Color Transition System
+        const scrollProgress = document.getElementById('scroll-progress');
+        const floatingChapter = document.getElementById('floating-chapter');
+        const sections = document.querySelectorAll('.section');
+        const root = document.documentElement;
+
+        window.addEventListener('scroll', () => {
+            const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (window.scrollY / totalScroll) * 100;
+            scrollProgress.style.width = `${progress}%`;
+        });
+
+        // IntersectionObserver for Scroll Animations & Color Shifts
+        const observerOptions = {
+            threshold: 0.3
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Trigger reveal class
+                    const reveals = entry.target.querySelectorAll('.reveal, .reveal-scale');
+                    reveals.forEach(el => el.classList.add('visible'));
+
+                    // Update era accent color & chapter indicator
+                    const color = entry.target.getAttribute('data-color');
+                    const era = entry.target.getAttribute('data-era');
+
+                    if (color) {
+                        root.style.setProperty('--current-accent', color);
+                    }
+                    if (era) {
+                        floatingChapter.textContent = era;
+                    }
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+</body>
+</html>
