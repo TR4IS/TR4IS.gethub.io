@@ -188,7 +188,7 @@
             letter-spacing: 4px;
         }
 
-        /* FULL SCREEN STAGE STYLING (95vw x 88vh) */
+        /* FULL SCREEN STAGE STYLING (96vw x 88vh) */
         .full-stage-wrapper {
             width: 96vw;
             height: 88vh;
@@ -530,22 +530,22 @@
             <div class="bg-glow" style="background: radial-gradient(circle, var(--era3) 0%, transparent 70%);"></div>
             <div class="giant-num" style="color: var(--era3)">03</div>
             <div class="card-center-box reveal">
-                <div class="tagline">ERA 03 // FULL STAGE</div>
+                <div class="tagline">ERA 03 // REBUILT COSMOS</div>
                 <h2 class="main-title">THE COSMOS</h2>
                 <div class="divider-bar" style="background: var(--era3)"></div>
-                <div class="date-sub">MAY 2026</div>
+                <div class="date-sub">MAY 2026 // REBUILT MASTERPIECE</div>
             </div>
         </section>
 
-        <!-- CHAPTER 03 FULL SCREEN WEBPAGE STAGE -->
+        <!-- CHAPTER 03 FULL SCREEN WEBPAGE STAGE (REBUILT 10X COSMOS DESIGN) -->
         <section class="section" data-era="03" data-color="var(--era3)">
-            <div class="full-stage-wrapper reveal" style="border-color: rgba(168, 85, 247, 0.4);">
+            <div class="full-stage-wrapper reveal" style="border-color: rgba(168, 85, 247, 0.6); box-shadow: 0 0 50px rgba(168, 85, 247, 0.2);">
                 <div class="stage-toolbar">
                     <div class="traffic-lights">
                         <div class="light r"></div><div class="light y"></div><div class="light g"></div>
                     </div>
-                    <div class="stage-address">https://reachflow.site/spaces/tr4is (May 2026 Original ERA 03)</div>
-                    <div style="font-size: 0.75rem; color: var(--era3); font-weight: bold;">[ERA 03 LIVE INTERACTIVE]</div>
+                    <div class="stage-address">https://reachflow.site/spaces/tr4is (May 2026 Rebuilt Masterpiece)</div>
+                    <div style="font-size: 0.75rem; color: var(--era3); font-weight: bold; text-shadow: 0 0 10px #a855f7;">[10X REBUILT COSMIC WORKSTATION]</div>
                 </div>
 
                 <iframe class="full-iframe" srcdoc="<!DOCTYPE html>
@@ -553,34 +553,129 @@
 <head>
 <meta charset='UTF-8'>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap');
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:#070510; color:#efefef; font-family:sans-serif; min-height:100vh; padding:40px; background-image: radial-gradient(rgba(168,85,247,0.15) 1px, transparent 1px); background-size:30px 30px; }
-  nav { display:flex; justify-content:space-between; align-items:center; backdrop-filter:blur(20px); background:rgba(20,14,38,0.7); border:1px solid rgba(168,85,247,0.35); padding:16px 28px; border-radius:16px; margin-bottom:40px; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
-  .logo { font-weight:bold; font-size:1.3rem; color:#a855f7; text-shadow:0 0 16px rgba(168,85,247,0.8); letter-spacing:2px; }
-  .badge { background:rgba(168,85,247,0.18); border:1px solid rgba(168,85,247,0.5); color:#a855f7; padding:6px 16px; border-radius:30px; font-size:0.8rem; letter-spacing:1px; }
-  .hero-glass { background:rgba(20,14,38,0.55); border:1px solid rgba(168,85,247,0.3); backdrop-filter:blur(24px); border-radius:24px; padding:48px; margin-bottom:30px; box-shadow:0 20px 50px rgba(0,0,0,0.6); position:relative; overflow:hidden; }
-  .hero-glass h1 { color:#fff; font-size:2.6rem; margin-bottom:16px; letter-spacing:1px; }
-  .hero-glass p { color:rgba(239,239,239,0.75); font-size:1.1rem; line-height:1.7; max-width:650px; }
-  .cards-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; }
-  .g-card { background:rgba(20,14,38,0.5); border:1px solid rgba(168,85,247,0.25); backdrop-filter:blur(16px); border-radius:18px; padding:28px; transition:transform 0.3s, border-color 0.3s; }
-  .g-card:hover { transform:translateY(-6px); border-color:#a855f7; box-shadow:0 10px 30px rgba(168,85,247,0.25); }
-  .g-card h3 { color:#a855f7; font-size:1.25rem; margin-bottom:10px; }
-  .g-card p { color:rgba(239,239,239,0.65); font-size:0.9rem; line-height:1.6; }
+  body { background:#070410; color:#efefef; font-family:'Outfit', sans-serif; min-height:100vh; padding:36px; background-image: radial-gradient(rgba(168, 85, 247, 0.2) 1.5px, transparent 1.5px), radial-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px); background-size: 32px 32px, 64px 64px; overflow-x:hidden; }
+
+  /* Nebula Glowing Orbs Background */
+  .nebula-1 { position:fixed; top:-100px; right:-100px; width:500px; height:500px; background:radial-gradient(circle, rgba(168,85,247,0.3) 0%, transparent 70%); filter:blur(80px); pointer-events:none; }
+  .nebula-2 { position:fixed; bottom:-100px; left:-100px; width:600px; height:600px; background:radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%); filter:blur(100px); pointer-events:none; }
+
+  /* Floating Glass Navbar */
+  nav { display:flex; justify-content:space-between; align-items:center; backdrop-filter:blur(24px); background:rgba(18, 12, 38, 0.75); border:1px solid rgba(168,85,247,0.4); padding:16px 32px; border-radius:40px; margin-bottom:36px; box-shadow:0 10px 40px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.1); }
+  .nav-left { display:flex; align-items:center; gap:16px; }
+  .logo { font-family:'Bebas Neue', sans-serif; font-size:1.8rem; letter-spacing:3px; color:#fff; text-shadow:0 0 20px rgba(168,85,247,0.9); }
+  .logo span { color:#a855f7; }
+  .status-badge { background:rgba(168,85,247,0.15); border:1px solid rgba(168,85,247,0.5); color:#c084fc; padding:4px 14px; border-radius:20px; font-size:0.75rem; font-family:'JetBrains Mono', monospace; font-weight:bold; letter-spacing:1px; display:flex; align-items:center; gap:8px; }
+  .pulse-dot { width:8px; height:8px; border-radius:50%; background:#27c93f; box-shadow:0 0 10px #27c93f; }
+  .nav-menu { display:flex; gap:24px; font-size:0.85rem; letter-spacing:1px; font-weight:600; }
+  .nav-item { color:rgba(239,239,239,0.6); text-decoration:none; transition:all 0.2s; }
+  .nav-item:hover, .nav-item.active { color:#c084fc; text-shadow:0 0 12px rgba(192,132,252,0.8); }
+
+  /* Hero Section */
+  .hero-container { display:grid; grid-template-columns:1.2fr 0.8fr; gap:36px; margin-bottom:36px; align-items:center; }
+  .hero-card { background:rgba(18, 12, 38, 0.65); border:1px solid rgba(168,85,247,0.35); backdrop-filter:blur(30px); border-radius:28px; padding:48px; box-shadow:0 20px 60px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.15); position:relative; overflow:hidden; }
+  .hero-card::before { content:''; position:absolute; top:0; left:0; width:100%; height:2px; background:linear-gradient(90deg, transparent, #a855f7, #3b82f6, transparent); }
+  .hero-tag { font-family:'JetBrains Mono', monospace; color:#a855f7; font-size:0.8rem; letter-spacing:3px; text-transform:uppercase; margin-bottom:16px; font-weight:bold; }
+  .hero-title { font-family:'Bebas Neue', sans-serif; font-size:3.8rem; line-height:0.95; letter-spacing:3px; margin-bottom:20px; color:#fff; text-shadow:0 0 30px rgba(168,85,247,0.4); }
+  .hero-title em { font-style:normal; background:linear-gradient(135deg, #a855f7, #c084fc, #3b82f6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .hero-sub { color:rgba(239,239,239,0.75); font-size:1.05rem; line-height:1.7; margin-bottom:28px; font-weight:300; }
+  
+  .cta-group { display:flex; gap:16px; }
+  .btn-primary { background:linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); color:#fff; padding:14px 28px; border-radius:14px; font-weight:700; text-decoration:none; letter-spacing:1.5px; font-size:0.85rem; text-transform:uppercase; box-shadow:0 0 25px rgba(168,85,247,0.6); transition:all 0.3s; border:1px solid rgba(255,255,255,0.2); }
+  .btn-primary:hover { transform:translateY(-3px); box-shadow:0 0 40px rgba(168,85,247,0.9); }
+  .btn-secondary { background:rgba(255,255,255,0.05); border:1px solid rgba(168,85,247,0.4); color:#c084fc; padding:14px 28px; border-radius:14px; font-weight:700; text-decoration:none; letter-spacing:1.5px; font-size:0.85rem; text-transform:uppercase; transition:all 0.3s; }
+  .btn-secondary:hover { background:rgba(168,85,247,0.15); color:#fff; }
+
+  /* Interactive Cosmic Hologram Card */
+  .holo-card { background:rgba(14, 9, 30, 0.7); border:1px solid rgba(168,85,247,0.4); backdrop-filter:blur(24px); border-radius:28px; padding:32px; box-shadow:0 20px 50px rgba(0,0,0,0.8); display:flex; flex-direction:column; gap:20px; position:relative; }
+  .user-header { display:flex; align-items:center; gap:16px; }
+  .avatar-ring { width:64px; height:64px; border-radius:50%; border:2px solid #a855f7; box-shadow:0 0 20px #a855f7; display:flex; align-items:center; justify-content:center; background:radial-gradient(circle, #3b82f6, #a855f7); font-weight:bold; font-size:1.4rem; color:#fff; }
+  .user-info h4 { font-size:1.2rem; color:#fff; margin-bottom:4px; }
+  .user-info p { font-size:0.8rem; color:#a855f7; font-family:'JetBrains Mono', monospace; }
+
+  .stats-row { display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; }
+  .stat-box { background:rgba(255,255,255,0.03); border:1px solid rgba(168,85,247,0.25); border-radius:12px; padding:14px; text-align:center; }
+  .stat-val { font-family:'Bebas Neue', sans-serif; font-size:1.8rem; color:#c084fc; letter-spacing:1px; }
+  .stat-lbl { font-size:0.7rem; color:rgba(239,239,239,0.5); font-family:'JetBrains Mono', monospace; text-transform:uppercase; }
+
+  /* 3 Modules Grid */
+  .modules-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; }
+  .m-card { background:rgba(18, 12, 38, 0.55); border:1px solid rgba(168,85,247,0.25); backdrop-filter:blur(20px); border-radius:20px; padding:28px; transition:all 0.3s; }
+  .m-card:hover { transform:translateY(-6px); border-color:#c084fc; box-shadow:0 15px 40px rgba(168,85,247,0.3); }
+  .m-icon { font-size:1.8rem; margin-bottom:14px; display:inline-block; }
+  .m-card h3 { font-size:1.25rem; color:#fff; margin-bottom:10px; font-weight:600; }
+  .m-card p { color:rgba(239,239,239,0.65); font-size:0.9rem; line-height:1.6; font-weight:300; }
 </style>
 </head>
 <body>
+  <div class='nebula-1'></div>
+  <div class='nebula-2'></div>
+
   <nav>
-    <div class='logo'>TR4IS SPACE</div>
-    <div class='badge'>COSMIC WORKSTATION // v3.0</div>
+    <div class='nav-left'>
+      <div class='logo'>TR4IS <span>SPACE</span></div>
+      <div class='status-badge'><div class='pulse-dot'></div>SYSTEM ONLINE</div>
+    </div>
+    <div class='nav-menu'>
+      <a class='nav-item active'>EXPLORE</a>
+      <a class='nav-item'>SPACES</a>
+      <a class='nav-item'>CUSTOMIZATION</a>
+      <a class='nav-item'>VAULT</a>
+    </div>
   </nav>
-  <div class='hero-glass'>
-    <h1>Digital Workstation &amp; Space Vault</h1>
-    <p>Particle constellation grids, orbital ring animations, and deep-space frosted glass containers.</p>
+
+  <div class='hero-container'>
+    <div class='hero-card'>
+      <div class='hero-tag'>// NEXT-GEN DEVELOPER PORTALS</div>
+      <h1 class='hero-title'>OWN YOUR SPACE IN THE <em>DIGITAL COSMOS</em></h1>
+      <p class='hero-sub'>Zero config hosting for developers. Drag-and-drop live widgets, 25+ font themes, custom avatar rings, and instant GitHub OAuth deployment in under 60 seconds.</p>
+      <div class='cta-group'>
+        <a class='btn-primary'>🚀 CLAIM YOUR SPACE</a>
+        <a class='btn-secondary'>VIEW DEMO</a>
+      </div>
+    </div>
+
+    <div class='holo-card'>
+      <div class='user-header'>
+        <div class='avatar-ring'>CR</div>
+        <div class='user-info'>
+          <h4>Cr4cker Workstation</h4>
+          <p>reachflow.site/spaces/tr4is</p>
+        </div>
+      </div>
+      <div class='stats-row'>
+        <div class='stat-box'>
+          <div class='stat-val'>2.4k+</div>
+          <div class='stat-lbl'>ACTIVE SPACES</div>
+        </div>
+        <div class='stat-box'>
+          <div class='stat-val'>0.02s</div>
+          <div class='stat-lbl'>EDGE LATENCY</div>
+        </div>
+      </div>
+      <div style='background:rgba(168,85,247,0.1); border:1px solid rgba(168,85,247,0.3); padding:10px 14px; border-radius:10px; font-size:0.75rem; font-family:monospace; color:#c084fc;'>
+        STATUS: LIVE_WORKSTATION // AUTH: VERIFIED
+      </div>
+    </div>
   </div>
-  <div class='cards-grid'>
-    <div class='g-card'><h3>Spaces Engine</h3><p>Instant developer spaces generated via GitHub OAuth with zero server config.</p></div>
-    <div class='g-card'><h3>Cloud Tools</h3><p>Custom software distribution vault built for security &amp; performance.</p></div>
-    <div class='g-card'><h3>Cosmic Theme</h3><p>Deep electric violet aesthetics with smooth frosted glassmorphism elements.</p></div>
+
+  <div class='modules-grid'>
+    <div class='m-card'>
+      <span class='m-icon'>🎛️</span>
+      <h3>Drag &amp; Drop Engine</h3>
+      <p>Move your photo, title, bio, and social widgets anywhere on screen with grid snapping.</p>
+    </div>
+    <div class='m-card'>
+      <span class='m-icon'>🎨</span>
+      <h3>Deep Customization</h3>
+      <p>25+ font families, glow text shadows, avatar orbital rings, background video filters.</p>
+    </div>
+    <div class='m-card'>
+      <span class='m-icon'>⚡</span>
+      <h3>Instant Subdomain</h3>
+      <p>Sign in with GitHub and claim reachflow.site/spaces/{username} instantly with zero setup.</p>
+    </div>
   </div>
 </body>
 </html>"></iframe>
